@@ -1,0 +1,28 @@
+{
+	"name": "Nblocks React Native",
+	"build": {
+		"dockerfile": "Dockerfile",
+	},
+	"containerEnv": {},
+	"runArgs": [],
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode",
+		"mikestead.dotenv",
+		"redhat.vscode-yaml"
+	],
+	"appPort": [
+		"19000:19000",
+		"19002:19002",
+		"19006:19006",
+	],
+	//this improves container performance
+	"mounts": [
+		"target=${containerWorkspaceFolder}/node_modules,type=volume",
+	],
+	"postCreateCommand": "bash .devcontainer/init.sh ${containerWorkspaceFolder}",
+}
