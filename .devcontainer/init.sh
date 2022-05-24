@@ -12,6 +12,7 @@ echo "Configuring GIT"
 git config --global user.email $GIT_EMAIL
 git config --global user.name $GIT_NAME
 
+echo "Installing global dependencies..."
 npm install -g expo-cli
 
 echo "Done dev specific initializing, running workspace_folder/init.sh..."
