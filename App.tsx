@@ -1,26 +1,20 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import CounterComponent from './src/components/Counter/CounterComponent';
-import UsdPriceComponent from './src/components/UsdPrice/UsdPrice';
+import React, { Component } from 'react';
+import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import Routes from './src/routes/Routes';
 
-export default function App() {
-
-  return (
-    <View style={styles.container}>
-      <Text>Hej Blomman!</Text>
-      <UsdPriceComponent></UsdPriceComponent>
-      <CounterComponent></CounterComponent>
-      <StatusBar style="auto" />
-    </View>
-  );
+export default class App extends Component<{}, {}> {
+  render() {
+    const styles = StyleSheet.create({
+      container: {
+        flex: 1 // Must have for mobile to give height of routes
+      }
+    })
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar style="auto" />
+        <Routes></Routes>
+      </SafeAreaView>
+    ); 
+  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

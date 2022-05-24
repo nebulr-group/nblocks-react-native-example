@@ -13,6 +13,7 @@ export default class CounterComponent extends Component<{},CounterComponentState
     this.state = {
       count: 0
     }
+
   }
 
   onPressButton(): void {

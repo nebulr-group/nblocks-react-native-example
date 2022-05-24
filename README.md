@@ -11,6 +11,7 @@ Initial commands used:
 ### Documentation
 * [Expo](https://docs.expo.dev)
 * [React Native](https://reactnative.dev/)
+* [React Native Express](https://www.reactnative.express)
 
 ## Run it
 When starting the development server web browsers and mobiles (Expo Go) can access the app using QR code. Due to the project beeing inside a docker container external access outside the host machine requires the local IP to be set.
@@ -24,3 +25,8 @@ When starting the development server web browsers and mobiles (Expo Go) can acce
 * `npm install -g expo-cli` to keep global expo cli up-to-date
 
 (`npx react-native upgrade` when we've diched expo)
+
+## FAQ & Loopholes
+### Why style flex:1 on root view?
+When using a root view it must be stretched to fill the container.
+See https://reactnavigation.org/docs/troubleshooting/#nothing-is-visible-on-the-screen-after-adding-a-view
