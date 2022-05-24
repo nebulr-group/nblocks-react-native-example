@@ -2,7 +2,7 @@
 This is currently a hello world react native app that gradually includes more and more functionality from nblocks. The idea is to turn this project into a ui plugin published and installable with `npm`,  just like `nblocks-ionic`. 
 
 ## Built with Expo
-Following the recommended way to get started with react-native this project is built with `expo`. Expo is a set of tools built around React Native to easily run and deploy your app. It also simplifies working with native OS APIs. Since this project aim to be an installable plugin and not deployable itself, expo will probably be removed later on.
+Following the recommended way to get started with react-native nowadays this project is built with `expo`. Expo is a set of tools built around React Native to easily build, run and deploy your app. It also simplifies working with native OS APIs. Since this project aim to be an installable plugin, not deployable itself and available to as many react-native devs as possible, expo will probably be removed later on.
 
 Initial commands used:
 1. `expo init nblocks-react-native --npm`
@@ -22,3 +22,5 @@ When starting the development server web browsers and mobiles (Expo Go) can acce
 ## Keeping dependencies up-to-date
 * `expo upgrade` will upgrade expo sdk and also npm packages to compatable semver.
 * `npm install -g expo-cli` to keep global expo cli up-to-date
+
+(`npx react-native upgrade` when we've diched expo)
