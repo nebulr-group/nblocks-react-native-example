@@ -1,10 +1,10 @@
 import { NavigationProp } from '@react-navigation/native';
 import React, { Component } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, View } from 'react-native';
 import { SecureHttpContext } from '../../components/SecureHttpContext/SecureHttpContext';
 import { RoutesStackParams } from '../../routes/Routes';
 
-export default class ProfileScreen extends Component<{navigation: NavigationProp<RoutesStackParams>},{user: any}>{
+export default class ChooseUserScreen extends Component<{navigation: NavigationProp<RoutesStackParams>},{users: any[]}>{
 
   static contextType = SecureHttpContext;
   declare context: React.ContextType<typeof SecureHttpContext>;
@@ -12,24 +12,26 @@ export default class ProfileScreen extends Component<{navigation: NavigationProp
   constructor(props: {navigation: NavigationProp<RoutesStackParams>}) {
     super(props);
     this.state = {
-      user: {}
+      users: []
     }
   }
-  
+
+  async setUser(userId: any): Promise<void> {
+    this.context.setUser(userId);
+    this.props.navigation.navigate('Profile');
+  }
+
   async componentDidMount(): Promise<void> {
-    const user = await this.context.currentUser();
-    this.setState({user});
+    const users = await this.context.listUsers();
+    this.setState({users});
   }
 
   render() {
     return (
       <View>
-        <Text>Profile</Text>
-        <Text>{JSON.stringify(this.state.user)}</Text>
-        <Button
-          onPress={() => this.props.navigation.navigate('Home')}
-          title="Go to Home!"
-        />
+        {this.state.users.map(user => 
+          <Button key={user.id} onPress={() => this.setUser(user.id)} title={`${user.tenant.name} - (${user.role})`}></Button>
+        )}
       </View>
     );
   }

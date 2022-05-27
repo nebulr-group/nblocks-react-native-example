@@ -1,12 +1,29 @@
 import { NavigationProp } from '@react-navigation/native';
 import React, { Component } from 'react';
 import { Button, Text, View } from 'react-native';
+import { SecureHttpContext } from '../../components/SecureHttpContext/SecureHttpContext';
 import { RoutesStackParams } from '../../routes/Routes';
 
-export default class LoginScreen extends Component<{navigation: NavigationProp<RoutesStackParams>},{}>{
+export default class LoginScreen extends Component<{navigation: NavigationProp<RoutesStackParams>},{errors: any[]}>{
+
+  static contextType = SecureHttpContext;
+  declare context: React.ContextType<typeof SecureHttpContext>;
 
   constructor(props: {navigation: NavigationProp<RoutesStackParams>}) {
     super(props);
+    this.state = {
+      errors: []
+    }
+  }
+
+  async authenticate(): Promise<void> {
+    const response = await this.context.authenticate("oscar@nebulr.group", "helloworld");
+    if (response.mfaState === 'DISABLED')
+      this.props.navigation.navigate('ChooseUser');
+  }
+
+  componentDidMount() {
+
   }
 
   render() {
@@ -14,11 +31,14 @@ export default class LoginScreen extends Component<{navigation: NavigationProp<R
       <View>
         <Text>Login</Text>
         <Button
-          onPress={() => this.props.navigation.navigate('Home')}
-          title="Go to Home!"
+          onPress={() => this.authenticate()}
+          title="Authenticate!"
+        />
+        <Button
+          onPress={() => this.props.navigation.goBack()}
+          title="Cancel!"
         />
       </View>
     );
   }
-
 }
