@@ -1,7 +1,7 @@
 import { NavigationProp } from '@react-navigation/native';
 import React, { Component } from 'react';
 import { Button, Text, View } from 'react-native';
-import { SecureHttpContext } from '../../components/SecureHttpContext/SecureHttpContext';
+import { SecureHttpContext } from '../../components/NblocksContext/NblocksContext';
 import { RoutesStackParams } from '../../routes/Routes';
 
 export default class LoginScreen extends Component<{navigation: NavigationProp<RoutesStackParams>},{errors: any[]}>{
@@ -17,7 +17,7 @@ export default class LoginScreen extends Component<{navigation: NavigationProp<R
   }
 
   async authenticate(): Promise<void> {
-    const response = await this.context.authenticate("oscar@nebulr.group", "helloworld");
+    const response = await this.context.authService.authenticate("oscar@nebulr.group", "helloworld");
     if (response.mfaState === 'DISABLED')
       this.props.navigation.navigate('ChooseUser');
   }

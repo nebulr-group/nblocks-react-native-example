@@ -3,58 +3,24 @@ import { ForbiddenError } from './errors/ForbiddenError';
 import { UnauthenticatedError } from './errors/UnauthenticatedError';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export class AuthApi {
+export class AuthHttpClient {
 
-    private readonly ENDPOINTS = {
-        authenticate: "/auth-proxy/authenticate",
-        authenticated: "/auth-proxy/authenticated",
-        tenantUsers: "/auth-proxy/tenantUsers",
-        currentUser: "/auth/currentUser",
-        password: "/auth-proxy/password",
-        user: "/auth-proxy/user",
-        socialLogin: "/social-login",
-        commitMfaCode: "/auth-proxy/commitMfaCode",
-        startMfaUserSetup: "/auth-proxy/startMfaUserSetup",
-        finishMfaUserSetup: "/auth-proxy/finishMfaUserSetup",
-        resetUserMfaSetup: "/auth-proxy/resetUserMfaSetup"
-    }
+  readonly httpClient: AxiosInstance;
 
-    private readonly BASE_URL = "http://192.168.2.22:3300";
-    private readonly httpClient: AxiosInstance;
-    private readonly debug = true;
+    private readonly BASE_URL: string;
+    private readonly debug: boolean;
 
     private authTokenKey = "NBLOCKS_AUTH_TOKEN";
     private tenantUserIdKey = "NBLOCKS_TENANT_USER_ID";
 
-    constructor() {
-        this.httpClient = axios.create({
-            baseURL: this.BASE_URL,
-        });
-        this._configureHttpClient(this.httpClient);
-    }
+    constructor(baseUrl: string, debug: boolean) {
+      this.BASE_URL = baseUrl;
+      this.debug = debug;
 
-    async authenticate(username:string, password:string): Promise<{mfaState: 'DISABLED' | 'REQUIRED' | 'SETUP'}> {
-        const response = await this.httpClient.post<{token: string, mfaState: 'DISABLED' | 'REQUIRED' | 'SETUP'}>(this.ENDPOINTS.authenticate, {username, password});
-        if (!response.data.token)
-            throw new Error("Wrong credentials");
-
-        await AsyncStorage.setItem(this.authTokenKey, response.data.token);
-
-        return {mfaState: response.data.mfaState};
-    }
-
-    async listUsers(): Promise<any[]> {
-      const response = await this.httpClient.get<any[]>(this.ENDPOINTS.tenantUsers);
-      return response.data;
-    }
-
-    async currentUser(): Promise<any> {
-      const response = await this.httpClient.get<any>(this.ENDPOINTS.currentUser);
-      return response.data;
-    }
-
-    async setUser(userId: string): Promise<void> {
-      await AsyncStorage.setItem(this.tenantUserIdKey, userId);
+      this.httpClient = axios.create({
+          baseURL: this.BASE_URL,
+      });
+      this._configureHttpClient(this.httpClient);
     }
 
     private _configureHttpClient(httpClient: AxiosInstance): void {

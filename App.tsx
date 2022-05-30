@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { SecureHttpContext, initialData } from './src/components/SecureHttpContext/SecureHttpContext';
+import NblocksContext from './src/components/NblocksContext/NblocksContext';
 import Routes from './src/routes/Routes';
 
 export default class App extends Component<{}, {}> {
@@ -13,12 +13,12 @@ export default class App extends Component<{}, {}> {
       }
     })
     return (
-      <SecureHttpContext.Provider value={initialData}>
+      <NblocksContext>
         <SafeAreaView style={styles.container}>
           <StatusBar style="auto" />
             <Routes></Routes>
         </SafeAreaView>
-      </SecureHttpContext.Provider>
+      </NblocksContext>
     ); 
   }
 }

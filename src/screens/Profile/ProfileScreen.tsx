@@ -1,7 +1,8 @@
 import { NavigationProp } from '@react-navigation/native';
 import React, { Component } from 'react';
 import { Button, Text, View } from 'react-native';
-import { SecureHttpContext } from '../../components/SecureHttpContext/SecureHttpContext';
+import { SecureHttpContext } from '../../components/NblocksContext/NblocksContext';
+import UserListComponent from '../../components/User/UserListComponent/UserListComponent';
 import { RoutesStackParams } from '../../routes/Routes';
 
 export default class ProfileScreen extends Component<{navigation: NavigationProp<RoutesStackParams>},{user: any}>{
@@ -17,7 +18,7 @@ export default class ProfileScreen extends Component<{navigation: NavigationProp
   }
   
   async componentDidMount(): Promise<void> {
-    const user = await this.context.currentUser();
+    const user = await this.context.authService.currentUser();
     this.setState({user});
   }
 
@@ -30,6 +31,7 @@ export default class ProfileScreen extends Component<{navigation: NavigationProp
           onPress={() => this.props.navigation.navigate('Home')}
           title="Go to Home!"
         />
+        <UserListComponent></UserListComponent>
       </View>
     );
   }
