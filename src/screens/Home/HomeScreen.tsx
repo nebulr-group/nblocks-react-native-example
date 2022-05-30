@@ -1,23 +1,26 @@
-import { NavigationProp } from '@react-navigation/native';
-import React, { Component } from 'react';
+
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import React, { FunctionComponent } from 'react';
 import { Button, Text, View } from 'react-native';
 import { RoutesStackParams } from '../../routes/Routes';
 
-export default class HomeScreen extends Component<{navigation: NavigationProp<RoutesStackParams>},{}>{
+const HomeScreen: FunctionComponent<{}> = () => {
 
-  render() {
+    const navigation = useNavigation<NavigationProp<RoutesStackParams>>();
+
     return (
       <View>
         <Text>Home</Text>
         <Button
-          onPress={() => this.props.navigation.navigate('Profile')}
+          onPress={() => navigation.navigate('Profile')}
           title="Go to Profile!"
         />
         <Button
-          onPress={() => this.props.navigation.navigate('Login')}
+          onPress={() => navigation.navigate('Login')}
           title="Login!"
         />
       </View>
     );
-  }
 }
+
+export default HomeScreen;

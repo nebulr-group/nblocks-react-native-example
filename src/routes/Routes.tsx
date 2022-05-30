@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React, { Component } from 'react';
+import React, { FunctionComponent } from 'react';
 import HomeScreen from '../screens/Home/HomeScreen';
 import ChooseUserScreen from '../screens/Login/ChooseUserScreen';
 import LoginScreen from '../screens/Login/LoginScreen';
@@ -15,9 +15,7 @@ export type RoutesStackParams = {
 
 const Stack = createNativeStackNavigator<RoutesStackParams>();
 
-export default class Routes extends Component<{},{}>{
-
-  render() {
+const Routes: FunctionComponent<{}> = ({}) => {
     return (
       <NavigationContainer>
           <Stack.Navigator initialRouteName="Home">
@@ -32,6 +30,6 @@ export default class Routes extends Component<{},{}>{
           </Stack.Navigator>
       </NavigationContainer>
     );
-  }
-
 }
+
+export default Routes;

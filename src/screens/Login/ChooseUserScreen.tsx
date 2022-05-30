@@ -1,38 +1,33 @@
-import { NavigationProp } from '@react-navigation/native';
-import React, { Component } from 'react';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 import { Button, View } from 'react-native';
 import { SecureHttpContext } from '../../components/NblocksContext/NblocksContext';
 import { RoutesStackParams } from '../../routes/Routes';
 
-export default class ChooseUserScreen extends Component<{navigation: NavigationProp<RoutesStackParams>},{users: any[]}>{
+const ChooseUserScreen: FunctionComponent<{}> = () => {
 
-  static contextType = SecureHttpContext;
-  declare context: React.ContextType<typeof SecureHttpContext>;
+  const [users, setUsers] = useState<any[]>();
+  const navigation = useNavigation<NavigationProp<RoutesStackParams>>();
+  const context = useContext(SecureHttpContext);
 
-  constructor(props: {navigation: NavigationProp<RoutesStackParams>}) {
-    super(props);
-    this.state = {
-      users: []
+  useEffect(() => {
+    if (!users) {
+      context.authService.listUsers().then(result => setUsers(result));
     }
+  });
+
+  const setUser = async (userId: any): Promise<void> => {
+    await context.authService.setUser(userId);
+    navigation.navigate('Profile');
   }
 
-  async setUser(userId: any): Promise<void> {
-    this.context.authService.setUser(userId);
-    this.props.navigation.navigate('Profile');
-  }
-
-  async componentDidMount(): Promise<void> {
-    const users = await this.context.authService.listUsers();
-    this.setState({users});
-  }
-
-  render() {
-    return (
-      <View>
-        {this.state.users.map(user => 
-          <Button key={user.id} onPress={() => this.setUser(user.id)} title={`${user.tenant.name} - (${user.role})`}></Button>
-        )}
-      </View>
-    );
-  }
+  return (
+    <View>
+      {users?.map(user => 
+        <Button key={user.id} onPress={() => setUser(user.id)} title={`${user.tenant.name} - (${user.role})`}></Button>
+      )}
+    </View>
+  );
 }
+
+export default ChooseUserScreen;

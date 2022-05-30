@@ -1,36 +1,22 @@
-import React, { Component } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Button, Text, View } from 'react-native';
 
-type CounterComponentState = {
-  count: number;
-};
+const CounterComponent: FunctionComponent<{}> = ({}) => {
+  const [count, setCount] = useState(0);
 
-export default class CounterComponent extends Component<{},CounterComponentState>{
-
-  constructor(props = {}) {
-    super(props);
-
-    this.state = {
-      count: 0
-    }
-
+  const onPressButton = () => {
+    setCount(count + 1);
   }
 
-  onPressButton(): void {
-    const count = this.state.count;
-    this.setState({count: count + 1})
-  }
-
-  render() {
-    return (
-      <View>
-        <Text>You clicked {this.state.count} times</Text>
-        <Button
-          onPress={() => this.onPressButton()}
-          title="Click me!"
-        />
-      </View>
-    );
-  }
-
+  return (
+    <View>
+      <Text>You clicked {count} times</Text>
+      <Button
+        onPress={() => onPressButton()}
+        title="Click me!"
+      />
+    </View>
+  );
 }
+
+export default CounterComponent;

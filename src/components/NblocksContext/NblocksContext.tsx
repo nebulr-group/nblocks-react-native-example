@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { FunctionComponent } from "react";
 import { AuthService } from "../../utils/AuthService";
 import { AuthHttpClient } from "../../utils/AuthHttpClient";
 import { AuthApolloClient } from "../../utils/AuthApolloClient";
@@ -18,20 +18,21 @@ const SecureHttpContext = React.createContext(initialContext);
 
 export {SecureHttpContext};
 
-
 // TODO most probably it make sense to introduce abstraction layer and expose different contexts one by one.
 {/* <SecureHttpContext
   <<SecureApiContext */}
 
-export default class NblocksContext extends Component<{}, {}> {
+interface NblocksContextProps {
+}
 
-  render() {
+const NblocksContext: FunctionComponent<NblocksContextProps> = ({children}) => {
     return (
       <SecureHttpContext.Provider value={initialContext}>
         <ApolloProvider client={apolloClient}>
-          {this.props.children}
+          {children}
         </ApolloProvider>
       </SecureHttpContext.Provider>
-    ); 
-  }
+    );
 }
+
+export default NblocksContext;

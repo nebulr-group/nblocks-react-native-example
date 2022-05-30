@@ -1,38 +1,31 @@
-import React, { Component } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Text } from 'react-native';
 
-type CounterComponentState = {
-  usd: number;
-};
+const UsdPriceComponent: FunctionComponent<{}> = ({}) => {
 
-export default class UsdPriceComponent extends Component<{},CounterComponentState>{
+  const [usd, setUsd] = useState(0.0);
 
-  constructor(props = {}) {
-    super(props);
+  useEffect(() => {
+    getPriceFromApiAsync().then(result => setUsd(result));
+  })
 
-    this.state = {
-      usd: 0
-    }
-
-    this.getPriceFromApiAsync();
-  }
-
-  async getPriceFromApiAsync(): Promise<void> {
+  const getPriceFromApiAsync = async (): Promise<number> => {
     try {
       const response = await fetch(
         'https://api.coindesk.com/v1/bpi/currentprice/USD.json'
       );
       const json = await response.json();
-      this.setState({usd: json.bpi.USD.rate_float})
+      return json.bpi.USD.rate_float;
     } catch (error) {
       console.error(error);
     }
+    return 0;
   };
 
-  render() {
-    return (
-      <Text>USD: {this.state.usd}</Text>
-    );
-  }
+  return (
+    <Text>USD: {usd}</Text>
+  );
 
 }
+
+export default UsdPriceComponent;
