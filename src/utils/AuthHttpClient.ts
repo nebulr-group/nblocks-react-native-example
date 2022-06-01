@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { ForbiddenError } from './errors/ForbiddenError';
 import { UnauthenticatedError } from './errors/UnauthenticatedError';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthService } from './AuthService';
 
 export class AuthHttpClient {
 
@@ -9,9 +9,6 @@ export class AuthHttpClient {
 
     private readonly BASE_URL: string;
     private readonly debug: boolean;
-
-    private authTokenKey = "NBLOCKS_AUTH_TOKEN";
-    private tenantUserIdKey = "NBLOCKS_TENANT_USER_ID";
 
     constructor(baseUrl: string, debug: boolean) {
       this.BASE_URL = baseUrl;
@@ -28,8 +25,8 @@ export class AuthHttpClient {
 
         httpClient.interceptors.request.use(async (request) => {
           const [authToken, tenantUserId] = await Promise.all([
-            AsyncStorage.getItem(this.authTokenKey),
-            AsyncStorage.getItem(this.tenantUserIdKey)
+            AuthService.getAuthToken(),
+            AuthService.getTenantUserId()
           ]);
 
           if (authToken !== null) {

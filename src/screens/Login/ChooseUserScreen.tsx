@@ -1,24 +1,26 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, View } from 'react-native';
-import { SecureHttpContext } from '../../components/NblocksContext/NblocksContext';
+import { useSecureContext } from '../../components/NblocksContext/NblocksContext';
 import { RoutesStackParams } from '../../routes/Routes';
+import { AuthService } from '../../utils/AuthService';
 
 const ChooseUserScreen: FunctionComponent<{}> = () => {
 
   const [users, setUsers] = useState<any[]>();
   const navigation = useNavigation<NavigationProp<RoutesStackParams>>();
-  const context = useContext(SecureHttpContext);
+  const {authService, didAuthenticate} = useSecureContext();
 
   useEffect(() => {
     if (!users) {
-      context.authService.listUsers().then(result => setUsers(result));
+      authService.listUsers().then(result => setUsers(result));
     }
   });
 
   const setUser = async (userId: any): Promise<void> => {
-    await context.authService.setUser(userId);
-    navigation.navigate('Profile');
+    await AuthService.setTenantUserId(userId);
+    didAuthenticate(true);
+    navigation.navigate('Home');
   }
 
   return (

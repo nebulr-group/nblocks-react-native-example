@@ -2,16 +2,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
+import { AuthService } from './AuthService';
 
 export class AuthApolloClient {
 
     readonly client: ApolloClient<NormalizedCacheObject>;
 
     private readonly debug: boolean;
-
-    private authTokenKey = "NBLOCKS_AUTH_TOKEN";
-    private tenantUserIdKey = "NBLOCKS_TENANT_USER_ID";
-
     constructor(graphqlUrl: string, debug: boolean) {
       this.debug = debug;
 
@@ -33,8 +30,8 @@ export class AuthApolloClient {
         const authLink = setContext(async (_, { headers }) => {
         
           const [authToken, tenantUserId] = await Promise.all([
-            AsyncStorage.getItem(this.authTokenKey),
-            AsyncStorage.getItem(this.tenantUserIdKey)
+            AuthService.getAuthToken(),
+            AuthService.getTenantUserId()
           ]);
           
           return {

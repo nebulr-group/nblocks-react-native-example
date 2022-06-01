@@ -4,7 +4,6 @@ import { useListUsersQuery } from '../../../generated/graphql';
 
 const UserListComponent = () => {
 
-  const [users, setUsers] = useState([]);
   const { data, loading } = useListUsersQuery();
 
   if (loading) {
