@@ -2,7 +2,7 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { FunctionComponent } from 'react';
 import { Button, View } from 'react-native';
-import { useAuth } from '../../components/NblocksContext/NblocksContext';
+import { useAuth } from '../../hooks/auth-context';
 import { RoutesStackParams } from '../../routes/Routes';
 
 const HomeScreen: FunctionComponent<{}> = () => {

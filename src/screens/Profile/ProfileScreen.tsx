@@ -1,8 +1,8 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import { Button, Text, View } from 'react-native';
-import { useAuth } from '../../components/NblocksContext/NblocksContext';
 import UserListComponent from '../../components/User/UserListComponent/UserListComponent';
+import { useAuth } from '../../hooks/auth-context';
 import { RoutesStackParams } from '../../routes/Routes';
 
 const ProfileScreen: FunctionComponent<{}> = () => {

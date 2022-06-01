@@ -1,7 +1,7 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Button, View } from 'react-native';
-import { useSecureContext } from '../../components/NblocksContext/NblocksContext';
+import { useSecureContext } from '../../hooks/secure-http-context';
 import { RoutesStackParams } from '../../routes/Routes';
 import { AuthService } from '../../utils/AuthService';
 

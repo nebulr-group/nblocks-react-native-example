@@ -1,7 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import NblocksContext from './src/components/NblocksContext/NblocksContext';
+import NblocksProvider from './src/components/NblocksProvider/NblocksProvider';
+import NblocksSecureContextProvider from './src/hooks/secure-http-context';
 import Routes from './src/routes/Routes';
 
 export default class App extends Component<{}, {}> {
@@ -13,12 +14,12 @@ export default class App extends Component<{}, {}> {
       }
     })
     return (
-      <NblocksContext>
+      <NblocksProvider>
         <SafeAreaView style={styles.container}>
           <StatusBar style="auto" />
             <Routes></Routes>
         </SafeAreaView>
-      </NblocksContext>
+      </NblocksProvider>
     ); 
   }
 }

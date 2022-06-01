@@ -1,7 +1,7 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { FunctionComponent } from 'react';
 import { Button, Text, View } from 'react-native';
-import { useSecureContext } from '../../components/NblocksContext/NblocksContext';
+import { useSecureContext } from '../../hooks/secure-http-context';
 import { RoutesStackParams } from '../../routes/Routes';
 
 const LoginScreen: FunctionComponent<{}> = () => {
