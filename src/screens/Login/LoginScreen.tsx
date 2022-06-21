@@ -17,14 +17,10 @@ const LoginScreen: FunctionComponent<{}> = () => {
 
   return (
     <View>
-      <Text>Login</Text>
+      <Text>Oh, oh! Please login to continue</Text>
       <Button
         onPress={() => authenticate()}
         title="Authenticate!"
-      />
-      <Button
-        onPress={() => navigation.goBack()}
-        title="Cancel!"
       />
     </View>
   );

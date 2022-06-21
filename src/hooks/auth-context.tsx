@@ -7,8 +7,6 @@ const initialAuthContext = {currentUser:new CurrentUser(), logout: () => {}};
 const AuthContext = React.createContext(initialAuthContext);
 const useAuth = () => useContext(AuthContext);
 
-export {useAuth};
-
 interface NblocksContextProps {
 }
 
@@ -36,4 +34,4 @@ const NblocksAuthContextProvider: FunctionComponent<NblocksContextProps> = ({chi
     );
 }
 
-export default NblocksAuthContextProvider;
+export {NblocksAuthContextProvider, useAuth};

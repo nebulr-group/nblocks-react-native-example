@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import NblocksAuthContextProvider from '../../hooks/auth-context';
-import NblocksSecureContextProvider from '../../hooks/secure-http-context';
+import { NblocksAuthContextProvider } from '../../hooks/auth-context';
+import { NblocksSecureContextProvider } from '../../hooks/secure-http-context';
 
 const NblocksProvider: FunctionComponent<{}> = ({children}) => {
 

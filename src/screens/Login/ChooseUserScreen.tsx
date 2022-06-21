@@ -20,7 +20,6 @@ const ChooseUserScreen: FunctionComponent<{}> = () => {
   const setUser = async (userId: any): Promise<void> => {
     await AuthService.setTenantUserId(userId);
     didAuthenticate(true);
-    navigation.navigate('Home');
   }
 
   return (

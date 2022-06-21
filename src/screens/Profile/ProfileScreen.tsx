@@ -1,7 +1,6 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { FunctionComponent } from 'react';
 import { Button, Text, View } from 'react-native';
-import UserListComponent from '../../components/User/UserListComponent/UserListComponent';
 import { useAuth } from '../../hooks/auth-context';
 import { RoutesStackParams } from '../../routes/Routes';
 
@@ -17,7 +16,6 @@ const ProfileScreen: FunctionComponent<{}> = () => {
         onPress={() => navigation.navigate('Home')}
         title="Go to Home!"
       />
-      <UserListComponent></UserListComponent>
     </View>
   );
 }
