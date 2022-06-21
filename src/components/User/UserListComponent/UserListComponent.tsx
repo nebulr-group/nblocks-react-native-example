@@ -1,17 +1,15 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { ActivityIndicator, Text, StyleSheet, View, FlatList, Button, Switch } from 'react-native';
+import { ActivityIndicator, Text, StyleSheet, View, FlatList, Button, Switch, LayoutAnimation } from 'react-native';
 import { useListUsersQuery, User, useUpdateUserMutation, ListUsersDocument, useDeleteUserMutation, useCreateUsersMutation, UserInput } from '../../../generated/graphql';
 import SafeFullNameComponent from '../SafeFullNameComponent/SafeFullNameComponent';
+import AddUserModalComponent from './AddUserModalComponent';
+import EditUserModalComponent from './EditUserModalComponent';
 
 const UserListComponent:FunctionComponent = () => {
 
   const { data, loading, error } = useListUsersQuery();
-
-  const [createUserMutation] = useCreateUsersMutation({refetchQueries: [{query: ListUsersDocument}]});
-
-  const createUser = (userNames: string[]) => {
-    createUserMutation({variables: {userNames: userNames}})
-  }
+  const [editUser, setEditUser ] = useState<User>();
+  const [addUserModalVisible, setAddUserModalVisible ] = useState<boolean>(false);
     
   if (loading) {
     return (
@@ -20,51 +18,73 @@ const UserListComponent:FunctionComponent = () => {
       </View>
     );
   }
+
+  const showEditUserModal = (user?: User) => {
+    setEditUser(user);
+  }
+
+  const didCloseEditUserModal = () => {
+    setEditUser(undefined);
+  }
+  
+  const showAddUserModal = () => {
+    setAddUserModalVisible(true);
+  }
+
+  const didCloseAddUserModal = () => {
+    setAddUserModalVisible(false);
+  }
   
   return (
     <View style={styles.container}>
       <FlatList
         data={data?.listUsers}
         keyExtractor={(item) => item.id}
-        renderItem={({item}) => <UserItemComponent user={item}></UserItemComponent>}
+        renderItem={({item}) => <UserItemComponent user={item} onEditUserClick={showEditUserModal}></UserItemComponent>}
+        ItemSeparatorComponent={renderSeparator}
         >
       </FlatList>
-      <Button title='Add user' onPress={() => createUser(['o.soderlund@gmail.com'])}></Button>
+      <Button title='Add user' onPress={() => showAddUserModal()}></Button>
+      <EditUserModalComponent 
+        user={editUser}
+        visible={editUser ? true : false} 
+        onCloseModal={didCloseEditUserModal}
+        />
+        <AddUserModalComponent visible={addUserModalVisible} onCloseModal={didCloseAddUserModal}/>
     </View>
   );
 }
 
-const UserItemComponent:FunctionComponent<{user:User}> = ({user}) => {
+const renderSeparator = () => (
+  <View
+    style={{
+      backgroundColor: 'black',
+      height: 0.5,
+    }}
+  />
+);
+
+const UserItemComponent:FunctionComponent<{user:User, onEditUserClick: (user: User) => void;}> = ({user, onEditUserClick}) => {
   const [expanded, setExpanded] = useState(false);
 
-  const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation();
-  const [deleteUserMutation] = useDeleteUserMutation({refetchQueries: [{query: ListUsersDocument}]});
-
-  const toggleEnabled = (value: boolean) => {
-   updateUserMutation({variables: {user: {...userToUserInput(user), ...{enabled: value}}}}) 
+  const toggleExpand=()=>{
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setExpanded(!expanded);
   }
-
-  const deleteUser = () => {
-    deleteUserMutation({variables: {userId: user.id}}); 
-  }
-
   return (
     <View>
-      <Text style={styles.userItem} onPress={() => setExpanded(!expanded)}>
-        <SafeFullNameComponent fullName={user.fullName?.toString()} /> - {user.username} ({user.role})
+      <Text style={styles.userItem} onPress={() => toggleExpand()}>
+        <SafeFullNameComponent fullName={user.fullName?.toString()} />
+        <Text>
+          {expanded ? "▼" : "◀︎"}
+        </Text>
+        
       </Text>
       {
         expanded ? (
           <View>
-            <Button onPress={() => deleteUser()} title='Delete'></Button>
-            <Text>
-              Enabled
-              <Switch value={user.enabled ? true : false} onValueChange={(newVal) => toggleEnabled(newVal)}></Switch>
-            </Text>
-            <Text>
-              Role
-              <Switch value={user.enabled ? true : false} onValueChange={(newVal) => toggleEnabled(newVal)}></Switch>
-            </Text>
+            <Text>{user.username} ({user.role})</Text>
+            <Button title='Edit' onPress={() => onEditUserClick(user)}></Button>
           </View>
         ) : (null)
       }
@@ -80,11 +100,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   userItem: {
-    minHeight: 50,
+    padding: 10,
+    height: 50,
     fontSize: 28
   },
 });
-
-const userToUserInput = (user: User): UserInput => {
-  return {id: user.id, role: user.role, enabled: user.enabled};
-}
