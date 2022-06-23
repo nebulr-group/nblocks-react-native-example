@@ -22,6 +22,10 @@ const HomeScreen: FunctionComponent<{}> = () => {
             title="Go to Users!"
           />
           <Button
+            onPress={() => navigation.navigate('Tenant')}
+            title="Go to Tenant!"
+          />
+          <Button
             onPress={() => { logout() }}
             title="Logout!"
           />

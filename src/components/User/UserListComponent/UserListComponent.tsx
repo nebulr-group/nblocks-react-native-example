@@ -1,13 +1,13 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { ActivityIndicator, Text, StyleSheet, View, FlatList, Button, Switch, LayoutAnimation } from 'react-native';
-import { useListUsersQuery, User, useUpdateUserMutation, ListUsersDocument, useDeleteUserMutation, useCreateUsersMutation, UserInput } from '../../../generated/graphql';
+import { useListUsersQuery, User} from '../../../generated/graphql';
 import SafeFullNameComponent from '../SafeFullNameComponent/SafeFullNameComponent';
 import AddUserModalComponent from './AddUserModalComponent';
 import EditUserModalComponent from './EditUserModalComponent';
 
 const UserListComponent:FunctionComponent = () => {
 
-  const { data, loading, error } = useListUsersQuery();
+  const { data, loading, error, refetch } = useListUsersQuery();
   const [editUser, setEditUser ] = useState<User>();
   const [addUserModalVisible, setAddUserModalVisible ] = useState<boolean>(false);
     
@@ -38,19 +38,24 @@ const UserListComponent:FunctionComponent = () => {
   return (
     <View style={styles.container}>
       <FlatList
+        refreshing={loading}
+        onRefresh={() => refetch({})}
         data={data?.listUsers}
         keyExtractor={(item) => item.id}
         renderItem={({item}) => <UserItemComponent user={item} onEditUserClick={showEditUserModal}></UserItemComponent>}
         ItemSeparatorComponent={renderSeparator}
         >
       </FlatList>
-      <Button title='Add user' onPress={() => showAddUserModal()}></Button>
-      <EditUserModalComponent 
+      <Button title='Invite users' onPress={() => showAddUserModal()}></Button>
+      {editUser && <EditUserModalComponent 
         user={editUser}
-        visible={editUser ? true : false} 
+        visible={true} 
         onCloseModal={didCloseEditUserModal}
-        />
-        <AddUserModalComponent visible={addUserModalVisible} onCloseModal={didCloseAddUserModal}/>
+        />}
+      {addUserModalVisible && <AddUserModalComponent 
+        visible={true} 
+        onCloseModal={didCloseAddUserModal}
+        />}
     </View>
   );
 }

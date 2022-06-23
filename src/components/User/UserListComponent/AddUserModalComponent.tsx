@@ -32,17 +32,22 @@ const AddUserModalComponent:FunctionComponent<{
         >
             <View style={styles.container}>
                 <Text>
-                    Add
+                    Invite users
+                </Text>
+                <Text>
+                    You can invite several users, just hit enter.
                 </Text>
                 <TextInput
+                    textContentType="emailAddress"
+                    autoCapitalize="none"
                     value={usernames}
-                    placeholder="Type here..."
+                    placeholder="Email address"
                     onChangeText={(text) => {
                         setUsernames(text)
                     }}
                 />
                 
-                <Button title="Save" onPress={() => createUsers()}></Button>
+                <Button title="Invite" onPress={() => createUsers()}></Button>
                 <Button title="Cancel" onPress={() => onCloseModal()}></Button>
             </View>
         </Modal>

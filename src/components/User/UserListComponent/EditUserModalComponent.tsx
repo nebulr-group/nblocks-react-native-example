@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from "react";
-import { Modal, Text, StyleSheet, View, Button, Switch, TextInput, ActivityIndicator } from "react-native";
+import { Modal, Text, StyleSheet, View, Button, Switch, TextInput, ActivityIndicator, Alert, Platform } from "react-native";
 import { ListUsersDocument, useDeleteUserMutation, User, UserInput, useUpdateUserMutation } from "../../../generated/graphql";
 import SafeFullNameComponent from "../SafeFullNameComponent/SafeFullNameComponent";
 
@@ -21,6 +21,26 @@ const EditUserModalComponent:FunctionComponent<{
     const updateUser = () => {
         updateUserMutation({variables: {user: {...userToUserInput(user), ...{enabled, role}}}});
         onCloseModal();
+    }
+
+    const ensureDeleteUser = () => {
+        if (Platform.OS !== 'web') {
+            Alert.alert(
+                "Delete user",
+                "Are you sure you want to delete this user?",
+                [
+                    {
+                        text: "Cancel",
+                        onPress: () => {},
+                        style: "cancel"
+                    },
+                    { text: "Delete", onPress: () => deleteUser() }
+                ]
+            );
+        } else {
+            deleteUser();
+        }
+        
     }
 
     const deleteUser = () => {
@@ -53,18 +73,18 @@ const EditUserModalComponent:FunctionComponent<{
                 </Text>
                 <Text>
                     Role: 
-                    <TextInput
+                </Text>
+                <TextInput
                     value={role}
                     onChangeText={(text) => {
                         setRole(text)
                     }}
-                />
-                </Text>
+                    />
                 
-                <Button onPress={() => deleteUser()} title='Delete'></Button>
-
                 <Button title="Save" onPress={() => updateUser()}></Button>
                 <Button title="Cancel" onPress={() => onCloseModal()}></Button>
+                <Button onPress={() => ensureDeleteUser()} title='Delete'></Button>
+
             </View>
         </Modal>
     )

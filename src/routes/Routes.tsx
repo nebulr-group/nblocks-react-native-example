@@ -5,12 +5,15 @@ import UserListComponent from '../components/User/UserListComponent/UserListComp
 import { useAuth } from '../hooks/auth-context';
 import HomeScreen from '../screens/Home/HomeScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
+import TenantScreen from '../screens/Tenant/TenantScreen';
+import UsersScreen from '../screens/Users/UsersScreen';
 import AuthRoutes, { AuthRoutesStackParams } from './AuthRoutes';
 
 export type RoutesStackParams = AuthRoutesStackParams & {
     Home: undefined;
     Profile: undefined;
-    Users: undefined
+    Users: undefined;
+    Tenant: undefined;
 };
 
 const Stack = createNativeStackNavigator<RoutesStackParams>();
@@ -25,7 +28,8 @@ const Routes: FunctionComponent<{}> = ({}) => {
                 <Stack.Group>
                     <Stack.Screen name="Home" component={HomeScreen}/>
                     <Stack.Screen name="Profile" component={ProfileScreen}/>
-                    <Stack.Screen name="Users" component={UserListComponent}/>
+                    <Stack.Screen name="Users" component={UsersScreen}/>
+                    <Stack.Screen name="Tenant" component={TenantScreen}/>
                 </Stack.Group>
                 </Stack.Navigator>
             </NavigationContainer>
