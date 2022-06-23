@@ -20,6 +20,29 @@ When starting the development server web browsers and mobiles (Expo Go) can acce
 
 ![QR code](readme_assets/qr.png)
 
+## Dependencies
+We should try avoid external dependencies as much as possible. Those we add must work both for expo but also natively since we're going to ditch Expo at some point.
+
+### Simple dependencies
+#### date-fns
+Lodash for dates. Greate modularized date tool, better than momentjs
+`npm i date-fns`
+
+### Native dependencies
+*Installing* `expo install [package name]`
+https://stackoverflow.com/questions/63784493/is-it-safe-to-use-expo-install-for-everything-that-i-need-to-install
+
+*Uninstalling* `npm uninstall [package name]`
+
+#### select/picker
+react-native-picker-select
+There exists no built in picker in react-native. Expo docs refers to this community project https://docs.expo.dev/versions/v45.0.0/sdk/picker.
+
+`expo install @react-native-picker/picker`
+
+It seems this breaks when opening a web run on expo mobile (`npm run web`). Will download xcode to see if stuff is working on mobile (`npm run ios`).
+That did not work either. Seems a lot of packages are not built for Expo web and webpack must fix them, unsure how to configure webpack for this....
+
 ## Keeping dependencies up-to-date
 * `expo upgrade` will upgrade expo sdk and also npm packages to compatable semver.
 * `npm install -g expo-cli` to keep global expo cli up-to-date

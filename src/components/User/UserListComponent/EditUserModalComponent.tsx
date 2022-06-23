@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from "react";
 import { Modal, Text, StyleSheet, View, Button, Switch, TextInput, ActivityIndicator, Alert, Platform } from "react-native";
-import { ListUsersDocument, useDeleteUserMutation, User, UserInput, useUpdateUserMutation } from "../../../generated/graphql";
+import { ListUsersDocument, useDeleteUserMutation, useListUserRolesQuery, User, UserInput, useSendPasswordResetLinkMutation, useUpdateUserMutation } from "../../../generated/graphql";
 import SafeFullNameComponent from "../SafeFullNameComponent/SafeFullNameComponent";
 
 const EditUserModalComponent:FunctionComponent<{
@@ -13,13 +13,20 @@ const EditUserModalComponent:FunctionComponent<{
         return(null);
 
     const [enabled, setEnabled] = useState(user.enabled ? true : false);
-    const [role, setRole] = useState<string>(user.role!);
-
+    const [selectedRole, setSelectedRole] = useState<string>(user.role!);
+    
+    const { data: listUserRolesData, loading: listUserRolesLoading, error } = useListUserRolesQuery();
     const [updateUserMutation, { data: updateData, loading: updateLoading, error: updateError }] = useUpdateUserMutation();
+    const [sendPasswordResetLinkMutation, { data: sendPasswordResetLinkData, loading: sendPasswordResetLinkLoading, error: sendPasswordResetLinkError }] = useSendPasswordResetLinkMutation();
     const [deleteUserMutation,{ data: deleteData, loading: deleteLoading, error: deleteError}] = useDeleteUserMutation({refetchQueries: [{query: ListUsersDocument}]});
 
     const updateUser = () => {
-        updateUserMutation({variables: {user: {...userToUserInput(user), ...{enabled, role}}}});
+        updateUserMutation({variables: {user: userToUserInput(user)}});
+        onCloseModal();
+    }
+
+    const sendPasswordResetLink = () => {
+        sendPasswordResetLinkMutation({variables: {userId: user.id}});
         onCloseModal();
     }
 
@@ -48,7 +55,17 @@ const EditUserModalComponent:FunctionComponent<{
         onCloseModal();
     }
 
-    if (updateLoading || deleteLoading) {
+    const userToUserInput = (user: User): UserInput => {
+        const obj:UserInput = {id: user.id};
+        if (user.role !== selectedRole)
+            obj.role = selectedRole;
+        if (user.enabled !== enabled)
+            obj.enabled = enabled;
+
+        return obj;
+    }
+
+    if (updateLoading || deleteLoading || sendPasswordResetLinkLoading || listUserRolesLoading) {
         return (
           <View style={styles.container}>
             <ActivityIndicator color="#32B768" size="large" />
@@ -66,7 +83,7 @@ const EditUserModalComponent:FunctionComponent<{
                 <Text>
                     Edit
                 </Text>
-                <SafeFullNameComponent fullName={user!.fullName!}/>
+                <SafeFullNameComponent fullName={user!.fullName!}/> 
                 <Text>
                     Enabled:
                     <Switch value={enabled} onValueChange={(newVal) => setEnabled(newVal)}></Switch>
@@ -74,12 +91,6 @@ const EditUserModalComponent:FunctionComponent<{
                 <Text>
                     Role: 
                 </Text>
-                <TextInput
-                    value={role}
-                    onChangeText={(text) => {
-                        setRole(text)
-                    }}
-                    />
                 
                 <Button title="Save" onPress={() => updateUser()}></Button>
                 <Button title="Cancel" onPress={() => onCloseModal()}></Button>
@@ -91,10 +102,6 @@ const EditUserModalComponent:FunctionComponent<{
 }
 
 export default EditUserModalComponent;
-
-const userToUserInput = (user: User): UserInput => {
-    return {id: user.id, role: user.role, enabled: user.enabled};
-  }
   
 const styles = StyleSheet.create({
     container: {

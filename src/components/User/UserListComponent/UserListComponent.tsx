@@ -1,6 +1,8 @@
 import React, { FunctionComponent, useState } from 'react';
 import { ActivityIndicator, Text, StyleSheet, View, FlatList, Button, Switch, LayoutAnimation } from 'react-native';
 import { useListUsersQuery, User} from '../../../generated/graphql';
+import { useAuth } from '../../../hooks/auth-context';
+import FormattedDateComponent from '../../FormattedDate/FormattedDate';
 import SafeFullNameComponent from '../SafeFullNameComponent/SafeFullNameComponent';
 import AddUserModalComponent from './AddUserModalComponent';
 import EditUserModalComponent from './EditUserModalComponent';
@@ -70,6 +72,8 @@ const renderSeparator = () => (
 );
 
 const UserItemComponent:FunctionComponent<{user:User, onEditUserClick: (user: User) => void;}> = ({user, onEditUserClick}) => {
+  
+  const {currentUser} = useAuth();
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpand=()=>{
@@ -80,6 +84,7 @@ const UserItemComponent:FunctionComponent<{user:User, onEditUserClick: (user: Us
     <View>
       <Text style={styles.userItem} onPress={() => toggleExpand()}>
         <SafeFullNameComponent fullName={user.fullName?.toString()} />
+        {currentUser.isSameUser(user) && (<Text>(You)</Text>)}
         <Text>
           {expanded ? "▼" : "◀︎"}
         </Text>
@@ -88,7 +93,10 @@ const UserItemComponent:FunctionComponent<{user:User, onEditUserClick: (user: Us
       {
         expanded ? (
           <View>
-            <Text>{user.username} ({user.role})</Text>
+            <Text>
+              {user.username} ({user.role}) 
+              Added: <FormattedDateComponent date={user.createdAt!} length="short"/>
+            </Text>
             <Button title='Edit' onPress={() => onEditUserClick(user)}></Button>
           </View>
         ) : (null)

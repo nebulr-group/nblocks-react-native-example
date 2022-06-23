@@ -63,6 +63,8 @@ export type Query = {
   getTenantAnonymous: TenantAnonymous;
   /** Lists all tenants */
   listTenants: Array<Tenant>;
+  /** List all available user roles */
+  listUserRoles: Array<Scalars['String']>;
   /** List all users in this tenant. */
   listUsers: Array<User>;
 };
@@ -86,7 +88,7 @@ export type TenantAnonymous = {
 
 export type User = {
   __typename?: 'User';
-  createdAt?: Maybe<Scalars['DateTime']>;
+  createdAt?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
   enabled?: Maybe<Scalars['Boolean']>;
   fullName?: Maybe<Scalars['String']>;
@@ -108,7 +110,7 @@ export type CreateUsersMutationVariables = Exact<{
 }>;
 
 
-export type CreateUsersMutation = { __typename?: 'Mutation', createUsers: Array<{ __typename?: 'User', id: string, fullName?: string | null, email?: string | null, username?: string | null, createdAt?: any | null, onboarded?: boolean | null, enabled?: boolean | null, role?: string | null, teams?: Array<string> | null }> };
+export type CreateUsersMutation = { __typename?: 'Mutation', createUsers: Array<{ __typename?: 'User', id: string, fullName?: string | null, email?: string | null, username?: string | null, createdAt?: string | null, onboarded?: boolean | null, enabled?: boolean | null, role?: string | null, teams?: Array<string> | null }> };
 
 export type DeleteUserMutationVariables = Exact<{
   userId: Scalars['String'];
@@ -117,17 +119,29 @@ export type DeleteUserMutationVariables = Exact<{
 
 export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: boolean };
 
+export type ListUserRolesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListUserRolesQuery = { __typename?: 'Query', listUserRoles: Array<string> };
+
 export type ListUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type ListUsersQuery = { __typename?: 'Query', listUsers: Array<{ __typename?: 'User', id: string, fullName?: string | null, email?: string | null, username?: string | null, createdAt?: any | null, onboarded?: boolean | null, enabled?: boolean | null, role?: string | null, teams?: Array<string> | null }> };
+export type ListUsersQuery = { __typename?: 'Query', listUsers: Array<{ __typename?: 'User', id: string, fullName?: string | null, email?: string | null, username?: string | null, createdAt?: string | null, onboarded?: boolean | null, enabled?: boolean | null, role?: string | null, teams?: Array<string> | null }> };
+
+export type SendPasswordResetLinkMutationVariables = Exact<{
+  userId: Scalars['String'];
+}>;
+
+
+export type SendPasswordResetLinkMutation = { __typename?: 'Mutation', sendPasswordResetLink: boolean };
 
 export type UpdateUserMutationVariables = Exact<{
   user: UserInput;
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, fullName?: string | null, email?: string | null, username?: string | null, createdAt?: any | null, onboarded?: boolean | null, enabled?: boolean | null, role?: string | null, teams?: Array<string> | null } };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, fullName?: string | null, email?: string | null, username?: string | null, createdAt?: string | null, onboarded?: boolean | null, enabled?: boolean | null, role?: string | null, teams?: Array<string> | null } };
 
 
 export const CreateUsersDocument = gql`
@@ -202,6 +216,38 @@ export function useDeleteUserMutation(baseOptions?: Apollo.MutationHookOptions<D
 export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
 export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
 export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
+export const ListUserRolesDocument = gql`
+    query ListUserRoles {
+  listUserRoles
+}
+    `;
+
+/**
+ * __useListUserRolesQuery__
+ *
+ * To run a query within a React component, call `useListUserRolesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListUserRolesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListUserRolesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListUserRolesQuery(baseOptions?: Apollo.QueryHookOptions<ListUserRolesQuery, ListUserRolesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ListUserRolesQuery, ListUserRolesQueryVariables>(ListUserRolesDocument, options);
+      }
+export function useListUserRolesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListUserRolesQuery, ListUserRolesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ListUserRolesQuery, ListUserRolesQueryVariables>(ListUserRolesDocument, options);
+        }
+export type ListUserRolesQueryHookResult = ReturnType<typeof useListUserRolesQuery>;
+export type ListUserRolesLazyQueryHookResult = ReturnType<typeof useListUserRolesLazyQuery>;
+export type ListUserRolesQueryResult = Apollo.QueryResult<ListUserRolesQuery, ListUserRolesQueryVariables>;
 export const ListUsersDocument = gql`
     query ListUsers {
   listUsers {
@@ -244,6 +290,37 @@ export function useListUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type ListUsersQueryHookResult = ReturnType<typeof useListUsersQuery>;
 export type ListUsersLazyQueryHookResult = ReturnType<typeof useListUsersLazyQuery>;
 export type ListUsersQueryResult = Apollo.QueryResult<ListUsersQuery, ListUsersQueryVariables>;
+export const SendPasswordResetLinkDocument = gql`
+    mutation SendPasswordResetLink($userId: String!) {
+  sendPasswordResetLink(userId: $userId)
+}
+    `;
+export type SendPasswordResetLinkMutationFn = Apollo.MutationFunction<SendPasswordResetLinkMutation, SendPasswordResetLinkMutationVariables>;
+
+/**
+ * __useSendPasswordResetLinkMutation__
+ *
+ * To run a mutation, you first call `useSendPasswordResetLinkMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendPasswordResetLinkMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendPasswordResetLinkMutation, { data, loading, error }] = useSendPasswordResetLinkMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useSendPasswordResetLinkMutation(baseOptions?: Apollo.MutationHookOptions<SendPasswordResetLinkMutation, SendPasswordResetLinkMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SendPasswordResetLinkMutation, SendPasswordResetLinkMutationVariables>(SendPasswordResetLinkDocument, options);
+      }
+export type SendPasswordResetLinkMutationHookResult = ReturnType<typeof useSendPasswordResetLinkMutation>;
+export type SendPasswordResetLinkMutationResult = Apollo.MutationResult<SendPasswordResetLinkMutation>;
+export type SendPasswordResetLinkMutationOptions = Apollo.BaseMutationOptions<SendPasswordResetLinkMutation, SendPasswordResetLinkMutationVariables>;
 export const UpdateUserDocument = gql`
     mutation UpdateUser($user: UserInput!) {
   updateUser(user: $user) {
