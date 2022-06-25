@@ -1,6 +1,7 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { Modal, Text, StyleSheet, View, Button, TextInput, ActivityIndicator } from "react-native";
 import { ListUsersDocument, useCreateUsersMutation } from "../../../generated/graphql";
+import NblocksModalComponent from "../../shared/NblocksModalComponent";
 
 const AddUserModalComponent:FunctionComponent<{
     visible: boolean, 
@@ -13,6 +14,11 @@ const AddUserModalComponent:FunctionComponent<{
 
     const createUsers = () => {
         createUserMutation({variables: {userNames: usernames.split(",")}});
+        resetAndCloseModal();
+    }
+
+    const resetAndCloseModal = () => {
+        setUsernames("");
         onCloseModal();
     }
 
@@ -25,11 +31,7 @@ const AddUserModalComponent:FunctionComponent<{
     }
 
     return (
-        <Modal 
-        visible={visible}
-        animationType="slide" 
-        // transparent={true}
-        >
+        <NblocksModalComponent height='half' swipable={false} visible={visible} onCloseModal={() => resetAndCloseModal()} >
             <View style={styles.container}>
                 <Text>
                     Invite users
@@ -48,9 +50,9 @@ const AddUserModalComponent:FunctionComponent<{
                 />
                 
                 <Button title="Invite" onPress={() => createUsers()}></Button>
-                <Button title="Cancel" onPress={() => onCloseModal()}></Button>
+                <Button title="Cancel" onPress={() => resetAndCloseModal()}></Button>
             </View>
-        </Modal>
+        </NblocksModalComponent>
     )
 }
 
@@ -58,8 +60,5 @@ export default AddUserModalComponent;
   
 const styles = StyleSheet.create({
     container: {
-    marginTop: 300,
-      height: 50,
-      backgroundColor: '#FFFFFF',
     },
   });

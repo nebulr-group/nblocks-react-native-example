@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
-import { ActivityIndicator, Text, StyleSheet, View, FlatList, Button, Switch, LayoutAnimation } from 'react-native';
-import { useListUsersQuery, User} from '../../../generated/graphql';
+import { ActivityIndicator, Text, StyleSheet, View, FlatList, Button, Switch, LayoutAnimation, Platform, Alert } from 'react-native';
+import { useListUsersQuery, User, useSendPasswordResetLinkMutation} from '../../../generated/graphql';
 import { useAuth } from '../../../hooks/auth-context';
 import FormattedDateComponent from '../../FormattedDate/FormattedDate';
 import SafeFullNameComponent from '../SafeFullNameComponent/SafeFullNameComponent';
@@ -49,15 +49,15 @@ const UserListComponent:FunctionComponent = () => {
         >
       </FlatList>
       <Button title='Invite users' onPress={() => showAddUserModal()}></Button>
-      {editUser && <EditUserModalComponent 
+      <EditUserModalComponent 
         user={editUser}
-        visible={true} 
-        onCloseModal={didCloseEditUserModal}
-        />}
-      {addUserModalVisible && <AddUserModalComponent 
-        visible={true} 
+        visible={editUser ? true : false} 
+        onCloseModal={() => didCloseEditUserModal()}
+        />
+      <AddUserModalComponent 
+        visible={addUserModalVisible} 
         onCloseModal={didCloseAddUserModal}
-        />}
+        />
     </View>
   );
 }
@@ -75,6 +75,30 @@ const UserItemComponent:FunctionComponent<{user:User, onEditUserClick: (user: Us
   
   const {currentUser} = useAuth();
   const [expanded, setExpanded] = useState(false);
+  const [sendPasswordResetLinkMutation, { data: sendPasswordResetLinkData, loading: sendPasswordResetLinkLoading, error: sendPasswordResetLinkError }] = useSendPasswordResetLinkMutation();
+
+  const ensureSendPasswordResetLink = () => {
+    if (Platform.OS !== 'web') {
+        Alert.alert(
+            "Resend invite",
+            "Are you sure you want to resend an invitation link?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => {},
+                    style: "cancel"
+                },
+                { text: "Delete", onPress: () => sendPasswordResetLink() }
+            ]
+        );
+    } else {
+      sendPasswordResetLink();
+    }
+  }
+
+  const sendPasswordResetLink = () => {
+    sendPasswordResetLinkMutation({variables: {userId: user.id}});
+  }
 
   const toggleExpand=()=>{
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -97,6 +121,7 @@ const UserItemComponent:FunctionComponent<{user:User, onEditUserClick: (user: Us
               {user.username} ({user.role}) 
               Added: <FormattedDateComponent date={user.createdAt!} length="short"/>
             </Text>
+            <Button title='Resend invite' onPress={() => ensureSendPasswordResetLink()}></Button>
             <Button title='Edit' onPress={() => onEditUserClick(user)}></Button>
           </View>
         ) : (null)

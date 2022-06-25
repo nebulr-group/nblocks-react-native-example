@@ -63,7 +63,7 @@ export type Query = {
   getTenantAnonymous: TenantAnonymous;
   /** Lists all tenants */
   listTenants: Array<Tenant>;
-  /** List all available user roles */
+  /** List all available user roles that the current user can assign others */
   listUserRoles: Array<Scalars['String']>;
   /** List all users in this tenant. */
   listUsers: Array<User>;

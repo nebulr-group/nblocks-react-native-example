@@ -1,6 +1,8 @@
-import React, { FunctionComponent, useState } from "react";
-import { Modal, Text, StyleSheet, View, Button, Switch, TextInput, ActivityIndicator, Alert, Platform } from "react-native";
-import { ListUsersDocument, useDeleteUserMutation, useListUserRolesQuery, User, UserInput, useSendPasswordResetLinkMutation, useUpdateUserMutation } from "../../../generated/graphql";
+import { Picker } from "@react-native-picker/picker";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { Text, StyleSheet, View, Button, Switch, ActivityIndicator, Alert, Platform } from "react-native";
+import { ListUsersDocument, useDeleteUserMutation, useListUserRolesQuery, User, UserInput, useUpdateUserMutation } from "../../../generated/graphql";
+import NblocksModalComponent from "../../shared/NblocksModalComponent";
 import SafeFullNameComponent from "../SafeFullNameComponent/SafeFullNameComponent";
 
 const EditUserModalComponent:FunctionComponent<{
@@ -9,24 +11,22 @@ const EditUserModalComponent:FunctionComponent<{
     onCloseModal: () => void
 }> = ({user, visible, onCloseModal}) => {
 
-    if (!user)
-        return(null);
-
-    const [enabled, setEnabled] = useState(user.enabled ? true : false);
-    const [selectedRole, setSelectedRole] = useState<string>(user.role!);
+    const [enabled, setEnabled] = useState(false);
+    const [selectedRole, setSelectedRole] = useState<string>("");
     
     const { data: listUserRolesData, loading: listUserRolesLoading, error } = useListUserRolesQuery();
     const [updateUserMutation, { data: updateData, loading: updateLoading, error: updateError }] = useUpdateUserMutation();
-    const [sendPasswordResetLinkMutation, { data: sendPasswordResetLinkData, loading: sendPasswordResetLinkLoading, error: sendPasswordResetLinkError }] = useSendPasswordResetLinkMutation();
     const [deleteUserMutation,{ data: deleteData, loading: deleteLoading, error: deleteError}] = useDeleteUserMutation({refetchQueries: [{query: ListUsersDocument}]});
 
-    const updateUser = () => {
-        updateUserMutation({variables: {user: userToUserInput(user)}});
-        onCloseModal();
-    }
+    useEffect(() => {
+        if (user) {
+            setEnabled(user!.enabled!);
+            setSelectedRole(user!.role!);
+        }
+    }, [user])
 
-    const sendPasswordResetLink = () => {
-        sendPasswordResetLinkMutation({variables: {userId: user.id}});
+    const updateUser = () => {
+        updateUserMutation({variables: {user: userToUserInput(user!)}});
         onCloseModal();
     }
 
@@ -65,7 +65,7 @@ const EditUserModalComponent:FunctionComponent<{
         return obj;
     }
 
-    if (updateLoading || deleteLoading || sendPasswordResetLinkLoading || listUserRolesLoading) {
+    if (updateLoading || deleteLoading || listUserRolesLoading) {
         return (
           <View style={styles.container}>
             <ActivityIndicator color="#32B768" size="large" />
@@ -74,14 +74,11 @@ const EditUserModalComponent:FunctionComponent<{
     }
 
     return (
-        <Modal 
-        visible={visible}
-        animationType="slide" 
-        // transparent={true}
-        >
-            <View style={styles.container}>
+        <NblocksModalComponent height='half' swipable={false} visible={visible} onCloseModal={() => onCloseModal()} >
+            {user &&
+                <View style={styles.container}>
                 <Text>
-                    Edit
+                    Edit {user.email}
                 </Text>
                 <SafeFullNameComponent fullName={user!.fullName!}/> 
                 <Text>
@@ -91,13 +88,21 @@ const EditUserModalComponent:FunctionComponent<{
                 <Text>
                     Role: 
                 </Text>
+                <Picker
+                    selectedValue={selectedRole}
+                    onValueChange={(itemValue, itemIndex) =>
+                        setSelectedRole(itemValue)
+                    }>
+                    {listUserRolesData?.listUserRoles.map(role => (<Picker.Item key={role} label={role} value={role} />))}
+                </Picker>
                 
                 <Button title="Save" onPress={() => updateUser()}></Button>
                 <Button title="Cancel" onPress={() => onCloseModal()}></Button>
                 <Button onPress={() => ensureDeleteUser()} title='Delete'></Button>
 
             </View>
-        </Modal>
+            }
+        </NblocksModalComponent>
     )
 }
 
@@ -105,8 +110,5 @@ export default EditUserModalComponent;
   
 const styles = StyleSheet.create({
     container: {
-        marginTop: 300,
-      height: 50,
-      backgroundColor: '#FFFFFF',
     },
   });
