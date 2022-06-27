@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { FunctionComponent } from 'react';
 import UserListComponent from '../components/User/UserListComponent/UserListComponent';
 import { useAuth } from '../hooks/auth-context';
+import BrandExpoScreen from '../screens/BrandExpo/BrandExpoScreen';
 import HomeScreen from '../screens/Home/HomeScreen';
 import ProfileScreen from '../screens/Profile/ProfileScreen';
 import TenantScreen from '../screens/Tenant/TenantScreen';
@@ -14,6 +15,7 @@ export type RoutesStackParams = AuthRoutesStackParams & {
     Profile: undefined;
     Users: undefined;
     Tenant: undefined;
+    BrandExpo: undefined;
 };
 
 const Stack = createNativeStackNavigator<RoutesStackParams>();
@@ -30,6 +32,7 @@ const Routes: FunctionComponent<{}> = ({}) => {
                     <Stack.Screen name="Profile" component={ProfileScreen}/>
                     <Stack.Screen name="Users" component={UsersScreen}/>
                     <Stack.Screen name="Tenant" component={TenantScreen}/>
+                    <Stack.Screen name="BrandExpo" component={BrandExpoScreen}/>
                 </Stack.Group>
                 </Stack.Navigator>
             </NavigationContainer>

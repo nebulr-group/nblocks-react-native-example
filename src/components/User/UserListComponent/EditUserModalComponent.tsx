@@ -2,7 +2,9 @@ import { Picker } from "@react-native-picker/picker";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Text, StyleSheet, View, Button, Switch, ActivityIndicator, Alert, Platform } from "react-native";
 import { ListUsersDocument, useDeleteUserMutation, useListUserRolesQuery, User, UserInput, useUpdateUserMutation } from "../../../generated/graphql";
+import NblocksButton from "../../shared/NblocksButton";
 import NblocksModalComponent from "../../shared/NblocksModalComponent";
+import SubmitCancelButtonsComponent from "../../shared/SubmitCancelButtonsComponent";
 import SafeFullNameComponent from "../SafeFullNameComponent/SafeFullNameComponent";
 
 const EditUserModalComponent:FunctionComponent<{
@@ -16,7 +18,6 @@ const EditUserModalComponent:FunctionComponent<{
     
     const { data: listUserRolesData, loading: listUserRolesLoading, error } = useListUserRolesQuery();
     const [updateUserMutation, { data: updateData, loading: updateLoading, error: updateError }] = useUpdateUserMutation();
-    const [deleteUserMutation,{ data: deleteData, loading: deleteLoading, error: deleteError}] = useDeleteUserMutation({refetchQueries: [{query: ListUsersDocument}]});
 
     useEffect(() => {
         if (user) {
@@ -30,31 +31,6 @@ const EditUserModalComponent:FunctionComponent<{
         onCloseModal();
     }
 
-    const ensureDeleteUser = () => {
-        if (Platform.OS !== 'web') {
-            Alert.alert(
-                "Delete user",
-                "Are you sure you want to delete this user?",
-                [
-                    {
-                        text: "Cancel",
-                        onPress: () => {},
-                        style: "cancel"
-                    },
-                    { text: "Delete", onPress: () => deleteUser() }
-                ]
-            );
-        } else {
-            deleteUser();
-        }
-        
-    }
-
-    const deleteUser = () => {
-        deleteUserMutation({variables: {userId: user!.id}});
-        onCloseModal();
-    }
-
     const userToUserInput = (user: User): UserInput => {
         const obj:UserInput = {id: user.id};
         if (user.role !== selectedRole)
@@ -65,7 +41,7 @@ const EditUserModalComponent:FunctionComponent<{
         return obj;
     }
 
-    if (updateLoading || deleteLoading || listUserRolesLoading) {
+    if (updateLoading || listUserRolesLoading) {
         return (
           <View style={styles.container}>
             <ActivityIndicator color="#32B768" size="large" />
@@ -74,7 +50,7 @@ const EditUserModalComponent:FunctionComponent<{
     }
 
     return (
-        <NblocksModalComponent height='half' swipable={false} visible={visible} onCloseModal={() => onCloseModal()} >
+        <NblocksModalComponent mode='half' swipable={false} visible={visible} onCloseModal={() => onCloseModal()} >
             {user &&
                 <View style={styles.container}>
                 <Text>
@@ -95,10 +71,13 @@ const EditUserModalComponent:FunctionComponent<{
                     }>
                     {listUserRolesData?.listUserRoles.map(role => (<Picker.Item key={role} label={role} value={role} />))}
                 </Picker>
-                
-                <Button title="Save" onPress={() => updateUser()}></Button>
-                <Button title="Cancel" onPress={() => onCloseModal()}></Button>
-                <Button onPress={() => ensureDeleteUser()} title='Delete'></Button>
+
+                <SubmitCancelButtonsComponent 
+                    submitText="Save" 
+                    cancelText="Cancel" 
+                    onSubmit={() => updateUser()} 
+                    onCancel={() => onCloseModal()}>
+                </SubmitCancelButtonsComponent>
 
             </View>
             }

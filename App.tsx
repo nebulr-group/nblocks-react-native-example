@@ -16,7 +16,7 @@ export default class App extends Component<{}, {}> {
       <NblocksProvider>
         <SafeAreaView style={styles.container}>
           <StatusBar style="auto" />
-            <Routes></Routes>
+          <Routes></Routes>
         </SafeAreaView>
       </NblocksProvider>
     ); 

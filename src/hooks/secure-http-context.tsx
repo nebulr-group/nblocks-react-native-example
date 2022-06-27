@@ -5,8 +5,8 @@ import { AuthApolloClient } from "../utils/AuthApolloClient";
 import { ApolloProvider } from "@apollo/client";
 
 //const BASE_URL = "http://192.168.2.22";
-const BASE_URL = "http://172.20.10.3"
-//const BASE_URL = "http://172.22.79.23"
+//const BASE_URL = "http://172.20.10.3"
+const BASE_URL = "http://172.22.78.147"
 const HTTP_URL = `${BASE_URL}:3300`;
 const GRAPHQL_URL = `${HTTP_URL}/graphql`;
 

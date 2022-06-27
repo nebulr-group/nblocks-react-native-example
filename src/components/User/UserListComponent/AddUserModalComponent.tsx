@@ -1,7 +1,9 @@
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { Modal, Text, StyleSheet, View, Button, TextInput, ActivityIndicator } from "react-native";
 import { ListUsersDocument, useCreateUsersMutation } from "../../../generated/graphql";
+import NblocksButton from "../../shared/NblocksButton";
 import NblocksModalComponent from "../../shared/NblocksModalComponent";
+import SubmitCancelButtonsComponent from "../../shared/SubmitCancelButtonsComponent";
 
 const AddUserModalComponent:FunctionComponent<{
     visible: boolean, 
@@ -31,7 +33,7 @@ const AddUserModalComponent:FunctionComponent<{
     }
 
     return (
-        <NblocksModalComponent height='half' swipable={false} visible={visible} onCloseModal={() => resetAndCloseModal()} >
+        <NblocksModalComponent mode='half' swipable={false} visible={visible} onCloseModal={() => resetAndCloseModal()} >
             <View style={styles.container}>
                 <Text>
                     Invite users
@@ -48,9 +50,14 @@ const AddUserModalComponent:FunctionComponent<{
                         setUsernames(text)
                     }}
                 />
-                
-                <Button title="Invite" onPress={() => createUsers()}></Button>
-                <Button title="Cancel" onPress={() => resetAndCloseModal()}></Button>
+
+                <SubmitCancelButtonsComponent 
+                    submitText="Invite" 
+                    cancelText="Cancel" 
+                    onSubmit={() => createUsers()} 
+                    onCancel={() => resetAndCloseModal()}>
+                </SubmitCancelButtonsComponent>
+
             </View>
         </NblocksModalComponent>
     )

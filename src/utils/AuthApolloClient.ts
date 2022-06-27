@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
@@ -28,7 +27,6 @@ export class AuthApolloClient {
         });
 
         const authLink = setContext(async (_, { headers }) => {
-        
           const [authToken, tenantUserId] = await Promise.all([
             AuthService.getAuthToken(),
             AuthService.getTenantUserId()
@@ -42,6 +40,18 @@ export class AuthApolloClient {
             }
           }
         });
+
+
+        const responseLink = new ApolloLink((operation, forward) => {
+          return forward(operation).map(response => {
+            if (debug) {
+              console.log("[GraphQL response]:", response);
+            }
+            return response;
+          });
+        });
+
+        
 
         const errorLink = onError(({ graphQLErrors, networkError, response, operation }) => {
           if (graphQLErrors) {
@@ -58,6 +68,6 @@ export class AuthApolloClient {
           }
         });
 
-        return ApolloLink.from([authLink, errorLink, httpLink]);
+        return ApolloLink.from([authLink, errorLink, responseLink, httpLink]);
       }
 }

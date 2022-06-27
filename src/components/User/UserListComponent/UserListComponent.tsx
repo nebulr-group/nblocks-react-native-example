@@ -1,8 +1,10 @@
 import React, { FunctionComponent, useState } from 'react';
 import { ActivityIndicator, Text, StyleSheet, View, FlatList, Button, Switch, LayoutAnimation, Platform, Alert } from 'react-native';
-import { useListUsersQuery, User, useSendPasswordResetLinkMutation} from '../../../generated/graphql';
+import { ListUsersDocument, useDeleteUserMutation, useListUsersQuery, User, useSendPasswordResetLinkMutation} from '../../../generated/graphql';
 import { useAuth } from '../../../hooks/auth-context';
 import FormattedDateComponent from '../../FormattedDate/FormattedDate';
+import DefaultPaddingComponent from '../../shared/DefaultPaddingComponent';
+import NblocksButton from '../../shared/NblocksButton';
 import SafeFullNameComponent from '../SafeFullNameComponent/SafeFullNameComponent';
 import AddUserModalComponent from './AddUserModalComponent';
 import EditUserModalComponent from './EditUserModalComponent';
@@ -12,6 +14,7 @@ const UserListComponent:FunctionComponent = () => {
   const { data, loading, error, refetch } = useListUsersQuery();
   const [editUser, setEditUser ] = useState<User>();
   const [addUserModalVisible, setAddUserModalVisible ] = useState<boolean>(false);
+  const [deleteUserMutation,{ data: deleteData, loading: deleteLoading, error: deleteError}] = useDeleteUserMutation({refetchQueries: [{query: ListUsersDocument}]});
     
   if (loading) {
     return (
@@ -36,19 +39,50 @@ const UserListComponent:FunctionComponent = () => {
   const didCloseAddUserModal = () => {
     setAddUserModalVisible(false);
   }
+
+  const ensureDeleteUser = (user: User) => {
+    if (Platform.OS !== 'web') {
+        Alert.alert(
+            "Delete user",
+            "Are you sure you want to delete this user?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => {},
+                    style: "cancel"
+                },
+                { text: "Delete", onPress: () => deleteUser(user) }
+            ]
+        );
+    } else {
+        deleteUser(user);
+    }
+    
+}
+
+const deleteUser = (user: User) => {
+    deleteUserMutation({variables: {userId: user!.id}});
+}
   
   return (
+    
     <View style={styles.container}>
-      <FlatList
-        refreshing={loading}
-        onRefresh={() => refetch({})}
-        data={data?.listUsers}
-        keyExtractor={(item) => item.id}
-        renderItem={({item}) => <UserItemComponent user={item} onEditUserClick={showEditUserModal}></UserItemComponent>}
-        ItemSeparatorComponent={renderSeparator}
-        >
-      </FlatList>
-      <Button title='Invite users' onPress={() => showAddUserModal()}></Button>
+      <DefaultPaddingComponent style={{flex: 1}}>
+        <View style={{flex: 11}}>
+          <FlatList
+            refreshing={loading || deleteLoading}
+            onRefresh={() => refetch({})}
+            data={data?.listUsers}
+            keyExtractor={(item) => item.id}
+            renderItem={({item}) => <UserItemComponent user={item} onEditUserClick={showEditUserModal} onDeleteUserClick={(user) => ensureDeleteUser(user)}></UserItemComponent>}
+            ItemSeparatorComponent={renderSeparator}
+          >
+          </FlatList> 
+        </View>
+        <View style={{flex: 1}}>
+          <NblocksButton type='primary' title='Invite users' onPress={() => showAddUserModal()}></NblocksButton>
+        </View>
+      </DefaultPaddingComponent>
       <EditUserModalComponent 
         user={editUser}
         visible={editUser ? true : false} 
@@ -71,7 +105,7 @@ const renderSeparator = () => (
   />
 );
 
-const UserItemComponent:FunctionComponent<{user:User, onEditUserClick: (user: User) => void;}> = ({user, onEditUserClick}) => {
+const UserItemComponent:FunctionComponent<{user:User, onEditUserClick: (user: User) => void; onDeleteUserClick: (user: User) => void;}> = ({user, onEditUserClick, onDeleteUserClick}) => {
   
   const {currentUser} = useAuth();
   const [expanded, setExpanded] = useState(false);
@@ -117,12 +151,24 @@ const UserItemComponent:FunctionComponent<{user:User, onEditUserClick: (user: Us
       {
         expanded ? (
           <View>
-            <Text>
-              {user.username} ({user.role}) 
-              Added: <FormattedDateComponent date={user.createdAt!} length="short"/>
-            </Text>
-            <Button title='Resend invite' onPress={() => ensureSendPasswordResetLink()}></Button>
-            <Button title='Edit' onPress={() => onEditUserClick(user)}></Button>
+            
+
+            <View style={{flexDirection: 'row'}}>
+                <View style={{ flex: 1, padding: 10 }}>
+                  <Text>
+                    {user.username} ({user.role}) 
+                  </Text>
+                  <Text>
+                    Added: <FormattedDateComponent date={user.createdAt!} length="short"/>
+                  </Text>
+                </View>
+                <View style={{ flex: 1, padding: 10 }}>
+                  <NblocksButton type="primary" title='Edit' onPress={() => onEditUserClick(user)}></NblocksButton>
+                  <NblocksButton title="Resend invite" onPress={() => ensureSendPasswordResetLink()}></NblocksButton>
+                  <NblocksButton title="Delete" type="danger" onPress={() => onDeleteUserClick(user)}></NblocksButton>
+                </View>
+            </View>
+
           </View>
         ) : (null)
       }

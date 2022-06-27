@@ -5,15 +5,16 @@ import Modal from "react-native-modal";
 /**
  * NblocksModalComponent, shared reusable modal
  * Swipable support is experimental. Works 50% of the time
+ * onCloseModal optional but required when half mode
  * @param param0 
  * @returns 
  */
 const NblocksModalComponent:FunctionComponent<{
     visible: boolean,
     onCloseModal: () => void,
-    height: 'full' | 'half'
+    mode: 'full' | 'half'
     swipable: boolean,
-}> = ({visible, onCloseModal, height, swipable, children}) => {
+}> = ({visible, onCloseModal, mode, swipable, children}) => {
 
     return (
         <Modal 
@@ -25,7 +26,7 @@ const NblocksModalComponent:FunctionComponent<{
             backdropTransitionOutTiming={0}
         >
             <View 
-            style={{ flex: height === 'half' ? 0.5 : 1, marginTop: 'auto', backgroundColor: 'white' }}>
+            style={{ flex: mode === 'half' ? 0.5 : 1, marginTop: 'auto', backgroundColor: 'white' }}>
               {children}
             </View>
           </Modal>
