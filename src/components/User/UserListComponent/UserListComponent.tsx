@@ -1,9 +1,12 @@
-import React, { FunctionComponent, useState } from 'react';
-import { ActivityIndicator, Text, StyleSheet, View, FlatList, Button, Switch, LayoutAnimation, Platform, Alert } from 'react-native';
-import { ListUsersDocument, useDeleteUserMutation, useListUsersQuery, User, useSendPasswordResetLinkMutation} from '../../../generated/graphql';
+import React, { FunctionComponent, useReducer, useState } from 'react';
+import { Text, View, FlatList, LayoutAnimation, TouchableOpacity, Switch } from 'react-native';
+import { ListUsersDocument, useDeleteUserMutation, useListUsersQuery, User, useSendPasswordResetLinkMutation, useUpdateUserMutation} from '../../../generated/graphql';
 import { useAuth } from '../../../hooks/auth-context';
+import { DialogueService } from '../../../utils/AlertService';
+import { brandingConfig } from '../../../utils/BrandingConfig';
 import FormattedDateComponent from '../../FormattedDate/FormattedDate';
 import DefaultPaddingComponent from '../../shared/DefaultPaddingComponent';
+import DividerComponent from '../../shared/DividerComponent';
 import NblocksButton from '../../shared/NblocksButton';
 import SafeFullNameComponent from '../SafeFullNameComponent/SafeFullNameComponent';
 import AddUserModalComponent from './AddUserModalComponent';
@@ -15,14 +18,6 @@ const UserListComponent:FunctionComponent = () => {
   const [editUser, setEditUser ] = useState<User>();
   const [addUserModalVisible, setAddUserModalVisible ] = useState<boolean>(false);
   const [deleteUserMutation,{ data: deleteData, loading: deleteLoading, error: deleteError}] = useDeleteUserMutation({refetchQueries: [{query: ListUsersDocument}]});
-    
-  if (loading) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator color="#32B768" size="large" />
-      </View>
-    );
-  }
 
   const showEditUserModal = (user?: User) => {
     setEditUser(user);
@@ -41,151 +36,119 @@ const UserListComponent:FunctionComponent = () => {
   }
 
   const ensureDeleteUser = (user: User) => {
-    if (Platform.OS !== 'web') {
-        Alert.alert(
-            "Delete user",
-            "Are you sure you want to delete this user?",
-            [
-                {
-                    text: "Cancel",
-                    onPress: () => {},
-                    style: "cancel"
-                },
-                { text: "Delete", onPress: () => deleteUser(user) }
-            ]
-        );
-    } else {
-        deleteUser(user);
-    }
-    
-}
+    DialogueService.showConfirmation("Delete user", "Are you sure you want to delete this user?", "Delete", () => deleteUser(user));
+  }
 
-const deleteUser = (user: User) => {
-    deleteUserMutation({variables: {userId: user!.id}});
-}
+  const deleteUser = (user: User) => {
+      deleteUserMutation({variables: {userId: user!.id}});
+  }
+
+  const renderUserItem = (user: User) => {
+    return (
+      <UserItemComponent user={user} onEditUserClick={(user) => showEditUserModal(user)} onDeleteUserClick={(user) => ensureDeleteUser(user)}></UserItemComponent>
+    )
+  }
   
+  //TODO remove DefaultPaddingComponent as this should be in screen/view
   return (
-    
-    <View style={styles.container}>
       <DefaultPaddingComponent style={{flex: 1}}>
         <View style={{flex: 11}}>
           <FlatList
             refreshing={loading || deleteLoading}
-            onRefresh={() => refetch({})}
+            onRefresh={() => refetch({})} 
             data={data?.listUsers}
             keyExtractor={(item) => item.id}
-            renderItem={({item}) => <UserItemComponent user={item} onEditUserClick={showEditUserModal} onDeleteUserClick={(user) => ensureDeleteUser(user)}></UserItemComponent>}
-            ItemSeparatorComponent={renderSeparator}
+            renderItem={({item}) => renderUserItem(item) }
+            ItemSeparatorComponent={() => <DividerComponent/>} 
           >
           </FlatList> 
         </View>
         <View style={{flex: 1}}>
           <NblocksButton type='primary' title='Invite users' onPress={() => showAddUserModal()}></NblocksButton>
         </View>
-      </DefaultPaddingComponent>
-      <EditUserModalComponent 
+        <EditUserModalComponent 
         user={editUser}
         visible={editUser ? true : false} 
         onCloseModal={() => didCloseEditUserModal()}
         />
-      <AddUserModalComponent 
-        visible={addUserModalVisible} 
-        onCloseModal={didCloseAddUserModal}
+        <AddUserModalComponent 
+          visible={addUserModalVisible} 
+          onCloseModal={didCloseAddUserModal}
         />
-    </View>
+      </DefaultPaddingComponent>
   );
 }
 
-const renderSeparator = () => (
-  <View
-    style={{
-      backgroundColor: 'black',
-      height: 0.5,
-    }}
-  />
-);
-
-const UserItemComponent:FunctionComponent<{user:User, onEditUserClick: (user: User) => void; onDeleteUserClick: (user: User) => void;}> = ({user, onEditUserClick, onDeleteUserClick}) => {
+const UserItemComponent:FunctionComponent<{user:User, onEditUserClick: (user: User) => void, onDeleteUserClick: (user: User) => void}> = ({user, onEditUserClick, onDeleteUserClick}) => {
   
   const {currentUser} = useAuth();
   const [expanded, setExpanded] = useState(false);
   const [sendPasswordResetLinkMutation, { data: sendPasswordResetLinkData, loading: sendPasswordResetLinkLoading, error: sendPasswordResetLinkError }] = useSendPasswordResetLinkMutation();
-
+  const [updateUserMutation, { data: updateData, loading: updateLoading, error: updateError }] = useUpdateUserMutation();
+  
   const ensureSendPasswordResetLink = () => {
-    if (Platform.OS !== 'web') {
-        Alert.alert(
-            "Resend invite",
-            "Are you sure you want to resend an invitation link?",
-            [
-                {
-                    text: "Cancel",
-                    onPress: () => {},
-                    style: "cancel"
-                },
-                { text: "Delete", onPress: () => sendPasswordResetLink() }
-            ]
-        );
-    } else {
-      sendPasswordResetLink();
-    }
+    DialogueService.showConfirmation("Resend invite", "Are you sure you want to resend an invitation link?", "Invite", () => sendPasswordResetLink());
   }
 
   const sendPasswordResetLink = () => {
     sendPasswordResetLinkMutation({variables: {userId: user.id}});
   }
 
+  const updateUser = (enabled: boolean) => {
+    updateUserMutation({variables: {user: {id: user!.id, enabled: enabled}}});
+  }
+
   const toggleExpand=()=>{
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    //LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpanded(!expanded);
   }
+
+  const renderExpanedContent = (user: User) => {
+    return (
+      <View>
+          <View>
+            <Text>
+              Email: {user.username}
+            </Text>
+            <Text>
+              Added: <FormattedDateComponent date={user.createdAt!} length="short"/>
+            </Text>
+            <View style={{flexDirection: 'row', alignContent: 'space-between', alignItems: 'center'}}>
+              <Text style={{flex: 1}}>
+                Active:
+              </Text>
+              <Switch disabled={currentUser.isSameUser(user)} value={user.enabled!} onValueChange={(newVal) => updateUser(newVal)}></Switch>
+            </View>
+          </View>
+          <View style={{marginTop: 10}}>
+            <NblocksButton title="Resend invite" onPress={() => ensureSendPasswordResetLink()}></NblocksButton>
+            <NblocksButton type="primary" title='Change role' disabled={currentUser.isSameUser(user)} onPress={() => onEditUserClick(user)}></NblocksButton>
+            <NblocksButton title="Delete" type="danger" disabled={currentUser.isSameUser(user)} onPress={() => onDeleteUserClick(user)}></NblocksButton>
+          </View>
+      </View>
+    )
+  }
+
   return (
     <View>
-      <Text style={styles.userItem} onPress={() => toggleExpand()}>
-        <SafeFullNameComponent fullName={user.fullName?.toString()} />
-        {currentUser.isSameUser(user) && (<Text>(You)</Text>)}
-        <Text>
-          {expanded ? "▼" : "◀︎"}
-        </Text>
-        
-      </Text>
-      {
-        expanded ? (
-          <View>
-            
-
-            <View style={{flexDirection: 'row'}}>
-                <View style={{ flex: 1, padding: 10 }}>
-                  <Text>
-                    {user.username} ({user.role}) 
-                  </Text>
-                  <Text>
-                    Added: <FormattedDateComponent date={user.createdAt!} length="short"/>
-                  </Text>
-                </View>
-                <View style={{ flex: 1, padding: 10 }}>
-                  <NblocksButton type="primary" title='Edit' onPress={() => onEditUserClick(user)}></NblocksButton>
-                  <NblocksButton title="Resend invite" onPress={() => ensureSendPasswordResetLink()}></NblocksButton>
-                  <NblocksButton title="Delete" type="danger" onPress={() => onDeleteUserClick(user)}></NblocksButton>
-                </View>
-            </View>
-
+      <TouchableOpacity onPress={() => toggleExpand()}>
+        <View style={{height: 50, flexDirection: 'row', alignContent: 'space-between', alignItems: "center"}}>
+          <View style={{flex: 10}}>
+            <SafeFullNameComponent style={brandingConfig.subTitle} fullName={user.fullName?.toString()} />
+            <Text>{user.role}</Text>
           </View>
-        ) : (null)
+          <View>
+            <Text>
+              {expanded ? "▼" : "◀︎"}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+      {
+        expanded && renderExpanedContent(user)
       }
     </View>
   )
 }
 
 export default UserListComponent;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
-  userItem: {
-    padding: 10,
-    height: 50,
-    fontSize: 28
-  },
-});

@@ -9,22 +9,24 @@ const textColor = 'black';
 
 const brandingConfig = StyleSheet.create({
     body: {
-        
+        backgroundColor: 'white'
     },
     textGlobal: {
-        color: textColor
+        color: textColor,
     },
     defaultPadding: {
         padding: defaultPadding
     },
     title: {
         fontSize: 28,
+        fontWeight: "700",
         marginTop: 5,
         marginBottom: 10
     },
     subTitle: {
         fontSize: 20,
         marginTop: 5,
+        fontWeight: "500",
         marginBottom: 8
     },
     textIngress: {
@@ -35,6 +37,12 @@ const brandingConfig = StyleSheet.create({
         marginTop: 5,
         alignItems: 'center',
         borderRadius:4
+    },
+    divider: {
+        backgroundColor: '#F4F5F8',
+        height: 2,
+        marginTop: 5,
+        marginBottom: 5,
     },
     buttonText: {
         color: 'white',

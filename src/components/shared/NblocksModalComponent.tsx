@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { View} from "react-native";
 import Modal from "react-native-modal";
+import DefaultPaddingComponent from "./DefaultPaddingComponent";
 
 /**
  * NblocksModalComponent, shared reusable modal
@@ -25,9 +26,10 @@ const NblocksModalComponent:FunctionComponent<{
             onSwipeComplete={() => onCloseModal}
             backdropTransitionOutTiming={0}
         >
-            <View 
-            style={{ flex: mode === 'half' ? 0.5 : 1, marginTop: 'auto', backgroundColor: 'white' }}>
-              {children}
+            <View style={{ flex: mode === 'half' ? 0.5 : 1, marginTop: 'auto' }}>
+              <DefaultPaddingComponent style={{flex: 1}}>
+                {children}
+              </DefaultPaddingComponent>
             </View>
           </Modal>
     )

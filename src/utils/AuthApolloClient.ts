@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloLink, createHttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, ApolloLink, createHttpLink, from, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import { AuthService } from './AuthService';
@@ -41,7 +41,11 @@ export class AuthApolloClient {
           }
         });
 
-
+        const requestMiddleware = new ApolloLink((operation, forward) => {
+          console.log("[GraphQL request]:", operation.operationName, operation.variables);
+          return forward(operation);
+        });
+        
         const responseLink = new ApolloLink((operation, forward) => {
           return forward(operation).map(response => {
             if (debug) {
@@ -50,8 +54,6 @@ export class AuthApolloClient {
             return response;
           });
         });
-
-        
 
         const errorLink = onError(({ graphQLErrors, networkError, response, operation }) => {
           if (graphQLErrors) {
@@ -68,6 +70,6 @@ export class AuthApolloClient {
           }
         });
 
-        return ApolloLink.from([authLink, errorLink, responseLink, httpLink]);
+        return from([authLink, requestMiddleware, errorLink, responseLink, httpLink]);
       }
 }

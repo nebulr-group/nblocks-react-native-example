@@ -1,14 +1,16 @@
 import React, { FunctionComponent, useState } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import FormattedDateComponent from '../../components/FormattedDate/FormattedDate';
 import DefaultPaddingComponent from '../../components/shared/DefaultPaddingComponent';
+import DividerComponent from '../../components/shared/DividerComponent';
 import IngressComponent from '../../components/shared/IngressComponent';
 import NblocksButton from '../../components/shared/NblocksButton';
 import NblocksModalComponent from '../../components/shared/NblocksModalComponent';
 import SubmitCancelButtonsComponent from '../../components/shared/SubmitCancelButtonsComponent';
 import SubTitleComponent from '../../components/shared/SubTitleComponent';
 import TitleComponent from '../../components/shared/TitleComponent';
-import UserListComponent from '../../components/User/UserListComponent/UserListComponent';
+import { DialogueService } from '../../utils/AlertService';
+import { brandingConfig } from '../../utils/BrandingConfig';
 
 const BrandExpoScreen: FunctionComponent<{}> = () => {
 
@@ -16,10 +18,9 @@ const BrandExpoScreen: FunctionComponent<{}> = () => {
     const [fullModalVisible, setFullModalVisible] = useState(false);
 
       return (
-        <ScrollView style={{flex: 1}}>
+        <ScrollView style={[brandingConfig.body, {flex: 1}]}>
           <DefaultPaddingComponent>
-
-            <View>
+            
               <TitleComponent>
                 This is a title
               </TitleComponent>
@@ -35,14 +36,21 @@ const BrandExpoScreen: FunctionComponent<{}> = () => {
               <Text>
               This is normal text. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pellentesque massa vel velit fermentum, sed vestibulum augue egestas. Aenean blandit nisl ac mi tempor, a vestibulum mi malesuada. Cras hendrerit, massa et semper interdum, lacus turpis rutrum arcu, in sagittis nisl dui at eros. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus vitae turpis ex. Praesent tellus est, placerat quis hendrerit in, gravida id libero. Vivamus posuere a magna sed posuere. Maecenas sagittis porttitor malesuada. Phasellus auctor purus vel volutpat posuere. Nam quis ipsum quis ipsum sollicitudin dapibus. Donec gravida viverra nulla, in porttitor tortor gravida at. Aenean nunc nibh, convallis non commodo tincidunt, porta iaculis odio. Pellentesque non sem fringilla, posuere neque ac, mattis nulla.
               </Text>
-
+              <DividerComponent/>
               <SubTitleComponent>
                 Buttons
               </SubTitleComponent>
               <NblocksButton title='Default btn' onPress={() => {}}></NblocksButton>
               <NblocksButton title='Primary btn' onPress={() => {}} type='primary'></NblocksButton>
               <NblocksButton title='Danger btn' onPress={() => {}} type='danger'></NblocksButton>
+              <NblocksButton title='Default disabled' disabled={true} onPress={() => {}}></NblocksButton>
+              <NblocksButton title='Primary disabled' disabled={true} onPress={() => {}} type='primary'></NblocksButton>
+              <NblocksButton title='Danger disabled' disabled={true} onPress={() => {}} type='danger'></NblocksButton>
 
+              <SubTitleComponent>
+                Button pairs
+              </SubTitleComponent>
+              <SubmitCancelButtonsComponent cancelText='Cancel' submitText='Submit' onCancel={() => {}} onSubmit={() => {}} />
               <SubTitleComponent>
                 Dates
               </SubTitleComponent>
@@ -54,7 +62,12 @@ const BrandExpoScreen: FunctionComponent<{}> = () => {
               <Text numberOfLines={2}>
                 <FormattedDateComponent date={new Date().toISOString()} length="long" /> (long)
               </Text>
+              <DividerComponent/>
+              <SubTitleComponent>
+                Dialogues
+              </SubTitleComponent>
 
+              <NblocksButton type='primary' title='Show confirmation dialogue' onPress={() => DialogueService.showConfirmation("Confirm", "This is a confirmation dialogue. Click Cancel or OK", "Ok", () => {})}></NblocksButton>
               <SubTitleComponent>
                 Modals
               </SubTitleComponent>
@@ -66,38 +79,38 @@ const BrandExpoScreen: FunctionComponent<{}> = () => {
                 Table
               </SubTitleComponent>
               {/* <UserListComponent></UserListComponent> */}
-            </View>
 
-            <NblocksModalComponent visible={halfModalVisible} mode='half' onCloseModal={() => setHalfModalVisible(false)} swipable={false}>
-              <DefaultPaddingComponent>
-                <TitleComponent>
-                  This is a half modal
-                </TitleComponent>
-                <Text>
-                  Tap the outer area to close
-                </Text>
-              </DefaultPaddingComponent>
-            </NblocksModalComponent>
-
-            <NblocksModalComponent visible={fullModalVisible} mode='full' onCloseModal={() => {}} swipable={false}>
-              <DefaultPaddingComponent>
-                <View>
-                  <TitleComponent>
-                    This is a full modal
-                  </TitleComponent>
-                  
-                  <SubmitCancelButtonsComponent 
-                    submitText="Save" 
-                    cancelText="Cancel" 
-                    onSubmit={() => setFullModalVisible(false)} 
-                    onCancel={() => setFullModalVisible(false)}>
-                  </SubmitCancelButtonsComponent>
-
-                </View>
-              </DefaultPaddingComponent>
-            </NblocksModalComponent>
+              <SubTitleComponent>
+                Loading
+              </SubTitleComponent>
+              <View>
+                <ActivityIndicator color="#32B768" size="large" />
+              </View>
 
           </DefaultPaddingComponent>
+
+          <NblocksModalComponent visible={halfModalVisible} mode='half' onCloseModal={() => setHalfModalVisible(false)} swipable={false}>
+            <TitleComponent>
+              This is a half modal
+            </TitleComponent>
+            <Text>
+              Tap the outer area to close
+            </Text>
+          </NblocksModalComponent>
+
+          <NblocksModalComponent visible={fullModalVisible} mode='full' onCloseModal={() => {}} swipable={false}>
+            <TitleComponent>
+              This is a full modal
+            </TitleComponent>
+            
+            <SubmitCancelButtonsComponent 
+              submitText="Save" 
+              cancelText="Cancel" 
+              onSubmit={() => setFullModalVisible(false)} 
+              onCancel={() => setFullModalVisible(false)}>
+            </SubmitCancelButtonsComponent>
+          </NblocksModalComponent>
+
         </ScrollView>
       )
 }
