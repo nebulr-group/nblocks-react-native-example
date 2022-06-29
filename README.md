@@ -28,6 +28,8 @@ We should try avoid external dependencies as much as possible. Those we add must
 Lodash for dates. Greate modularized date tool, better than momentjs
 `npm i date-fns`
 
+#### lodash + @types/lodash probably not?
+
 ### Native dependencies
 *Installing* `expo install [package name]`
 https://stackoverflow.com/questions/63784493/is-it-safe-to-use-expo-install-for-everything-that-i-need-to-install

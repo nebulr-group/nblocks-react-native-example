@@ -13,6 +13,7 @@ const brandingConfig = StyleSheet.create({
     },
     textGlobal: {
         color: textColor,
+        fontSize: 16
     },
     defaultPadding: {
         padding: defaultPadding
@@ -24,19 +25,35 @@ const brandingConfig = StyleSheet.create({
         marginBottom: 10
     },
     subTitle: {
-        fontSize: 20,
+        fontSize: 22,
         marginTop: 5,
         fontWeight: "500",
         marginBottom: 8
     },
     textIngress: {
-        fontSize: 16,
+        fontSize: 18,
         marginBottom: 5
+    },
+    inputGroup: {
+        marginTop: 10,
+        flexDirection: 'row',
+        alignContent: 'space-between'
+    },
+    textInput: {
+        borderWidth: 2, 
+        padding: 5, 
+        borderRadius:4, 
+        borderColor: '#F4F5F8'
     },
     button: {
         marginTop: 5,
         alignItems: 'center',
         borderRadius:4
+    },
+    buttonText: {
+        color: 'white',
+        padding: 10,
+        fontWeight: "700",
     },
     divider: {
         backgroundColor: '#F4F5F8',
@@ -44,11 +61,14 @@ const brandingConfig = StyleSheet.create({
         marginTop: 5,
         marginBottom: 5,
     },
-    buttonText: {
-        color: 'white',
-        padding: 10,
-        fontWeight: "700",
-    },
+    chip: {
+        borderColor: 'gray',
+        backgroundColor: 'lightgray',
+        borderWidth: 2,
+        borderRadius: 15,
+        padding: 5,
+        margin: 5
+    }
   });
 
 export {brandingConfig, primaryColor, secondaryColor, dangerColor, cancelColor};
