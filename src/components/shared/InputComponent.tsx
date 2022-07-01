@@ -4,7 +4,7 @@ import { brandingConfig } from "../../utils/BrandingConfig";
 import InputGroupComponent from "./InputGroupComponent";
 import TextComponent from "./TextComponent";
 
-type InputType = 'none' | 'password' | 'oneTimeCode' | 'telephoneNumber' | 'emailAddress' | 'username';
+type InputType = 'none' | 'name' | 'password' | 'oneTimeCode' | 'telephoneNumber' | 'emailAddress' | 'username';
 
 const TextInputComponent:FunctionComponent<{
     type: InputType;
@@ -27,7 +27,7 @@ const TextInputComponent:FunctionComponent<{
                 multiline={multiline}
                 textContentType={type}
                 keyboardType={getKeyboardType(type)}
-                autoCapitalize={type === 'none' ? 'sentences' : 'none'}
+                autoCapitalize={getCapitalize(type)}
                 secureTextEntry={type === 'password'}
                 value={value}
                 placeholder={placeholder}
@@ -35,6 +35,19 @@ const TextInputComponent:FunctionComponent<{
             />
         </InputGroupComponent>
     )
+}
+
+const getCapitalize = (type: InputType): "none" | "sentences" | "words" | "characters" | undefined => {
+    switch (type) {
+        case 'none':
+            return 'sentences';
+
+        case 'name':
+            return 'words';
+    
+        default:
+            return 'none';
+    }
 }
 
 // Must be outside component to be recalculated each time user taps another input

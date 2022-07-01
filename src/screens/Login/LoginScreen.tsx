@@ -1,6 +1,7 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { FunctionComponent } from 'react';
 import { Button, Text, View } from 'react-native';
+import NblocksButton from '../../components/shared/NblocksButton';
 import { useSecureContext } from '../../hooks/secure-http-context';
 import { RoutesStackParams } from '../../routes/Routes';
 
@@ -18,7 +19,8 @@ const LoginScreen: FunctionComponent<{}> = () => {
   return (
     <View>
       <Text>Oh, oh! Please login to continue</Text>
-      <Button
+      <NblocksButton
+        type='primary'
         onPress={() => authenticate()}
         title="Authenticate!"
       />

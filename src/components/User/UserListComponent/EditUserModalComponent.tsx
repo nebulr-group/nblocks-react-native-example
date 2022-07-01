@@ -7,9 +7,9 @@ import SubmitCancelButtonsComponent from "../../shared/SubmitCancelButtonsCompon
 import TitleComponent from "../../shared/TitleComponent";
 
 const EditUserModalComponent:FunctionComponent<{
-    user?:User, 
-    visible: boolean, 
-    onCloseModal: () => void
+    user?:User;
+    visible: boolean;
+    onCloseModal: () => void;
 }> = ({user, visible, onCloseModal}) => {
 
     const [selectedRole, setSelectedRole] = useState<string>("");

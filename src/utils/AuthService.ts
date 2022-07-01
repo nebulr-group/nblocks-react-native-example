@@ -1,6 +1,9 @@
 import { AxiosInstance } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+//FIXME centralize models
+export type UpdateUserProfileArgs = {firstName?: string, lastName?: string, phoneNumber?: string, consentsToPrivacyPolicy?: boolean};
+
 export class AuthService {
 
     private readonly ENDPOINTS = {
@@ -66,6 +69,11 @@ export class AuthService {
 
     async currentUser(): Promise<any> {
       const response = await this.httpClient.get<any>(this.ENDPOINTS.currentUser);
+      return response.data;
+    }
+
+    async updateCurrentUser(userProfile: UpdateUserProfileArgs): Promise<any> {
+      const response = await this.httpClient.put<any>(this.ENDPOINTS.user, userProfile);
       return response.data;
     }
 

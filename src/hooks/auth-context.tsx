@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from "react";
-import { AuthService } from "../utils/AuthService";
+import { AuthService, UpdateUserProfileArgs } from "../utils/AuthService";
 import { CurrentUser } from "../models/current-user.model";
 import { useSecureContext } from "./secure-http-context";
 
-const initialAuthContext = {currentUser:new CurrentUser(), logout: () => {}};
+const initialAuthContext = {currentUser:new CurrentUser(), logout: () => {}, updateUserProfile: (userProfile: UpdateUserProfileArgs) => {}};
 const AuthContext = React.createContext(initialAuthContext);
 const useAuth = () => useContext(AuthContext);
 
@@ -19,6 +19,12 @@ const NblocksAuthContextProvider: FunctionComponent<NblocksContextProps> = ({chi
       didAuthenticate(false);
     }
 
+    const updateUserProfile = (userProfile: UpdateUserProfileArgs) => {
+      authService.updateCurrentUser(userProfile).then(() => {
+        authService.currentUser().then(user => setCurrentUser(new CurrentUser(user)));
+      });
+    }
+
     useEffect(() => {
         if (authenticated) {
           authService.currentUser().then(user => setCurrentUser(new CurrentUser(user)));
@@ -28,7 +34,7 @@ const NblocksAuthContextProvider: FunctionComponent<NblocksContextProps> = ({chi
     }, [authenticated])
 
     return (
-      <AuthContext.Provider value={{...initialAuthContext,...{currentUser, logout}}}>
+      <AuthContext.Provider value={{...initialAuthContext,...{currentUser, logout, updateUserProfile}}}>
         {children}
       </AuthContext.Provider>
     );

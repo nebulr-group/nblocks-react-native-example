@@ -5,14 +5,14 @@ import UserListComponent from '../components/User/UserListComponent/UserListComp
 import { useAuth } from '../hooks/auth-context';
 import BrandExpoScreen from '../screens/BrandExpo/BrandExpoScreen';
 import HomeScreen from '../screens/Home/HomeScreen';
-import ProfileScreen from '../screens/Profile/ProfileScreen';
+import UserProfileScreen from '../screens/UserProfile/UserProfileScreen';
 import TenantScreen from '../screens/Tenant/TenantScreen';
 import UsersScreen from '../screens/Users/UsersScreen';
 import AuthRoutes, { AuthRoutesStackParams } from './AuthRoutes';
 
 export type RoutesStackParams = AuthRoutesStackParams & {
     Home: undefined;
-    Profile: undefined;
+    UserProfile: undefined;
     Users: undefined;
     Tenant: undefined;
     BrandExpo: undefined;
@@ -29,7 +29,7 @@ const Routes: FunctionComponent<{}> = ({}) => {
                 <Stack.Navigator initialRouteName="Home">
                 <Stack.Group>
                     <Stack.Screen name="Home" component={HomeScreen}/>
-                    <Stack.Screen name="Profile" component={ProfileScreen}/>
+                    <Stack.Screen name="UserProfile" component={UserProfileScreen}/>
                     <Stack.Screen name="Users" component={UsersScreen}/>
                     <Stack.Screen name="Tenant" component={TenantScreen}/>
                     <Stack.Screen name="BrandExpo" component={BrandExpoScreen}/>

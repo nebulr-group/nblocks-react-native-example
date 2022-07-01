@@ -1,7 +1,10 @@
 
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { FunctionComponent } from 'react';
-import { Button, View } from 'react-native';
+import DefaultPaddingComponent from '../../components/shared/DefaultPaddingComponent';
+import DividerComponent from '../../components/shared/DividerComponent';
+import NblocksButton from '../../components/shared/NblocksButton';
+import TitleComponent from '../../components/shared/TitleComponent';
 import { useAuth } from '../../hooks/auth-context';
 import { RoutesStackParams } from '../../routes/Routes';
 
@@ -12,37 +15,44 @@ const HomeScreen: FunctionComponent<{}> = () => {
 
     if (currentUser.authenticated) 
       return (
-        <View>
-          <Button
-            onPress={() => navigation.navigate('Profile')}
-            title="Go to Profile!"
+        <DefaultPaddingComponent style={{flex: 1}}>
+          <TitleComponent>Nblocks navigation test screen</TitleComponent>
+          <DividerComponent />
+          <NblocksButton
+            onPress={() => navigation.navigate('UserProfile')}
+            title="Go to UserProfile!"
           />
-          <Button
+          <DividerComponent />
+          <NblocksButton
             onPress={() => navigation.navigate('Users')}
             title="Go to Users!"
           />
-          <Button
+          <DividerComponent />
+          <NblocksButton
             onPress={() => navigation.navigate('Tenant')}
             title="Go to Tenant!"
           />
-          <Button
+          <DividerComponent />
+          <NblocksButton
             onPress={() => navigation.navigate('BrandExpo')}
             title="Go to Brand expo!"
           />
-          <Button
+          <DividerComponent />
+          <NblocksButton
             onPress={() => { logout() }}
             title="Logout!"
           />
-        </View>
+        </DefaultPaddingComponent>
       )
     else
       return (
-        <View>
-          <Button
+        <DefaultPaddingComponent style={{flex: 1}}>
+          <NblocksButton
+            type='primary'
             onPress={() => navigation.navigate('Login')}
             title="Login!"
           />
-        </View>
+        </DefaultPaddingComponent>
       );
 }
 

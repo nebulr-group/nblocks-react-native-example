@@ -105,6 +105,24 @@ export type UserInput = {
   role?: InputMaybe<Scalars['String']>;
 };
 
+export type GetCustomerPortalQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCustomerPortalQuery = { __typename?: 'Query', getCustomerPortal: string };
+
+export type GetTenantQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetTenantQuery = { __typename?: 'Query', getTenant: { __typename?: 'Tenant', id: string, name: string, locale?: string | null, logo: string, plan?: string | null, createdAt?: any | null } };
+
+export type UpdateTenantMutationVariables = Exact<{
+  name: Scalars['String'];
+  locale: Scalars['String'];
+}>;
+
+
+export type UpdateTenantMutation = { __typename?: 'Mutation', updateTenant: { __typename?: 'Tenant', id: string, name: string, locale?: string | null, logo: string, plan?: string | null, createdAt?: any | null } };
+
 export type CreateUsersMutationVariables = Exact<{
   userNames: Array<Scalars['String']> | Scalars['String'];
 }>;
@@ -144,6 +162,116 @@ export type UpdateUserMutationVariables = Exact<{
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, fullName?: string | null, email?: string | null, username?: string | null, createdAt?: string | null, onboarded?: boolean | null, enabled?: boolean | null, role?: string | null, teams?: Array<string> | null } };
 
 
+export const GetCustomerPortalDocument = gql`
+    query GetCustomerPortal {
+  getCustomerPortal
+}
+    `;
+
+/**
+ * __useGetCustomerPortalQuery__
+ *
+ * To run a query within a React component, call `useGetCustomerPortalQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCustomerPortalQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCustomerPortalQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCustomerPortalQuery(baseOptions?: Apollo.QueryHookOptions<GetCustomerPortalQuery, GetCustomerPortalQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCustomerPortalQuery, GetCustomerPortalQueryVariables>(GetCustomerPortalDocument, options);
+      }
+export function useGetCustomerPortalLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCustomerPortalQuery, GetCustomerPortalQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCustomerPortalQuery, GetCustomerPortalQueryVariables>(GetCustomerPortalDocument, options);
+        }
+export type GetCustomerPortalQueryHookResult = ReturnType<typeof useGetCustomerPortalQuery>;
+export type GetCustomerPortalLazyQueryHookResult = ReturnType<typeof useGetCustomerPortalLazyQuery>;
+export type GetCustomerPortalQueryResult = Apollo.QueryResult<GetCustomerPortalQuery, GetCustomerPortalQueryVariables>;
+export const GetTenantDocument = gql`
+    query GetTenant {
+  getTenant {
+    id
+    name
+    locale
+    logo
+    plan
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useGetTenantQuery__
+ *
+ * To run a query within a React component, call `useGetTenantQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTenantQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTenantQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTenantQuery(baseOptions?: Apollo.QueryHookOptions<GetTenantQuery, GetTenantQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTenantQuery, GetTenantQueryVariables>(GetTenantDocument, options);
+      }
+export function useGetTenantLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTenantQuery, GetTenantQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTenantQuery, GetTenantQueryVariables>(GetTenantDocument, options);
+        }
+export type GetTenantQueryHookResult = ReturnType<typeof useGetTenantQuery>;
+export type GetTenantLazyQueryHookResult = ReturnType<typeof useGetTenantLazyQuery>;
+export type GetTenantQueryResult = Apollo.QueryResult<GetTenantQuery, GetTenantQueryVariables>;
+export const UpdateTenantDocument = gql`
+    mutation UpdateTenant($name: String!, $locale: String!) {
+  updateTenant(name: $name, locale: $locale) {
+    id
+    name
+    locale
+    logo
+    plan
+    createdAt
+  }
+}
+    `;
+export type UpdateTenantMutationFn = Apollo.MutationFunction<UpdateTenantMutation, UpdateTenantMutationVariables>;
+
+/**
+ * __useUpdateTenantMutation__
+ *
+ * To run a mutation, you first call `useUpdateTenantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateTenantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateTenantMutation, { data, loading, error }] = useUpdateTenantMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      locale: // value for 'locale'
+ *   },
+ * });
+ */
+export function useUpdateTenantMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTenantMutation, UpdateTenantMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateTenantMutation, UpdateTenantMutationVariables>(UpdateTenantDocument, options);
+      }
+export type UpdateTenantMutationHookResult = ReturnType<typeof useUpdateTenantMutation>;
+export type UpdateTenantMutationResult = Apollo.MutationResult<UpdateTenantMutation>;
+export type UpdateTenantMutationOptions = Apollo.BaseMutationOptions<UpdateTenantMutation, UpdateTenantMutationVariables>;
 export const CreateUsersDocument = gql`
     mutation CreateUsers($userNames: [String!]!) {
   createUsers(userNames: $userNames) {

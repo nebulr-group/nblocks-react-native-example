@@ -5,7 +5,6 @@ import { useAuth } from '../../../hooks/auth-context';
 import { DialogueService } from '../../../utils/AlertService';
 import { brandingConfig } from '../../../utils/BrandingConfig';
 import FormattedDateComponent from '../../FormattedDate/FormattedDate';
-import DefaultPaddingComponent from '../../shared/DefaultPaddingComponent';
 import DividerComponent from '../../shared/DividerComponent';
 import NblocksButton from '../../shared/NblocksButton';
 import SafeFullNameComponent from '../SafeFullNameComponent/SafeFullNameComponent';
@@ -49,33 +48,32 @@ const UserListComponent:FunctionComponent = () => {
     )
   }
   
-  //TODO remove DefaultPaddingComponent as this should be in screen/view
   return (
-      <DefaultPaddingComponent style={{flex: 1}}>
-        <View style={{flex: 11}}>
-          <FlatList
-            refreshing={loading || deleteLoading}
-            onRefresh={() => refetch({})} 
-            data={data?.listUsers}
-            keyExtractor={(item) => item.id}
-            renderItem={({item}) => renderUserItem(item) }
-            ItemSeparatorComponent={() => <DividerComponent/>} 
-          >
-          </FlatList> 
-        </View>
-        <View style={{flex: 1}}>
-          <NblocksButton type='primary' title='Invite users' onPress={() => showAddUserModal()}></NblocksButton>
-        </View>
-        <EditUserModalComponent 
-        user={editUser}
-        visible={editUser ? true : false} 
-        onCloseModal={() => didCloseEditUserModal()}
-        />
-        <AddUserModalComponent 
-          visible={addUserModalVisible} 
-          onCloseModal={didCloseAddUserModal}
-        />
-      </DefaultPaddingComponent>
+    <View style={{flex: 1}}>
+      <View style={{flex: 11}}>
+        <FlatList
+          refreshing={loading || deleteLoading}
+          onRefresh={() => refetch({})} 
+          data={data?.listUsers}
+          keyExtractor={(item) => item.id}
+          renderItem={({item}) => renderUserItem(item) }
+          ItemSeparatorComponent={() => <DividerComponent/>} 
+        >
+        </FlatList> 
+      </View>
+      <View style={{flex: 1}}>
+        <NblocksButton type='primary' title='Invite users' onPress={() => showAddUserModal()}></NblocksButton>
+      </View>
+      <EditUserModalComponent 
+      user={editUser}
+      visible={editUser ? true : false} 
+      onCloseModal={() => didCloseEditUserModal()}
+      />
+      <AddUserModalComponent 
+        visible={addUserModalVisible} 
+        onCloseModal={() => didCloseAddUserModal()}
+      />
+    </View>
   );
 }
 
