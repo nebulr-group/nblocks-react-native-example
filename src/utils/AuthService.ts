@@ -1,5 +1,6 @@
 import { AxiosInstance } from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AuthTenantUserResponseDto } from '../models/auth-tenant-user-response.dto';
 
 //FIXME centralize models
 export type UpdateUserProfileArgs = {firstName?: string, lastName?: string, phoneNumber?: string, consentsToPrivacyPolicy?: boolean};
@@ -25,7 +26,7 @@ export class AuthService {
 
     private static AUTH_TOKEN_KEY = "NBLOCKS_AUTH_TOKEN";
     private static TENANT_USER_ID_KEY = "NBLOCKS_TENANT_USER_ID";
-    private static MFA_TOKEN_KEY = "NBLOCKS_TENANT_USER_ID";
+    private static MFA_TOKEN_KEY = "NBLOCKS_MFA_TOKEN";
 
     userAuthenticated: boolean;
 
@@ -62,8 +63,36 @@ export class AuthService {
       return response.data.authenticated;
     }
 
-    async listUsers(): Promise<any[]> {
-      const response = await this.httpClient.get<any[]>(this.ENDPOINTS.tenantUsers);
+    async sendResetPasswordLink(username: string): Promise<void> {
+      await this.httpClient.post<void>(this.ENDPOINTS.password, {username});
+    }
+
+    async commitMfaCode(mfaCode:string): Promise<void> {
+      const result = await this.httpClient.post<{mfaToken: string}>(this.ENDPOINTS.commitMfaCode, {mfaCode});
+      await AuthService.setMfaToken(result.data.mfaToken);
+    }
+
+    async startMfaUserSetup(phoneNumber: string): Promise<void> {
+      await this.httpClient.post<void>(this.ENDPOINTS.startMfaUserSetup, {phoneNumber});
+    }
+
+    /**
+     * Finish setting up MFA for the user and the user is hereby authenticated with MFA aswell.
+     * @param mfaCode 
+     * @returns The backup code to be saved for future reference
+     */
+    async finishMfaUserSetup(mfaCode: string): Promise<string> {
+      const result = await this.httpClient.post<{mfaToken: string, backupCode: string}>(this.ENDPOINTS.finishMfaUserSetup, {mfaCode});
+      await AuthService.setMfaToken(result.data.mfaToken);
+      return result.data.backupCode;
+    }
+
+    async resetUserMfaSetup(backupCode:string): Promise<void> {
+      await this.httpClient.post(this.ENDPOINTS.resetUserMfaSetup, {backupCode});
+    }
+
+    async listUsers(): Promise<AuthTenantUserResponseDto[]> {
+      const response = await this.httpClient.get<AuthTenantUserResponseDto[]>(this.ENDPOINTS.tenantUsers);
       return response.data;
     }
 
@@ -85,12 +114,21 @@ export class AuthService {
       await AsyncStorage.setItem(this.AUTH_TOKEN_KEY, token);
     }
 
+    static async setMfaToken(token: string): Promise<void> {
+      await AsyncStorage.setItem(this.MFA_TOKEN_KEY, token);
+    }
+
     static async setTenantUserId(userId: string): Promise<void> {
       await AsyncStorage.setItem(this.TENANT_USER_ID_KEY, userId);
     }
 
     static async getAuthToken(): Promise<string | null> {
       const data = AsyncStorage.getItem(this.AUTH_TOKEN_KEY);
+      return data;
+    }
+
+    static async getMfaToken(): Promise<string | null> {
+      const data = AsyncStorage.getItem(this.MFA_TOKEN_KEY);
       return data;
     }
 

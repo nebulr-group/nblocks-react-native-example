@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { View } from "react-native";
+import { ImageStyle, TextStyle, View, ViewStyle } from "react-native";
 import NblocksButton from "./NblocksButton";
 
 const SubmitCancelButtonsComponent:FunctionComponent<
@@ -9,7 +9,7 @@ const SubmitCancelButtonsComponent:FunctionComponent<
     cancelText: string, 
     onCancel: () => void, 
     submitDisabled?: boolean, 
-    style?: any}> = ({
+    style?: ViewStyle | TextStyle | ImageStyle | undefined }> = ({
         submitText, 
         onSubmit, 
         cancelText, 

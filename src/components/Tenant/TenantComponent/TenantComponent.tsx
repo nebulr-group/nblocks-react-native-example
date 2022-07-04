@@ -1,9 +1,10 @@
-import React, { FunctionComponent, useState } from "react";
-import { View, Image, Dimensions, ActivityIndicator } from "react-native";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { View, Image, Dimensions, ActivityIndicator, Switch } from "react-native";
 import WebView from "react-native-webview";
 import { useGetCustomerPortalLazyQuery, useGetTenantQuery, useUpdateTenantMutation } from "../../../generated/graphql";
 import FormattedDateComponent from "../../FormattedDate/FormattedDate";
 import IngressComponent from "../../shared/IngressComponent";
+import InputGroupComponent from "../../shared/InputGroupComponent";
 import NblocksButton from "../../shared/NblocksButton";
 import NblocksModalComponent from "../../shared/NblocksModalComponent";
 import SubmitCancelButtonsComponent from "../../shared/SubmitCancelButtonsComponent";
@@ -18,6 +19,7 @@ const TenantComponent:FunctionComponent = () => {
     const placeholderLogo = "http://cdn.onlinewebfonts.com/svg/img_464047.png";
 
     const {data, loading, error, refetch} = useGetTenantQuery();
+    const [updateTenantMutation, { data: updateData, loading: updateLoading, error: updateError }] = useUpdateTenantMutation();
     const [getCustomerPortalQuery, { loading: queryLoading, error: queryError, data: queryData }] = useGetCustomerPortalLazyQuery();
     const [showEditModal, setShowEditModal] = useState(false);
     const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
@@ -31,6 +33,10 @@ const TenantComponent:FunctionComponent = () => {
                 <WebView style={{flex: 1}} source={{uri: "https://google.com"}}>
                 </WebView>
             )
+    }
+
+    const updateTenant = (mfa: boolean) => {
+        updateTenantMutation({variables: {tenant: {mfa}}});
     }
 
   return (
@@ -51,8 +57,12 @@ const TenantComponent:FunctionComponent = () => {
                     Lang: {data?.getTenant.locale}
                 </IngressComponent>
                 <TextComponent>
-                    Added: <FormattedDateComponent date={data?.getTenant.createdAt} length="short"></FormattedDateComponent>
+                    Added: <FormattedDateComponent date={data?.getTenant.createdAt!} length="short"></FormattedDateComponent>
                 </TextComponent>
+                <InputGroupComponent style={{alignItems:"center"}}>
+                    <TextComponent>2FA: </TextComponent>
+                    <Switch value={data?.getTenant.mfa!} onValueChange={(val) => updateTenant(val)}></Switch>
+                </InputGroupComponent>
             </View>
         </View>
         <View>
@@ -60,7 +70,7 @@ const TenantComponent:FunctionComponent = () => {
             <NblocksButton title="Manage subscription" onPress={() => {getCustomerPortalQuery({}); setShowSubscriptionModal(true)}}></NblocksButton>
         </View>
 
-        {data?.getTenant && <EditTenantModalComponent tenant={data?.getTenant} visible={showEditModal} onCloseModal={() => setShowEditModal(false)}></EditTenantModalComponent>}
+        <EditTenantModalComponent visible={showEditModal} onCloseModal={() => setShowEditModal(false)}></EditTenantModalComponent>
         <NblocksModalComponent mode="full" swipable={false} visible={showSubscriptionModal} onCloseModal={() => setShowSubscriptionModal(false)}>
             <View style={{flex: 1, alignContent: 'stretch'}}>
                 <TitleComponent>

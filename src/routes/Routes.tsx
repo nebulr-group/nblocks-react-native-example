@@ -9,6 +9,7 @@ import UserProfileScreen from '../screens/UserProfile/UserProfileScreen';
 import TenantScreen from '../screens/Tenant/TenantScreen';
 import UsersScreen from '../screens/Users/UsersScreen';
 import AuthRoutes, { AuthRoutesStackParams } from './AuthRoutes';
+import ChooseUserScreen from '../screens/Auth/ChooseUserScreen';
 
 export type RoutesStackParams = AuthRoutesStackParams & {
     Home: undefined;
@@ -33,6 +34,7 @@ const Routes: FunctionComponent<{}> = ({}) => {
                     <Stack.Screen name="Users" component={UsersScreen}/>
                     <Stack.Screen name="Tenant" component={TenantScreen}/>
                     <Stack.Screen name="BrandExpo" component={BrandExpoScreen}/>
+                    <Stack.Screen name="ChooseUser" component={ChooseUserScreen}/>
                 </Stack.Group>
                 </Stack.Navigator>
             </NavigationContainer>

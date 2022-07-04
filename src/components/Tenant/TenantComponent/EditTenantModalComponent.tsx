@@ -1,34 +1,36 @@
 import { Picker } from "@react-native-picker/picker";
-import React, { FunctionComponent, useState } from "react";
-import { View, Image, Dimensions, ActivityIndicator } from "react-native";
-import WebView from "react-native-webview";
-import { Tenant, useGetCustomerPortalLazyQuery, useGetTenantQuery, useUpdateTenantMutation } from "../../../generated/graphql";
-import FormattedDateComponent from "../../FormattedDate/FormattedDate";
-import IngressComponent from "../../shared/IngressComponent";
+import React, { FunctionComponent, useEffect, useState } from "react";
+import { View, ActivityIndicator } from "react-native";
+import { Tenant, useGetTenantQuery, useUpdateTenantMutation } from "../../../generated/graphql";
 import TextInputComponent from "../../shared/InputComponent";
 import InputGroupComponent from "../../shared/InputGroupComponent";
-import NblocksButton from "../../shared/NblocksButton";
 import NblocksModalComponent from "../../shared/NblocksModalComponent";
 import SubmitCancelButtonsComponent from "../../shared/SubmitCancelButtonsComponent";
-import SubTitleComponent from "../../shared/SubTitleComponent";
 import TextComponent from "../../shared/TextComponent";
 import TitleComponent from "../../shared/TitleComponent";
 
 const EditTenantModalComponent:FunctionComponent<{
-    tenant: Tenant;
     visible: boolean;
     onCloseModal: () => void;
-}> = ({tenant, visible, onCloseModal}) => {
+}> = ({visible, onCloseModal}) => {
 
     //TODO fixme
     const locales = [{label: "English", value: 'en'}, {label: "Svenska", value: 'sv'}]
-    const [name, setName] = useState(tenant.name);
-    const [locale, setLocale] = useState(tenant.locale!);
+    const [name, setName] = useState("");
+    const [locale, setLocale] = useState("");
 
+    const {data, loading, error, refetch} = useGetTenantQuery();
     const [updateTenantMutation, { data: updateData, loading: updateLoading, error: updateError }] = useUpdateTenantMutation();
 
+    useEffect(() => {
+        if (data?.getTenant) {
+            setName(data.getTenant.name);
+            setLocale(data.getTenant.locale!);
+        }
+    }, [data]);
+
     const updateTenant = () => {
-        updateTenantMutation({variables: {name, locale}});
+        updateTenantMutation({variables: {tenant: {name, locale}}});
         onCloseModal();
     };
 
@@ -68,7 +70,7 @@ const EditTenantModalComponent:FunctionComponent<{
             <SubmitCancelButtonsComponent 
                 submitText="Save" 
                 cancelText="Cancel"
-                submitDisabled={name === tenant.name && locale === tenant.locale}
+                submitDisabled={name === data?.getTenant.name && locale === data?.getTenant.locale}
                 onSubmit={() => updateTenant()} 
                 onCancel={() => onCloseModal()}
             >

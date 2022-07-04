@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import {  StyleSheet, View } from "react-native";
+import {  ImageStyle, StyleSheet, TextStyle, View, ViewStyle } from "react-native";
 import { brandingConfig } from "../../utils/BrandingConfig";
 
 /**
@@ -8,7 +8,9 @@ import { brandingConfig } from "../../utils/BrandingConfig";
  * @param param0 
  * @returns 
  */
-const DefaultPaddingComponent:FunctionComponent<{style?: any}> = ({children, style: customStyle}) => {
+const DefaultPaddingComponent:FunctionComponent<{
+    style?: ViewStyle | TextStyle | ImageStyle | undefined
+}> = ({children, style: customStyle}) => {
     const style = StyleSheet.flatten([brandingConfig.body, brandingConfig.defaultPadding]);
     return (
         <View style={[style, customStyle]}>

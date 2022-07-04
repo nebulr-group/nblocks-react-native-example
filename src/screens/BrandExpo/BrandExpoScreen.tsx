@@ -1,6 +1,7 @@
 import { Picker } from '@react-native-picker/picker';
 import React, { FunctionComponent, useState } from 'react';
-import { View, Text, ScrollView, ActivityIndicator, TextInput, Switch } from 'react-native';
+import { View, ScrollView, ActivityIndicator, TextInput, Switch } from 'react-native';
+import AccessControllComponent from '../../components/Auth/AccessControllComponent';
 import FormattedDateComponent from '../../components/FormattedDate/FormattedDate';
 import ChipComponent from '../../components/shared/ChipComponent';
 import DefaultPaddingComponent from '../../components/shared/DefaultPaddingComponent';
@@ -161,6 +162,13 @@ const BrandExpoScreen: FunctionComponent<{}> = () => {
               <View>
                 <ActivityIndicator color="#32B768" size="large" />
               </View>
+
+              <SubTitleComponent>
+                UI helpers
+              </SubTitleComponent>
+              <AccessControllComponent roles={['OWNER']}>
+                <TextComponent>AccessControllComponent : This text is only visible if you're an Owner</TextComponent>
+              </AccessControllComponent>
 
           </DefaultPaddingComponent>
 

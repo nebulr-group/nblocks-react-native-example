@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from "react";
-import { StyleSheet, View } from "react-native";
+import { ImageStyle, StyleSheet, TextStyle, View, ViewStyle } from "react-native";
 import { brandingConfig } from "../../utils/BrandingConfig";
 
 const InputGroupComponent:FunctionComponent<{
-    style?: any;
+    style?: ViewStyle | TextStyle | ImageStyle | undefined | any[];
 }> = ({style: customStyle, children}) => {
 
     const style = StyleSheet.flatten([brandingConfig.inputGroup]);

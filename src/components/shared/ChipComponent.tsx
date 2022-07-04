@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { ImageStyle, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
 import { brandingConfig } from "../../utils/BrandingConfig";
 import TextComponent from "./TextComponent";
 
 const ChipComponent:FunctionComponent<{
-    style?: any;
+    style?:  ViewStyle | TextStyle | ImageStyle | undefined;
     onPress: (() => void);
 }> = ({style: customStyle, onPress, children}) => {
 

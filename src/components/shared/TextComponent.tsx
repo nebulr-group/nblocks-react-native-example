@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from "react";
-import { Text } from "react-native";
+import { ImageStyle, Text, TextStyle, ViewStyle } from "react-native";
 import { brandingConfig } from "../../utils/BrandingConfig";
 
 const TextComponent:FunctionComponent<{
-    style?: any;
+    style?: ViewStyle | TextStyle | ImageStyle | undefined;
     numberOfLines?: number
 }> = ({style: customStyle, numberOfLines, children}) => {
 

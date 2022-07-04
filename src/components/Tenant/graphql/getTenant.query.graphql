@@ -5,6 +5,7 @@ query GetTenant {
     locale
     logo
     plan
+    mfa
     createdAt
   }
 }

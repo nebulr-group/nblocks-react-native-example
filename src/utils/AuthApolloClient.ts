@@ -27,15 +27,16 @@ export class AuthApolloClient {
         });
 
         const authLink = setContext(async (_, { headers }) => {
-          const [authToken, tenantUserId] = await Promise.all([
+          const [authToken, mfaToken, tenantUserId] = await Promise.all([
             AuthService.getAuthToken(),
+            AuthService.getMfaToken(),
             AuthService.getTenantUserId()
           ]);
           
           return {
             headers: {
               ...headers,
-              'x-auth-token': authToken ? authToken : "",
+              'x-auth-token': authToken ? (mfaToken ? `${authToken}_${mfaToken}` : authToken) : "",
               'x-tenant-user-id': tenantUserId ? tenantUserId : "",
             }
           }

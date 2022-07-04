@@ -24,14 +24,15 @@ export class AuthHttpClient {
         const debug = this.debug;
 
         httpClient.interceptors.request.use(async (request) => {
-          const [authToken, tenantUserId] = await Promise.all([
+          const [authToken, mfaToken, tenantUserId] = await Promise.all([
             AuthService.getAuthToken(),
+            AuthService.getMfaToken(),
             AuthService.getTenantUserId()
           ]);
 
           if (authToken !== null) {
             if (request.headers)
-              request.headers['x-auth-token'] = authToken;
+              request.headers['x-auth-token'] = mfaToken ? `${authToken}_${mfaToken}` : authToken;
           }
 
           if (tenantUserId !== null) {

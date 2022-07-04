@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from "react";
-import { Text, StyleSheet, TextInput, View, KeyboardTypeOptions } from "react-native";
+import { StyleSheet, TextInput, View, KeyboardTypeOptions, ImageStyle, TextStyle, ViewStyle } from "react-native";
 import { brandingConfig } from "../../utils/BrandingConfig";
 import InputGroupComponent from "./InputGroupComponent";
 import TextComponent from "./TextComponent";
 
-type InputType = 'none' | 'name' | 'password' | 'oneTimeCode' | 'telephoneNumber' | 'emailAddress' | 'username';
+type InputType = 'none' | 'givenName' | 'password' | 'oneTimeCode' | 'telephoneNumber' | 'emailAddress' | 'username';
 
 const TextInputComponent:FunctionComponent<{
     type: InputType;
@@ -14,7 +14,7 @@ const TextInputComponent:FunctionComponent<{
     value: string;
     onChangeText: ((text: string) => void);
     onSubmitEditing?: (() => void);
-    style?: any;
+    style?: ViewStyle | TextStyle | ImageStyle;
 }> = ({type, label, multiline, placeholder, value, onChangeText, style: customStyle, onSubmitEditing}) => {
     const style = StyleSheet.flatten([brandingConfig.textGlobal, brandingConfig.textInput]);
 
@@ -42,7 +42,7 @@ const getCapitalize = (type: InputType): "none" | "sentences" | "words" | "chara
         case 'none':
             return 'sentences';
 
-        case 'name':
+        case 'givenName':
             return 'words';
     
         default:

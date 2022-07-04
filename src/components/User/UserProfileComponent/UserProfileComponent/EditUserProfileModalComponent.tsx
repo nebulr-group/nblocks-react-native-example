@@ -11,9 +11,9 @@ const EditUserProfileModalComponent:FunctionComponent<{
     visible: boolean;
     onCloseModal: () => void;
 }> = ({visible, onCloseModal}) => {
-
-    const {authService} = useSecureContext();
-    const {currentUser, updateUserProfile} = useAuth();
+    
+    const {authService, authenticated} = useSecureContext();
+    const {currentUser, refreshCurrentUser} = useAuth();
 
     //TODO fix this, introduce firstname, lastname in API response
     const [firstName, setFirstName] = useState(currentUser.user?.fullName ? currentUser.user?.fullName?.split(" ")[0] : "");
@@ -24,9 +24,13 @@ const EditUserProfileModalComponent:FunctionComponent<{
 
     const [updateLoading, setUpdateLoading] = useState(false);
 
-    const updateProfile = () => {
-        //TODO async?
-        updateUserProfile({firstName, lastName, phoneNumber: phoneNumber ? phoneNumber : undefined});
+    //TODO async?
+    const updateProfile = async () => {
+        setUpdateLoading(true);
+        await authService.updateCurrentUser({firstName, lastName, phoneNumber: phoneNumber ? phoneNumber : undefined});
+        if (authenticated)
+            refreshCurrentUser();
+        setUpdateLoading(false);
         onCloseModal();
     }
 
@@ -46,13 +50,13 @@ const EditUserProfileModalComponent:FunctionComponent<{
             </TitleComponent>
             <View style={{flex: 1}}>
                 <TextInputComponent 
-                    type='name'
+                    type='givenName'
                     label="First name"
                     placeholder="John" 
                     value={firstName} 
                     onChangeText={(val) => setFirstName(val)} />
                 <TextInputComponent 
-                    type='name' 
+                    type='givenName' 
                     label="Last name"
                     placeholder="Doe" 
                     value={lastName} 
@@ -67,7 +71,7 @@ const EditUserProfileModalComponent:FunctionComponent<{
             <SubmitCancelButtonsComponent 
                 submitText="Save" 
                 cancelText="Cancel"
-                submitDisabled={(`${firstName} ${lastName}` === currentUser.user?.fullName) || !!phoneNumber}
+                submitDisabled={(`${firstName} ${lastName}` === currentUser.user?.fullName)}
                 onSubmit={() => updateProfile()} 
                 onCancel={() => onCloseModal()}
             >

@@ -13,8 +13,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
-  DateTime: any;
 };
 
 export type Mutation = {
@@ -45,8 +43,7 @@ export type MutationSendPasswordResetLinkArgs = {
 
 
 export type MutationUpdateTenantArgs = {
-  locale: Scalars['String'];
-  name: Scalars['String'];
+  tenant: TenantInput;
 };
 
 
@@ -71,10 +68,11 @@ export type Query = {
 
 export type Tenant = {
   __typename?: 'Tenant';
-  createdAt?: Maybe<Scalars['DateTime']>;
+  createdAt?: Maybe<Scalars['String']>;
   id: Scalars['String'];
   locale?: Maybe<Scalars['String']>;
   logo: Scalars['String'];
+  mfa?: Maybe<Scalars['Boolean']>;
   name: Scalars['String'];
   plan?: Maybe<Scalars['String']>;
 };
@@ -84,6 +82,12 @@ export type TenantAnonymous = {
   id: Scalars['String'];
   locale?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+};
+
+export type TenantInput = {
+  locale?: InputMaybe<Scalars['String']>;
+  mfa?: InputMaybe<Scalars['Boolean']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type User = {
@@ -113,15 +117,14 @@ export type GetCustomerPortalQuery = { __typename?: 'Query', getCustomerPortal: 
 export type GetTenantQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetTenantQuery = { __typename?: 'Query', getTenant: { __typename?: 'Tenant', id: string, name: string, locale?: string | null, logo: string, plan?: string | null, createdAt?: any | null } };
+export type GetTenantQuery = { __typename?: 'Query', getTenant: { __typename?: 'Tenant', id: string, name: string, locale?: string | null, logo: string, plan?: string | null, mfa?: boolean | null, createdAt?: string | null } };
 
 export type UpdateTenantMutationVariables = Exact<{
-  name: Scalars['String'];
-  locale: Scalars['String'];
+  tenant: TenantInput;
 }>;
 
 
-export type UpdateTenantMutation = { __typename?: 'Mutation', updateTenant: { __typename?: 'Tenant', id: string, name: string, locale?: string | null, logo: string, plan?: string | null, createdAt?: any | null } };
+export type UpdateTenantMutation = { __typename?: 'Mutation', updateTenant: { __typename?: 'Tenant', id: string, name: string, locale?: string | null, logo: string, plan?: string | null, mfa?: boolean | null, createdAt?: string | null } };
 
 export type CreateUsersMutationVariables = Exact<{
   userNames: Array<Scalars['String']> | Scalars['String'];
@@ -202,6 +205,7 @@ export const GetTenantDocument = gql`
     locale
     logo
     plan
+    mfa
     createdAt
   }
 }
@@ -234,13 +238,14 @@ export type GetTenantQueryHookResult = ReturnType<typeof useGetTenantQuery>;
 export type GetTenantLazyQueryHookResult = ReturnType<typeof useGetTenantLazyQuery>;
 export type GetTenantQueryResult = Apollo.QueryResult<GetTenantQuery, GetTenantQueryVariables>;
 export const UpdateTenantDocument = gql`
-    mutation UpdateTenant($name: String!, $locale: String!) {
-  updateTenant(name: $name, locale: $locale) {
+    mutation UpdateTenant($tenant: TenantInput!) {
+  updateTenant(tenant: $tenant) {
     id
     name
     locale
     logo
     plan
+    mfa
     createdAt
   }
 }
@@ -260,8 +265,7 @@ export type UpdateTenantMutationFn = Apollo.MutationFunction<UpdateTenantMutatio
  * @example
  * const [updateTenantMutation, { data, loading, error }] = useUpdateTenantMutation({
  *   variables: {
- *      name: // value for 'name'
- *      locale: // value for 'locale'
+ *      tenant: // value for 'tenant'
  *   },
  * });
  */

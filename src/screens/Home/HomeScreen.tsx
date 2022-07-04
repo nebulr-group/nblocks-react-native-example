@@ -11,9 +11,8 @@ import { RoutesStackParams } from '../../routes/Routes';
 const HomeScreen: FunctionComponent<{}> = () => {
 
     const navigation = useNavigation<NavigationProp<RoutesStackParams>>();
-    const {currentUser, logout} = useAuth();
+    const {logout} = useAuth();
 
-    if (currentUser.authenticated) 
       return (
         <DefaultPaddingComponent style={{flex: 1}}>
           <TitleComponent>Nblocks navigation test screen</TitleComponent>
@@ -39,21 +38,15 @@ const HomeScreen: FunctionComponent<{}> = () => {
           />
           <DividerComponent />
           <NblocksButton
+            onPress={() => { navigation.navigate('ChooseUser') }}
+            title="Switch user!"
+          />
+          <NblocksButton
             onPress={() => { logout() }}
             title="Logout!"
           />
         </DefaultPaddingComponent>
       )
-    else
-      return (
-        <DefaultPaddingComponent style={{flex: 1}}>
-          <NblocksButton
-            type='primary'
-            onPress={() => navigation.navigate('Login')}
-            title="Login!"
-          />
-        </DefaultPaddingComponent>
-      );
 }
 
 export default HomeScreen;

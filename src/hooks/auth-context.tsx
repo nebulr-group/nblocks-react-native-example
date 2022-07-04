@@ -3,7 +3,13 @@ import { AuthService, UpdateUserProfileArgs } from "../utils/AuthService";
 import { CurrentUser } from "../models/current-user.model";
 import { useSecureContext } from "./secure-http-context";
 
-const initialAuthContext = {currentUser:new CurrentUser(), logout: () => {}, updateUserProfile: (userProfile: UpdateUserProfileArgs) => {}};
+const initialAuthContext = {
+  currentUser: new CurrentUser(),
+  logout: () => {},
+  switchUser: (tenantUserId: string) => {},
+  refreshCurrentUser: () => {}
+};
+
 const AuthContext = React.createContext(initialAuthContext);
 const useAuth = () => useContext(AuthContext);
 
@@ -11,30 +17,41 @@ interface NblocksContextProps {
 }
 
 const NblocksAuthContextProvider: FunctionComponent<NblocksContextProps> = ({children}) => {
-    const {authenticated, didAuthenticate, authService} = useSecureContext();
+    const {authenticated, didAuthenticate, authService, apolloClient} = useSecureContext();
     const [currentUser, setCurrentUser] = useState(new CurrentUser());
 
+    //TODO async
     const logout = () => {
       AuthService.clearAuthStorage();
+      apolloClient.resetStore();
       didAuthenticate(false);
+      console.log("DidLogout");
     }
 
-    const updateUserProfile = (userProfile: UpdateUserProfileArgs) => {
-      authService.updateCurrentUser(userProfile).then(() => {
-        authService.currentUser().then(user => setCurrentUser(new CurrentUser(user)));
-      });
+    //TODO async
+    const switchUser = (userId: string) => {
+      apolloClient.resetStore();
+      AuthService.setTenantUserId(userId!);
+      if (authenticated)
+        refreshCurrentUser();
+      console.log("DidSwitchUser");
+    }
+
+    const refreshCurrentUser = () => {
+      authService.currentUser().then(user => setCurrentUser(new CurrentUser(user)));
+      console.log("refreshCurrentUser");
     }
 
     useEffect(() => {
         if (authenticated) {
-          authService.currentUser().then(user => setCurrentUser(new CurrentUser(user)));
+          refreshCurrentUser();
         } else {
           setCurrentUser(new CurrentUser());
         }
     }, [authenticated])
 
     return (
-      <AuthContext.Provider value={{...initialAuthContext,...{currentUser, logout, updateUserProfile}}}>
+      <AuthContext.Provider value={{...initialAuthContext,...{currentUser, logout, switchUser, refreshCurrentUser}}}>
         {children}
       </AuthContext.Provider>
     );
