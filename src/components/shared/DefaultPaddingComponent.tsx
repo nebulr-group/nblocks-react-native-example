@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
-import {  ImageStyle, StyleSheet, TextStyle, View, ViewStyle } from "react-native";
-import { brandingConfig } from "../../utils/BrandingConfig";
+import {  ImageStyle, TextStyle, View, ViewStyle } from "react-native";
+import { useTheme } from "../../hooks/theme-context";
 
 /**
  * Applies Nblocks default padding to a screen.
@@ -11,9 +11,9 @@ import { brandingConfig } from "../../utils/BrandingConfig";
 const DefaultPaddingComponent:FunctionComponent<{
     style?: ViewStyle | TextStyle | ImageStyle | undefined
 }> = ({children, style: customStyle}) => {
-    const style = StyleSheet.flatten([brandingConfig.body, brandingConfig.defaultPadding]);
+    const {styles} = useTheme();
     return (
-        <View style={[style, customStyle]}>
+        <View style={[styles.body, styles.defaultPadding, customStyle]}>
             {children}
         </View>
     )

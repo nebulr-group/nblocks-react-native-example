@@ -6,8 +6,10 @@ import { AuthService } from './AuthService';
 export class AuthApolloClient {
 
     readonly client: ApolloClient<NormalizedCacheObject>;
-
     private readonly debug: boolean;
+    private unauthenticatedCallback = () => {};
+    private forbiddenCallback = () => {};
+    
     constructor(graphqlUrl: string, debug: boolean) {
       this.debug = debug;
 
@@ -17,6 +19,14 @@ export class AuthApolloClient {
         cache, 
         link: this._configureApolloLink(graphqlUrl)
       });
+    }
+
+    setUnauthenticatedCallback(callback: () => void): void {
+      this.unauthenticatedCallback = callback;
+    }
+
+    setForbiddenCallback(callback: () => void): void {
+      this.forbiddenCallback = callback;
     }
 
     private _configureApolloLink(graphqlUrl: string): ApolloLink {
@@ -60,10 +70,25 @@ export class AuthApolloClient {
           if (graphQLErrors) {
             for (const error of graphQLErrors) {
               console.error(
-                `[GraphQL error]: Message: ${error.message}, Location: ${error.locations}, Path: ${error.path}`,
-                operation,
-                response
-              );
+                `[GraphQL error]: Message: ${error.message}, Location: ${error.locations}, Path: ${error.path}`
+              ); 
+
+              const exception: {errorCode: string, httpStatus: number} = error?.extensions?.exception as any;
+              if (exception) {
+                switch (exception.httpStatus) {
+                  case 401:
+                    this.unauthenticatedCallback();
+                    break;
+
+                  case 403:
+                    this.forbiddenCallback();
+                    break;
+                  
+                  default:
+                    console.error("Unhandled GraphQL exception", exception);
+                    break;
+                }
+              }
             }
           }
           if (networkError) {

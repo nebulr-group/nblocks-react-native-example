@@ -22,3 +22,9 @@ export default class App extends Component<{}, {}> {
     ); 
   }
 }
+
+
+/**
+ * <NblocksProvider i18nOverrides={[{lang: 'en', resources: {"FORGOT_PASSWORD": "iForgot?"}}]} colorOverrides={{primaryColor: 'red'}} styleOverrides={{buttonText: {color: 'black', padding: 10,
+      fontWeight: "700"}}}>
+ */

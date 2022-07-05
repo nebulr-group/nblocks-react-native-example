@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from "react";
-import { Text, StyleSheet } from "react-native";
-import { brandingConfig } from "../../utils/BrandingConfig";
+import { Text } from "react-native";
+import { useTheme } from "../../hooks/theme-context";
 
 const IngressComponent:FunctionComponent = ({children}) => {
-    const style = StyleSheet.flatten([brandingConfig.textGlobal, brandingConfig.textIngress]);
+    const {styles} = useTheme();
     return (
-        <Text style={style}>
+        <Text style={[styles.textGlobal, styles.textIngress]}>
             {children}
         </Text>
     )

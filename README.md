@@ -30,6 +30,8 @@ Lodash for dates. Greate modularized date tool, better than momentjs
 
 #### lodash + @types/lodash probably not?
 
+#### react-i18next i18next
+
 ### Native dependencies
 *Installing* `expo install [package name]`
 https://stackoverflow.com/questions/63784493/is-it-safe-to-use-expo-install-for-everything-that-i-need-to-install
@@ -58,3 +60,31 @@ Requires linking?
 ### Why style flex:1 on root view?
 When using a root view it must be stretched to fill the container.
 See https://reactnavigation.org/docs/troubleshooting/#nothing-is-visible-on-the-screen-after-adding-a-view
+
+### Helpers
+* AccessControllComponent
+
+
+### Overriding default configurations
+The plugin supports overriding different default configurations like styling and translations (i18n).
+
+ 
+This is done by providing props to the root `NblocksProvider` component.
+
+Supported props:
+- i18nOverrides
+- colorOverrides
+- styleOverrides
+
+E.g.
+
+```tsx
+<NblocksProvider 
+    i18nOverrides={[{lang: 'en', resources: {"FORGOT_PASSWORD": "iForgot?"}}]} 
+    colorOverrides={{primaryColor: 'red'}} 
+    styleOverrides={{buttonText: {color: 'black', padding: 10,
+      fontWeight: "700"}}}
+>
+      <......>
+</NblocksProvider>
+```

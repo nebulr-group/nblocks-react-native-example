@@ -15,8 +15,8 @@ import SubmitCancelButtonsComponent from '../../components/shared/SubmitCancelBu
 import SubTitleComponent from '../../components/shared/SubTitleComponent';
 import TextComponent from '../../components/shared/TextComponent';
 import TitleComponent from '../../components/shared/TitleComponent';
+import { useTheme } from '../../hooks/theme-context';
 import { DialogueService } from '../../utils/AlertService';
-import { brandingConfig } from '../../utils/BrandingConfig';
 
 const BrandExpoScreen: FunctionComponent<{}> = () => {
 
@@ -24,9 +24,10 @@ const BrandExpoScreen: FunctionComponent<{}> = () => {
     const [fullModalVisible, setFullModalVisible] = useState(false);
     const [textInput, setTextInput] = useState("");
     const [pickerSelect, setPickerSelect] = useState("Porsche");
-
+    const {styles} = useTheme();
+    
       return (
-        <ScrollView style={[brandingConfig.body, {flex: 1}]}>
+        <ScrollView style={[styles.body, {flex: 1}]}>
           <DefaultPaddingComponent>
             
               <TitleComponent>

@@ -1,9 +1,9 @@
-import React, { FunctionComponent, useReducer, useState } from 'react';
-import { Text, View, FlatList, LayoutAnimation, TouchableOpacity, Switch } from 'react-native';
+import React, { FunctionComponent, useState } from 'react';
+import { Text, View, FlatList, TouchableOpacity, Switch } from 'react-native';
 import { ListUsersDocument, useDeleteUserMutation, useListUsersQuery, User, useSendPasswordResetLinkMutation, useUpdateUserMutation} from '../../../generated/graphql';
 import { useAuth } from '../../../hooks/auth-context';
+import { useTheme } from '../../../hooks/theme-context';
 import { DialogueService } from '../../../utils/AlertService';
-import { brandingConfig } from '../../../utils/BrandingConfig';
 import FormattedDateComponent from '../../FormattedDate/FormattedDate';
 import DividerComponent from '../../shared/DividerComponent';
 import NblocksButton from '../../shared/NblocksButton';
@@ -79,6 +79,7 @@ const UserListComponent:FunctionComponent = () => {
 
 const UserItemComponent:FunctionComponent<{user:User, onEditUserClick: (user: User) => void, onDeleteUserClick: (user: User) => void}> = ({user, onEditUserClick, onDeleteUserClick}) => {
   
+  const {styles} = useTheme();
   const {currentUser} = useAuth();
   const [expanded, setExpanded] = useState(false);
   const [sendPasswordResetLinkMutation, { data: sendPasswordResetLinkData, loading: sendPasswordResetLinkLoading, error: sendPasswordResetLinkError }] = useSendPasswordResetLinkMutation();
@@ -132,7 +133,7 @@ const UserItemComponent:FunctionComponent<{user:User, onEditUserClick: (user: Us
       <TouchableOpacity onPress={() => toggleExpand()}>
         <View style={{height: 50, flexDirection: 'row', alignContent: 'space-between', alignItems: "center"}}>
           <View style={{flex: 10}}>
-            <SafeFullNameComponent style={brandingConfig.subTitle} fullName={user.fullName?.toString()} />
+            <SafeFullNameComponent style={styles.subTitle} fullName={user.fullName?.toString()} />
             <Text>{user.role}</Text>
           </View>
           <View>

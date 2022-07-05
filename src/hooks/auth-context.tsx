@@ -17,25 +17,31 @@ interface NblocksContextProps {
 }
 
 const NblocksAuthContextProvider: FunctionComponent<NblocksContextProps> = ({children}) => {
-    const {authenticated, didAuthenticate, authService, apolloClient} = useSecureContext();
+    const {authenticated, didAuthenticate, authService, authApolloClient, authHttpClient} = useSecureContext();
     const [currentUser, setCurrentUser] = useState(new CurrentUser());
 
     //TODO async
     const logout = () => {
       AuthService.clearAuthStorage();
-      apolloClient.resetStore();
+      authApolloClient.client.resetStore();
       didAuthenticate(false);
       console.log("DidLogout");
     }
 
     //TODO async
     const switchUser = (userId: string) => {
-      apolloClient.resetStore();
+      authApolloClient.client.resetStore();
       AuthService.setTenantUserId(userId!);
       if (authenticated)
         refreshCurrentUser();
       console.log("DidSwitchUser");
     }
+
+    // Attach listners to events in http/graphql clients
+    authHttpClient.setUnauthenticatedCallback(() => logout());
+    authApolloClient.setUnauthenticatedCallback(() => logout());
+    authHttpClient.setForbiddenCallback(() => console.error("Forbidden error!"));
+    authApolloClient.setForbiddenCallback(() => console.error("Forbidden error!"));
 
     const refreshCurrentUser = () => {
       authService.currentUser().then(user => setCurrentUser(new CurrentUser(user)));

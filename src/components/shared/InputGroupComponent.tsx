@@ -1,15 +1,15 @@
 import React, { FunctionComponent } from "react";
-import { ImageStyle, StyleSheet, TextStyle, View, ViewStyle } from "react-native";
-import { brandingConfig } from "../../utils/BrandingConfig";
+import { ImageStyle, TextStyle, View, ViewStyle } from "react-native";
+import { useTheme } from "../../hooks/theme-context";
 
 const InputGroupComponent:FunctionComponent<{
     style?: ViewStyle | TextStyle | ImageStyle | undefined | any[];
 }> = ({style: customStyle, children}) => {
 
-    const style = StyleSheet.flatten([brandingConfig.inputGroup]);
+    const {styles} = useTheme();
 
     return (
-        <View style={[style, customStyle]}>
+        <View style={[styles.inputGroup, customStyle]}>
             {children}
         </View>
     )

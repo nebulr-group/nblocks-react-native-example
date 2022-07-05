@@ -2,7 +2,6 @@ import React, { FunctionComponent, useState } from "react";
 import { View, Image, Dimensions } from "react-native";
 import WebView from "react-native-webview";
 import { useApp } from "../../hooks/app-context";
-import { DialogueService } from "../../utils/AlertService";
 import IngressComponent from "../shared/IngressComponent";
 import NblocksButton from "../shared/NblocksButton";
 import NblocksModalComponent from "../shared/NblocksModalComponent";

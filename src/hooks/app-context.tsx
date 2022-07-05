@@ -1,12 +1,13 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from "react";
 
-const initialAppContext = {name:"", logo: "", userRoles: [], privacyPolicyUrl: ""};
+const initialAppContext = {name:"", defaultLocale: "", logo: "", userRoles: [], privacyPolicyUrl: ""};
 const AppContext = React.createContext(initialAppContext);
 const useApp = () => useContext(AppContext);
 
 const NblocksAppContextProvider: FunctionComponent = ({children}) => {
   
   const [name, setName] = useState("My app");
+  const [defaultLocale, setDefaultLocale] = useState("en");
   const [logo, setLogo] = useState("https://app-stage.northwhistle.com/assets/logos/logo-word-purple.png");
   const [privacyPolicyUrl, setPrivacyPolicyUrl] = useState("https://www.northwhistle.com/privacy-app")
   const [userRoles, setUserRoles] = useState([]);
@@ -16,7 +17,7 @@ const NblocksAppContextProvider: FunctionComponent = ({children}) => {
   })
 
     return (
-      <AppContext.Provider value={{...initialAppContext,...{name, logo, userRoles, privacyPolicyUrl}}}>
+      <AppContext.Provider value={{...initialAppContext,...{name, defaultLocale, logo, userRoles, privacyPolicyUrl}}}>
         {children}
       </AppContext.Provider>
     );

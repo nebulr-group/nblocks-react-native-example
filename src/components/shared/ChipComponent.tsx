@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { ImageStyle, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
-import { brandingConfig } from "../../utils/BrandingConfig";
+import { useTheme } from "../../hooks/theme-context";
 import TextComponent from "./TextComponent";
 
 const ChipComponent:FunctionComponent<{
@@ -8,11 +8,12 @@ const ChipComponent:FunctionComponent<{
     onPress: (() => void);
 }> = ({style: customStyle, onPress, children}) => {
 
+    const {styles} = useTheme();
     return (
         <TouchableOpacity onPress={() => onPress()}>
             <View
                 style={[
-                    brandingConfig.chip,
+                    styles.chip,
                     customStyle
                 ]}
             >

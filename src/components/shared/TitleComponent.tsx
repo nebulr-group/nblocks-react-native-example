@@ -1,14 +1,15 @@
 import React, { FunctionComponent } from "react";
-import { Text, StyleSheet, ImageStyle, TextStyle, ViewStyle } from "react-native";
-import { brandingConfig } from "../../utils/BrandingConfig";
+import { Text, ImageStyle, TextStyle, ViewStyle } from "react-native";
+import { useTheme } from "../../hooks/theme-context";
 
 const TitleComponent:FunctionComponent<{
     style?: ViewStyle | TextStyle | ImageStyle | undefined;
     selectable?: boolean | undefined;
 }> = ({children, style: customStyle, selectable}) => {
-    const style = StyleSheet.flatten([brandingConfig.textGlobal, brandingConfig.title]);
+    const {styles} = useTheme();
+
     return (
-        <Text style={[style, customStyle]} selectable={selectable}>
+        <Text style={[styles.textGlobal, styles.title, customStyle]} selectable={selectable}>
             {children}
         </Text>
     )

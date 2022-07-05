@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { View} from "react-native";
+import { SafeAreaView, View} from "react-native";
 import Modal from "react-native-modal";
 import DefaultPaddingComponent from "./DefaultPaddingComponent";
 
@@ -27,9 +27,11 @@ const NblocksModalComponent:FunctionComponent<{
             backdropTransitionOutTiming={0}
         >
             <View style={{ flex: mode === 'half' ? 0.5 : 1, marginTop: 'auto' }}>
-              <DefaultPaddingComponent style={{flex: 1}}>
-                {children}
-              </DefaultPaddingComponent>
+                <DefaultPaddingComponent style={{flex: 1}}>
+                  <SafeAreaView style={{flex: 1}}>
+                    {children}
+                  </SafeAreaView>
+                </DefaultPaddingComponent>
             </View>
           </Modal>
     )

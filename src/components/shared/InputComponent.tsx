@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
-import { StyleSheet, TextInput, View, KeyboardTypeOptions, ImageStyle, TextStyle, ViewStyle } from "react-native";
-import { brandingConfig } from "../../utils/BrandingConfig";
+import { TextInput, KeyboardTypeOptions, ImageStyle, TextStyle, ViewStyle } from "react-native";
+import { useTheme } from "../../hooks/theme-context";
 import InputGroupComponent from "./InputGroupComponent";
 import TextComponent from "./TextComponent";
 
@@ -16,14 +16,14 @@ const TextInputComponent:FunctionComponent<{
     onSubmitEditing?: (() => void);
     style?: ViewStyle | TextStyle | ImageStyle;
 }> = ({type, label, multiline, placeholder, value, onChangeText, style: customStyle, onSubmitEditing}) => {
-    const style = StyleSheet.flatten([brandingConfig.textGlobal, brandingConfig.textInput]);
+    const {styles} = useTheme();
 
     return (
         <InputGroupComponent style={[{flexDirection: 'column'},customStyle]}>
             {label && <TextComponent>{label}</TextComponent>}
             <TextInput
                 onSubmitEditing={() => { onSubmitEditing ? onSubmitEditing() : undefined}}
-                style={style}
+                style={[styles.textGlobal, styles.textInput]}
                 multiline={multiline}
                 textContentType={type}
                 keyboardType={getKeyboardType(type)}

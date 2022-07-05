@@ -9,6 +9,8 @@ export class AuthHttpClient {
 
     private readonly BASE_URL: string;
     private readonly debug: boolean;
+    private unauthenticatedCallback = () => {};
+    private forbiddenCallback = () => {};
 
     constructor(baseUrl: string, debug: boolean) {
       this.BASE_URL = baseUrl;
@@ -18,6 +20,14 @@ export class AuthHttpClient {
           baseURL: this.BASE_URL,
       });
       this._configureHttpClient(this.httpClient);
+    }
+
+    setUnauthenticatedCallback(callback: () => void): void {
+      this.unauthenticatedCallback = callback;
+    }
+
+    setForbiddenCallback(callback: () => void): void {
+      this.forbiddenCallback = callback;
     }
 
     private _configureHttpClient(httpClient: AxiosInstance): void {
@@ -47,35 +57,38 @@ export class AuthHttpClient {
           return request;
         });
 
-        httpClient.interceptors.response.use(function (response) {
+        httpClient.interceptors.response.use((response) => {
           if (debug) {
             console.log("Response:", response.status, response.data);
           }
           return response;
-        }, function (error: AxiosError) {
+        }, (error: AxiosError) => {
           
           if (debug) {
             console.error("Error response:", `${error.name} - Http status: ${error.response?.status}`, error.response?.data);
           }
     
           if (!error.response)
-            return Promise.reject(error);
+            throw error;
     
           let customError: Error;
           switch (error.response.status) {
             case 401:
               customError = new UnauthenticatedError(error.response.data as {message: string, error: string});
+              this.unauthenticatedCallback();
               break;
     
             case 403:
               customError = new ForbiddenError(error.response.data as {message: string, error: string});
+              this.forbiddenCallback();
               break;
           
             default:
               customError = new Error(error.response.data as string);
               break;
           }
-          return Promise.reject(customError);
+
+          throw customError;
         });
       }
 

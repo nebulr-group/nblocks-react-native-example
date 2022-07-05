@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
-import { brandingConfig } from "../../utils/BrandingConfig";
+import { useTheme } from "../../hooks/theme-context";
 import DividerComponent from "./DividerComponent";
 
 type Item = {id: string} & any;
@@ -24,6 +24,7 @@ const NblocksTable:FunctionComponent<{items: Item[], renderItem(item: Item): JSX
 const ItemComponent:FunctionComponent<{renderExpanded(): JSX.Element}> = ({renderExpanded, children}) => {
   
     const [expanded, setExpanded] = useState(false);
+    const {styles} = useTheme();
   
     const toggleExpand=()=>{
       //LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -35,7 +36,7 @@ const ItemComponent:FunctionComponent<{renderExpanded(): JSX.Element}> = ({rende
         <TouchableOpacity onPress={() => toggleExpand()}>
           <View style={{height: 50, flexDirection: 'row', alignContent: 'space-between', alignItems: "center"}}>
             <View style={{flex: 10}}>
-                <Text style={brandingConfig.subTitle}>
+                <Text style={styles.subTitle}>
                     {children}
                 </Text>
             </View>

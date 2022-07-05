@@ -1,15 +1,49 @@
-import {StyleSheet} from 'react-native';
+import {TextStyle, ViewStyle} from 'react-native';
 
 const primaryColor = "rgb(31, 66, 221)";
 const secondaryColor = "rgb(61, 194, 255)";
 const dangerColor = "rgb(235, 68, 90)";
 const cancelColor = "lightgray";
+const backgroundColor = "white";
 const defaultPadding = 15;
 const textColor = 'black';
 
-const brandingConfig = StyleSheet.create({
+type BrandingConfig = {
+    body: ViewStyle;
+    textGlobal: TextStyle;
+    defaultPadding: ViewStyle;
+    title: TextStyle;
+    subTitle: TextStyle;
+    textIngress: TextStyle;
+    inputGroup: ViewStyle;
+    textInput: TextStyle;
+    button: ViewStyle;
+    buttonText: TextStyle;
+    divider: ViewStyle;
+    chip: TextStyle
+};
+
+type ColorConfig = {
+    primaryColor: string;
+    secondaryColor: string;
+    dangerColor: string;
+    cancelColor: string;
+    backgroundColor: string;
+    textColor: string;
+}
+
+const defaultColor: ColorConfig = {
+    primaryColor,
+    secondaryColor,
+    dangerColor,
+    cancelColor,
+    backgroundColor,
+    textColor
+}
+
+const defaultBranding: BrandingConfig = {
     body: {
-        backgroundColor: 'white'
+        backgroundColor
     },
     textGlobal: {
         color: textColor,
@@ -69,6 +103,6 @@ const brandingConfig = StyleSheet.create({
         padding: 5,
         margin: 5
     }
-  });
+};
 
-export {brandingConfig, primaryColor, secondaryColor, dangerColor, cancelColor};
+export {defaultBranding, BrandingConfig, defaultColor, ColorConfig};

@@ -4,17 +4,17 @@ import { AuthHttpClient } from "../utils/AuthHttpClient";
 import { AuthApolloClient } from "../utils/AuthApolloClient";
 import { ApolloProvider } from "@apollo/client";
 
-const BASE_URL = "http://192.168.2.22";
+//const BASE_URL = "http://192.168.2.22";
 //const BASE_URL = "http://172.20.10.3"
-//const BASE_URL = "http://172.22.78.147"
+const BASE_URL = "http://172.22.78.160"
 const HTTP_URL = `${BASE_URL}:3300`;
 const GRAPHQL_URL = `${HTTP_URL}/graphql`;
 
-const httpClient = new AuthHttpClient(HTTP_URL, true).httpClient;
-const authService = new AuthService(httpClient, true);
-const apolloClient = new AuthApolloClient(GRAPHQL_URL, true).client;
+const authHttpClient = new AuthHttpClient(HTTP_URL, true);
+const authService = new AuthService(authHttpClient.httpClient, true);
+const authApolloClient = new AuthApolloClient(GRAPHQL_URL, true);
 
-const initialSecurityContext = {authService, httpClient, apolloClient, authenticated: false, didAuthenticate: (value: boolean) => {}};
+const initialSecurityContext = {authService, authHttpClient, authApolloClient, authenticated: false, didAuthenticate: (value: boolean) => {}};
 const SecureContext = React.createContext(initialSecurityContext);
 const useSecureContext = () => useContext(SecureContext);
 
@@ -39,7 +39,7 @@ const NblocksSecureContextProvider: FunctionComponent<NblocksContextProps> = ({c
 
     return (
       <SecureContext.Provider value={{...initialSecurityContext,...{authenticated, didAuthenticate}}}>
-        <ApolloProvider client={apolloClient}>
+        <ApolloProvider client={authApolloClient.client}>
             {children}
         </ApolloProvider>
       </SecureContext.Provider>

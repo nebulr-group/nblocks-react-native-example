@@ -1,16 +1,18 @@
 import React, { FunctionComponent } from "react";
 import { ImageStyle, Text, TextStyle, ViewStyle } from "react-native";
-import { brandingConfig } from "../../utils/BrandingConfig";
+import { useTheme } from "../../hooks/theme-context";
 
 const TextComponent:FunctionComponent<{
     style?: ViewStyle | TextStyle | ImageStyle | undefined;
     numberOfLines?: number
 }> = ({style: customStyle, numberOfLines, children}) => {
 
+    const {styles} = useTheme();
+    
     return (
         <Text 
         numberOfLines={numberOfLines}
-        style={[brandingConfig.textGlobal, customStyle]}>
+        style={[styles.textGlobal, customStyle]}>
             {children}
         </Text>
     )
