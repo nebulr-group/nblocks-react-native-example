@@ -2,12 +2,12 @@ import { Picker } from "@react-native-picker/picker";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { Tenant, useGetTenantQuery, useUpdateTenantMutation } from "../../../generated/graphql";
-import TextInputComponent from "../../shared/InputComponent";
-import InputGroupComponent from "../../shared/InputGroupComponent";
-import NblocksModalComponent from "../../shared/NblocksModalComponent";
-import SubmitCancelButtonsComponent from "../../shared/SubmitCancelButtonsComponent";
-import TextComponent from "../../shared/TextComponent";
-import TitleComponent from "../../shared/TitleComponent";
+import {TextInputComponent} from "../../shared/InputComponent";
+import {InputGroupComponent} from "../../shared/InputGroupComponent";
+import {NblocksModalComponent} from "../../shared/NblocksModalComponent";
+import {SubmitCancelButtonsComponent} from "../../shared/SubmitCancelButtonsComponent";
+import {TextComponent} from "../../shared/TextComponent";
+import {TitleComponent} from "../../shared/TitleComponent";
 
 const EditTenantModalComponent:FunctionComponent<{
     visible: boolean;
@@ -80,4 +80,4 @@ const EditTenantModalComponent:FunctionComponent<{
   );
 }
 
-export default EditTenantModalComponent;
+export {EditTenantModalComponent};

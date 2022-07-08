@@ -1,8 +1,8 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { FunctionComponent } from 'react';
 import { ActivityIndicator } from 'react-native';
-import DefaultPaddingComponent from '../../components/shared/DefaultPaddingComponent';
-import EditUserProfileModalComponent from '../../components/User/UserProfileComponent/UserProfileComponent/EditUserProfileModalComponent';
+import {DefaultPaddingComponent} from '../../components/shared/DefaultPaddingComponent';
+import {EditUserProfileModalComponent} from '../../components/User/UserProfileComponent/UserProfileComponent/EditUserProfileModalComponent';
 import { AuthRoutesStackParams } from '../../routes/AuthRoutes';
 
 const OnboardUserScreen: FunctionComponent<{}> = () => {
@@ -17,4 +17,4 @@ const OnboardUserScreen: FunctionComponent<{}> = () => {
   );
 }
 
-export default OnboardUserScreen;
+export {OnboardUserScreen};

@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { useTheme } from "../../hooks/theme-context";
-import DividerComponent from "./DividerComponent";
+import {DividerComponent} from "./DividerComponent";
 
 type Item = {id: string} & any;
 
@@ -62,5 +62,4 @@ const ItemComponent:FunctionComponent<{renderExpanded(): JSX.Element}> = ({rende
     )
   }
 
-export default NblocksTable;
-export {ItemComponent, ExpandedContentComponent}
+export {NblocksTable, ItemComponent, ExpandedContentComponent}

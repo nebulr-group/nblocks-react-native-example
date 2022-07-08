@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import DefaultPaddingComponent from '../../components/shared/DefaultPaddingComponent';
-import UserListComponent from '../../components/User/UserListComponent/UserListComponent';
+import {DefaultPaddingComponent} from '../../components/shared/DefaultPaddingComponent';
+import {UserListComponent} from '../../components/User/UserListComponent/UserListComponent';
 
 const UsersScreen: FunctionComponent<{}> = () => {
 
@@ -11,4 +11,4 @@ const UsersScreen: FunctionComponent<{}> = () => {
   );
 }
 
-export default UsersScreen;
+export {UsersScreen};

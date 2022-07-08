@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 import { TextInput, KeyboardTypeOptions, ImageStyle, TextStyle, ViewStyle } from "react-native";
 import { useTheme } from "../../hooks/theme-context";
-import InputGroupComponent from "./InputGroupComponent";
-import TextComponent from "./TextComponent";
+import {InputGroupComponent} from "./InputGroupComponent";
+import {TextComponent} from "./TextComponent";
 
 type InputType = 'none' | 'givenName' | 'password' | 'oneTimeCode' | 'telephoneNumber' | 'emailAddress' | 'username';
 
@@ -68,4 +68,4 @@ const getKeyboardType = (type: InputType):KeyboardTypeOptions | undefined => {
     }
 }
 
-export default TextInputComponent;
+export  {TextInputComponent};

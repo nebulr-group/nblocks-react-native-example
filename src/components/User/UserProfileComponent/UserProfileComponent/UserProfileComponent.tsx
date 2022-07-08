@@ -1,14 +1,14 @@
 import React, { FunctionComponent, useState } from "react";
 import { View, Image, Dimensions } from "react-native";
 import { useAuth } from "../../../../hooks/auth-context";
-import FormattedDateComponent from "../../../FormattedDate/FormattedDate";
-import IngressComponent from "../../../shared/IngressComponent";
-import NblocksButton from "../../../shared/NblocksButton";
-import SubTitleComponent from "../../../shared/SubTitleComponent";
-import TextComponent from "../../../shared/TextComponent";
-import TitleComponent from "../../../shared/TitleComponent";
-import SafeFullNameComponent from "../../SafeFullNameComponent/SafeFullNameComponent";
-import EditUserProfileModalComponent from "./EditUserProfileModalComponent";
+import {FormattedDateComponent} from "../../../FormattedDate/FormattedDate";
+import {IngressComponent} from "../../../shared/IngressComponent";
+import {NblocksButton} from "../../../shared/NblocksButton";
+import {SubTitleComponent} from "../../../shared/SubTitleComponent";
+import {TextComponent} from "../../../shared/TextComponent";
+import {TitleComponent} from "../../../shared/TitleComponent";
+import {SafeFullNameComponent} from "../../SafeFullNameComponent/SafeFullNameComponent";
+import {EditUserProfileModalComponent} from "./EditUserProfileModalComponent";
 
 const UserProfileComponent:FunctionComponent = () => {
 
@@ -52,4 +52,4 @@ const UserProfileComponent:FunctionComponent = () => {
   );
 }
 
-export default UserProfileComponent;
+export {UserProfileComponent};

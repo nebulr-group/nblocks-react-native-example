@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { SafeAreaView, View} from "react-native";
 import Modal from "react-native-modal";
-import DefaultPaddingComponent from "./DefaultPaddingComponent";
+import {DefaultPaddingComponent} from "./DefaultPaddingComponent";
 
 /**
  * NblocksModalComponent, shared reusable modal
@@ -37,4 +37,4 @@ const NblocksModalComponent:FunctionComponent<{
     )
 }
 
-export default NblocksModalComponent;
+export  {NblocksModalComponent};

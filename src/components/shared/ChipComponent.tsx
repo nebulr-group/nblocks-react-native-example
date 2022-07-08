@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { ImageStyle, TextStyle, TouchableOpacity, View, ViewStyle } from "react-native";
 import { useTheme } from "../../hooks/theme-context";
-import TextComponent from "./TextComponent";
+import {TextComponent} from "./TextComponent";
 
 const ChipComponent:FunctionComponent<{
     style?:  ViewStyle | TextStyle | ImageStyle | undefined;
@@ -23,4 +23,4 @@ const ChipComponent:FunctionComponent<{
     )
 }
 
-export default ChipComponent;
+export {ChipComponent};

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import RequireMfaComponent from '../../components/Auth/mfa/RequireMfaComponent';
-import DefaultPaddingComponent from '../../components/shared/DefaultPaddingComponent';
+import {RequireMfaComponent} from '../../components/Auth/mfa/RequireMfaComponent';
+import {DefaultPaddingComponent} from '../../components/shared/DefaultPaddingComponent';
 
 const RequireMfaScreen: FunctionComponent<{}> = () => {
 
@@ -11,4 +11,4 @@ const RequireMfaScreen: FunctionComponent<{}> = () => {
   );
 }
 
-export default RequireMfaScreen;
+export {RequireMfaScreen};

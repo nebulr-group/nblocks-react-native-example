@@ -12,4 +12,4 @@ const AccessControllComponent:FunctionComponent<{roles: string[]}> = ({children,
         return (null);
 }
 
-export default AccessControllComponent;
+export {AccessControllComponent};

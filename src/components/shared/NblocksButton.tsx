@@ -26,4 +26,4 @@ const NblocksButton:FunctionComponent<{onPress: () => any, title: string, type?:
     )
 }
 
-export default NblocksButton;
+export  {NblocksButton};

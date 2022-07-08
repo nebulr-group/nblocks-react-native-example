@@ -2,10 +2,10 @@ import React, { FunctionComponent, useState } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { useAuth } from "../../../../hooks/auth-context";
 import { useSecureContext } from "../../../../hooks/secure-http-context";
-import TextInputComponent from "../../../shared/InputComponent";
-import NblocksModalComponent from "../../../shared/NblocksModalComponent";
-import SubmitCancelButtonsComponent from "../../../shared/SubmitCancelButtonsComponent";
-import TitleComponent from "../../../shared/TitleComponent";
+import {TextInputComponent} from "../../../shared/InputComponent";
+import {NblocksModalComponent} from "../../../shared/NblocksModalComponent";
+import {SubmitCancelButtonsComponent} from "../../../shared/SubmitCancelButtonsComponent";
+import {TitleComponent} from "../../../shared/TitleComponent";
 
 const EditUserProfileModalComponent:FunctionComponent<{
     visible: boolean;
@@ -81,4 +81,4 @@ const EditUserProfileModalComponent:FunctionComponent<{
   );
 }
 
-export default EditUserProfileModalComponent;
+export {EditUserProfileModalComponent};

@@ -19,4 +19,4 @@ const DefaultPaddingComponent:FunctionComponent<{
     )
 }
 
-export default DefaultPaddingComponent;
+export {DefaultPaddingComponent};

@@ -2,9 +2,9 @@ import { Picker } from "@react-native-picker/picker";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { useListUserRolesQuery, User, useUpdateUserMutation } from "../../../generated/graphql";
-import NblocksModalComponent from "../../shared/NblocksModalComponent";
-import SubmitCancelButtonsComponent from "../../shared/SubmitCancelButtonsComponent";
-import TitleComponent from "../../shared/TitleComponent";
+import {NblocksModalComponent} from "../../shared/NblocksModalComponent";
+import {SubmitCancelButtonsComponent} from "../../shared/SubmitCancelButtonsComponent";
+import {TitleComponent} from "../../shared/TitleComponent";
 
 const EditUserModalComponent:FunctionComponent<{
     user?:User;
@@ -64,5 +64,5 @@ const EditUserModalComponent:FunctionComponent<{
     )
 }
 
-export default EditUserModalComponent;
+export  {EditUserModalComponent};
   

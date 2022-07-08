@@ -3,12 +3,12 @@ import React, { FunctionComponent, useState } from "react";
 import { View } from "react-native";
 import { useSecureContext } from "../../../hooks/secure-http-context";
 import { AuthRoutesStackParams } from "../../../routes/AuthRoutes";
-import TextInputComponent from "../../shared/InputComponent";
-import NblocksButton from "../../shared/NblocksButton";
-import SubTitleComponent from "../../shared/SubTitleComponent";
-import TextComponent from "../../shared/TextComponent";
-import TitleComponent from "../../shared/TitleComponent";
-import BaseStyleComponent from "../BaseStyleComponent";
+import {TextInputComponent} from "../../shared/InputComponent";
+import {NblocksButton} from "../../shared/NblocksButton";
+import {SubTitleComponent} from "../../shared/SubTitleComponent";
+import {TextComponent} from "../../shared/TextComponent";
+import {TitleComponent} from "../../shared/TitleComponent";
+import {BaseStyleComponent} from "../BaseStyleComponent";
 
 const SetupMfaComponent:FunctionComponent = () => {
 
@@ -93,4 +93,4 @@ const SetupMfaComponent:FunctionComponent = () => {
     }
 }
 
-export default SetupMfaComponent;
+export {SetupMfaComponent};

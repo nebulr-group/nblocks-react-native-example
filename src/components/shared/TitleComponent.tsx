@@ -15,4 +15,4 @@ const TitleComponent:FunctionComponent<{
     )
 }
 
-export default TitleComponent;
+export {TitleComponent};

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import ChooseUserComponent from '../../components/Auth/ChooseUserComponent/ChooseUserComponent';
-import DefaultPaddingComponent from '../../components/shared/DefaultPaddingComponent';
+import {ChooseUserComponent} from '../../components/Auth/ChooseUserComponent/ChooseUserComponent';
+import {DefaultPaddingComponent} from '../../components/shared/DefaultPaddingComponent';
 
 const ChooseUserScreen: FunctionComponent<{}> = () => {
 
@@ -11,4 +11,4 @@ const ChooseUserScreen: FunctionComponent<{}> = () => {
   );
 }
 
-export default ChooseUserScreen;
+export {ChooseUserScreen};

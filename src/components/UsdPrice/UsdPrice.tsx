@@ -28,4 +28,4 @@ const UsdPriceComponent: FunctionComponent<{}> = ({}) => {
 
 }
 
-export default UsdPriceComponent;
+export {UsdPriceComponent};

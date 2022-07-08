@@ -19,4 +19,4 @@ const CounterComponent: FunctionComponent<{}> = ({}) => {
   );
 }
 
-export default CounterComponent;
+export  {CounterComponent};

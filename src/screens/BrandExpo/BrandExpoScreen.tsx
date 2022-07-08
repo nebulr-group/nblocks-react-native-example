@@ -1,20 +1,20 @@
 import { Picker } from '@react-native-picker/picker';
 import React, { FunctionComponent, useState } from 'react';
 import { View, ScrollView, ActivityIndicator, TextInput, Switch } from 'react-native';
-import AccessControllComponent from '../../components/Auth/AccessControllComponent';
-import FormattedDateComponent from '../../components/FormattedDate/FormattedDate';
-import ChipComponent from '../../components/shared/ChipComponent';
-import DefaultPaddingComponent from '../../components/shared/DefaultPaddingComponent';
-import DividerComponent from '../../components/shared/DividerComponent';
-import IngressComponent from '../../components/shared/IngressComponent';
-import TextInputComponent from '../../components/shared/InputComponent';
-import InputGroupComponent from '../../components/shared/InputGroupComponent';
-import NblocksButton from '../../components/shared/NblocksButton';
-import NblocksModalComponent from '../../components/shared/NblocksModalComponent';
-import SubmitCancelButtonsComponent from '../../components/shared/SubmitCancelButtonsComponent';
-import SubTitleComponent from '../../components/shared/SubTitleComponent';
-import TextComponent from '../../components/shared/TextComponent';
-import TitleComponent from '../../components/shared/TitleComponent';
+import {AccessControllComponent} from '../../components/Auth/AccessControllComponent';
+import {FormattedDateComponent} from '../../components/FormattedDate/FormattedDate';
+import {ChipComponent} from '../../components/shared/ChipComponent';
+import {DefaultPaddingComponent} from '../../components/shared/DefaultPaddingComponent';
+import {DividerComponent} from '../../components/shared/DividerComponent';
+import {IngressComponent} from '../../components/shared/IngressComponent';
+import {TextInputComponent} from '../../components/shared/InputComponent';
+import {InputGroupComponent} from '../../components/shared/InputGroupComponent';
+import {NblocksButton} from '../../components/shared/NblocksButton';
+import {NblocksModalComponent} from '../../components/shared/NblocksModalComponent';
+import {SubmitCancelButtonsComponent} from '../../components/shared/SubmitCancelButtonsComponent';
+import {SubTitleComponent} from '../../components/shared/SubTitleComponent';
+import {TextComponent} from '../../components/shared/TextComponent';
+import {TitleComponent} from '../../components/shared/TitleComponent';
 import { useTheme } from '../../hooks/theme-context';
 import { DialogueService } from '../../utils/AlertService';
 
@@ -212,4 +212,4 @@ const BrandExpoScreen: FunctionComponent<{}> = () => {
       )
 }
 
-export default BrandExpoScreen;
+export {BrandExpoScreen};

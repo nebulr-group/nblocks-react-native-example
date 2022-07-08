@@ -10,4 +10,4 @@ const FormattedDateComponent: FunctionComponent<{date: string, length: 'short' |
   );
 }
 
-export default FormattedDateComponent;
+export {FormattedDateComponent};

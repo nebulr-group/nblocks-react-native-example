@@ -2,16 +2,16 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { View, Image, Dimensions, ActivityIndicator, Switch } from "react-native";
 import WebView from "react-native-webview";
 import { useGetCustomerPortalLazyQuery, useGetTenantQuery, useUpdateTenantMutation } from "../../../generated/graphql";
-import FormattedDateComponent from "../../FormattedDate/FormattedDate";
-import IngressComponent from "../../shared/IngressComponent";
-import InputGroupComponent from "../../shared/InputGroupComponent";
-import NblocksButton from "../../shared/NblocksButton";
-import NblocksModalComponent from "../../shared/NblocksModalComponent";
-import SubmitCancelButtonsComponent from "../../shared/SubmitCancelButtonsComponent";
-import SubTitleComponent from "../../shared/SubTitleComponent";
-import TextComponent from "../../shared/TextComponent";
-import TitleComponent from "../../shared/TitleComponent";
-import EditTenantModalComponent from "./EditTenantModalComponent";
+import {FormattedDateComponent} from "../../FormattedDate/FormattedDate";
+import {IngressComponent} from "../../shared/IngressComponent";
+import {InputGroupComponent} from "../../shared/InputGroupComponent";
+import {NblocksButton} from "../../shared/NblocksButton";
+import {NblocksModalComponent} from "../../shared/NblocksModalComponent";
+import {SubmitCancelButtonsComponent} from "../../shared/SubmitCancelButtonsComponent";
+import {SubTitleComponent} from "../../shared/SubTitleComponent";
+import {TextComponent} from "../../shared/TextComponent";
+import {TitleComponent} from "../../shared/TitleComponent";
+import {EditTenantModalComponent} from "./EditTenantModalComponent";
 
 const TenantComponent:FunctionComponent = () => {
 
@@ -89,4 +89,4 @@ const TenantComponent:FunctionComponent = () => {
   );
 }
 
-export default TenantComponent;
+export {TenantComponent};

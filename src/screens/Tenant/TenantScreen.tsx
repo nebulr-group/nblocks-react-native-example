@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import DefaultPaddingComponent from '../../components/shared/DefaultPaddingComponent';
-import TenantComponent from '../../components/Tenant/TenantComponent/TenantComponent';
+import {DefaultPaddingComponent} from '../../components/shared/DefaultPaddingComponent';
+import {TenantComponent} from '../../components/Tenant/TenantComponent/TenantComponent';
 
 const TenantScreen: FunctionComponent<{}> = () => {
 
@@ -11,4 +11,4 @@ const TenantScreen: FunctionComponent<{}> = () => {
   );
 }
 
-export default TenantScreen;
+export {TenantScreen};

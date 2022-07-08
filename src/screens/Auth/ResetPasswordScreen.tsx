@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import ResetPasswordComponent from '../../components/Auth/ResetPasswordComponent/ResetPasswordComponent';
-import DefaultPaddingComponent from '../../components/shared/DefaultPaddingComponent';
+import {ResetPasswordComponent} from '../../components/Auth/ResetPasswordComponent/ResetPasswordComponent';
+import {DefaultPaddingComponent} from '../../components/shared/DefaultPaddingComponent';
 
 const ResetPasswordScreen: FunctionComponent<{}> = () => {
 
@@ -11,4 +11,4 @@ const ResetPasswordScreen: FunctionComponent<{}> = () => {
   );
 }
 
-export default ResetPasswordScreen;
+export {ResetPasswordScreen};

@@ -1,10 +1,10 @@
 
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { FunctionComponent } from 'react';
-import DefaultPaddingComponent from '../../components/shared/DefaultPaddingComponent';
-import DividerComponent from '../../components/shared/DividerComponent';
-import NblocksButton from '../../components/shared/NblocksButton';
-import TitleComponent from '../../components/shared/TitleComponent';
+import {DefaultPaddingComponent} from '../../components/shared/DefaultPaddingComponent';
+import {DividerComponent} from '../../components/shared/DividerComponent';
+import {NblocksButton} from '../../components/shared/NblocksButton';
+import {TitleComponent} from '../../components/shared/TitleComponent';
 import { useAuth } from '../../hooks/auth-context';
 import { RoutesStackParams } from '../../routes/Routes';
 
@@ -49,4 +49,4 @@ const HomeScreen: FunctionComponent<{}> = () => {
       )
 }
 
-export default HomeScreen;
+export {HomeScreen};

@@ -2,11 +2,11 @@ import React, { FunctionComponent, useState } from "react";
 import { View, Image, Dimensions } from "react-native";
 import WebView from "react-native-webview";
 import { useApp } from "../../hooks/app-context";
-import IngressComponent from "../shared/IngressComponent";
-import NblocksButton from "../shared/NblocksButton";
-import NblocksModalComponent from "../shared/NblocksModalComponent";
-import SubTitleComponent from "../shared/SubTitleComponent";
-import TextComponent from "../shared/TextComponent";
+import {IngressComponent} from "../shared/IngressComponent";
+import {NblocksButton} from "../shared/NblocksButton";
+import {NblocksModalComponent} from "../shared/NblocksModalComponent";
+import {SubTitleComponent} from "../shared/SubTitleComponent";
+import {TextComponent} from "../shared/TextComponent";
 
 const BaseStyleComponent:FunctionComponent<{title: string, subTitle: string}> = ({children, title, subTitle}) => {
 
@@ -41,4 +41,4 @@ const BaseStyleComponent:FunctionComponent<{title: string, subTitle: string}> = 
     );
 }
 
-export default BaseStyleComponent;
+export {BaseStyleComponent};

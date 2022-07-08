@@ -11,4 +11,4 @@ const SubTitleComponent:FunctionComponent = ({children}) => {
     )
 }
 
-export default SubTitleComponent;
+export {SubTitleComponent};

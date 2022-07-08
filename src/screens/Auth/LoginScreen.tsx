@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import LoginComponent from '../../components/Auth/LoginComponent/LoginComponent';
-import DefaultPaddingComponent from '../../components/shared/DefaultPaddingComponent';
+import {LoginComponent} from '../../components/Auth/LoginComponent/LoginComponent';
+import {DefaultPaddingComponent} from '../../components/shared/DefaultPaddingComponent';
 
 const LoginScreen: FunctionComponent<{}> = () => {
 
@@ -11,4 +11,4 @@ const LoginScreen: FunctionComponent<{}> = () => {
   );
 }
 
-export default LoginScreen;
+export {LoginScreen};

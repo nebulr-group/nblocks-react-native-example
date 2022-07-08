@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { ImageStyle, TextStyle, View, ViewStyle } from "react-native";
-import NblocksButton from "./NblocksButton";
+import {NblocksButton} from "./NblocksButton";
 
 const SubmitCancelButtonsComponent:FunctionComponent<
 {  
@@ -29,4 +29,4 @@ const SubmitCancelButtonsComponent:FunctionComponent<
     )
 }
 
-export default SubmitCancelButtonsComponent;
+export  {SubmitCancelButtonsComponent};

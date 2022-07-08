@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import SetupMfaComponent from '../../components/Auth/mfa/SetupMfaComponent';
-import DefaultPaddingComponent from '../../components/shared/DefaultPaddingComponent';
+import {SetupMfaComponent} from '../../components/Auth/mfa/SetupMfaComponent';
+import {DefaultPaddingComponent} from '../../components/shared/DefaultPaddingComponent';
 
 const SetupMfaScreen: FunctionComponent<{}> = () => {
 
@@ -11,4 +11,4 @@ const SetupMfaScreen: FunctionComponent<{}> = () => {
   );
 }
 
-export default SetupMfaScreen;
+export {SetupMfaScreen};

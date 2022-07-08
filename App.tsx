@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import NblocksProvider from './src/components/NblocksProvider/NblocksProvider';
-import Routes from './src/routes/Routes';
+import {NblocksProvider} from './src/components/NblocksProvider/NblocksProvider';
+import {Routes} from './src/routes/Routes';
 
 export default class App extends Component<{}, {}> {
 

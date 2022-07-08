@@ -1,13 +1,12 @@
 import React, { FunctionComponent, useState } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { ListUsersDocument, useCreateUsersMutation } from "../../../generated/graphql";
-import ChipComponent from "../../shared/ChipComponent";
-import TextInputComponent from "../../shared/InputComponent";
-import NblocksModalComponent from "../../shared/NblocksModalComponent";
-import SubmitCancelButtonsComponent from "../../shared/SubmitCancelButtonsComponent";
-import SubTitleComponent from "../../shared/SubTitleComponent";
-import TextComponent from "../../shared/TextComponent";
-import TitleComponent from "../../shared/TitleComponent";
+import {ChipComponent} from "../../shared/ChipComponent";
+import {TextInputComponent} from "../../shared/InputComponent";
+import {NblocksModalComponent} from "../../shared/NblocksModalComponent";
+import {SubmitCancelButtonsComponent} from "../../shared/SubmitCancelButtonsComponent";
+import {SubTitleComponent} from "../../shared/SubTitleComponent";
+import {TitleComponent} from "../../shared/TitleComponent";
 
 const AddUserModalComponent:FunctionComponent<{
     visible: boolean, 
@@ -98,4 +97,4 @@ const AddUserModalComponent:FunctionComponent<{
     )
 }
 
-export default AddUserModalComponent;
+export {AddUserModalComponent};

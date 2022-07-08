@@ -4,12 +4,12 @@ import { ListUsersDocument, useDeleteUserMutation, useListUsersQuery, User, useS
 import { useAuth } from '../../../hooks/auth-context';
 import { useTheme } from '../../../hooks/theme-context';
 import { DialogueService } from '../../../utils/AlertService';
-import FormattedDateComponent from '../../FormattedDate/FormattedDate';
-import DividerComponent from '../../shared/DividerComponent';
-import NblocksButton from '../../shared/NblocksButton';
-import SafeFullNameComponent from '../SafeFullNameComponent/SafeFullNameComponent';
-import AddUserModalComponent from './AddUserModalComponent';
-import EditUserModalComponent from './EditUserModalComponent';
+import { FormattedDateComponent} from '../../FormattedDate/FormattedDate';
+import {DividerComponent} from '../../shared/DividerComponent';
+import {NblocksButton} from '../../shared/NblocksButton';
+import {SafeFullNameComponent} from '../SafeFullNameComponent/SafeFullNameComponent';
+import {AddUserModalComponent} from './AddUserModalComponent';
+import {EditUserModalComponent} from './EditUserModalComponent';
 
 const UserListComponent:FunctionComponent = () => {
 
@@ -150,4 +150,4 @@ const UserItemComponent:FunctionComponent<{user:User, onEditUserClick: (user: Us
   )
 }
 
-export default UserListComponent;
+export {UserListComponent};

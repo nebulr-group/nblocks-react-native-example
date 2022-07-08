@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { ActivityIndicator } from 'react-native';
-import DefaultPaddingComponent from '../../components/shared/DefaultPaddingComponent';
-import EditTenantModalComponent from '../../components/Tenant/TenantComponent/EditTenantModalComponent';
+import {DefaultPaddingComponent} from '../../components/shared/DefaultPaddingComponent';
+import {EditTenantModalComponent} from '../../components/Tenant/TenantComponent/EditTenantModalComponent';
 import { useSecureContext } from '../../hooks/secure-http-context';
 
 const OnboardTenantScreen: FunctionComponent<{}> = () => {
@@ -16,4 +16,4 @@ const OnboardTenantScreen: FunctionComponent<{}> = () => {
   );
 }
 
-export default OnboardTenantScreen;
+export {OnboardTenantScreen};

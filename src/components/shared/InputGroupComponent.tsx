@@ -15,4 +15,4 @@ const InputGroupComponent:FunctionComponent<{
     )
 }
 
-export default InputGroupComponent;
+export  {InputGroupComponent};

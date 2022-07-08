@@ -11,4 +11,4 @@ const DividerComponent:FunctionComponent = ({children}) => {
     )
 }
 
-export default DividerComponent;
+export {DividerComponent};

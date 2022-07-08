@@ -8,4 +8,4 @@ const SafeFullNameComponent:FunctionComponent<{fullName: string | undefined, sty
   )
 }
 
-export default SafeFullNameComponent;
+export {SafeFullNameComponent};

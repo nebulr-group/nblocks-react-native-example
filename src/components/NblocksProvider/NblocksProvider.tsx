@@ -29,4 +29,4 @@ const NblocksProvider: FunctionComponent<{
   );
 }
 
-export default NblocksProvider;
+export {NblocksProvider};

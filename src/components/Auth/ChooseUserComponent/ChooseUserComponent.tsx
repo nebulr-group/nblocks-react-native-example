@@ -5,9 +5,9 @@ import { useAuth } from "../../../hooks/auth-context";
 import { useSecureContext } from "../../../hooks/secure-http-context";
 import { AuthTenantUserResponseDto } from "../../../models/auth-tenant-user-response.dto";
 import { AuthRoutesStackParams } from "../../../routes/AuthRoutes";
-import DividerComponent from "../../shared/DividerComponent";
-import NblocksButton from "../../shared/NblocksButton";
-import BaseStyleComponent from "../BaseStyleComponent";
+import { DividerComponent } from "../../shared/DividerComponent";
+import { NblocksButton} from "../../shared/NblocksButton";
+import { BaseStyleComponent} from "../BaseStyleComponent";
 
 const ChooseUserComponent:FunctionComponent = () => {
 
@@ -58,4 +58,4 @@ const ChooseUserComponent:FunctionComponent = () => {
     );
 }
 
-export default ChooseUserComponent;
+export {ChooseUserComponent};

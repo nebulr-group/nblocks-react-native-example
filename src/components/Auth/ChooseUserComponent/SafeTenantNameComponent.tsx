@@ -9,4 +9,4 @@ const SafeFullNameComponent:FunctionComponent<{tenantName: string | undefined, s
   )
 }
 
-export default SafeFullNameComponent;
+export {SafeFullNameComponent};

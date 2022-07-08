@@ -11,4 +11,4 @@ const IngressComponent:FunctionComponent = ({children}) => {
     )
 }
 
-export default IngressComponent;
+export {IngressComponent};

@@ -3,9 +3,9 @@ import React, { FunctionComponent, useState } from "react";
 import { useApp } from "../../../hooks/app-context";
 import { useSecureContext } from "../../../hooks/secure-http-context";
 import { AuthRoutesStackParams } from "../../../routes/AuthRoutes";
-import TextInputComponent from "../../shared/InputComponent";
-import NblocksButton from "../../shared/NblocksButton";
-import BaseStyleComponent from "../BaseStyleComponent";
+import {TextInputComponent} from "../../shared/InputComponent";
+import {NblocksButton} from "../../shared/NblocksButton";
+import {BaseStyleComponent} from "../BaseStyleComponent";
 
 const ResetPasswordComponent:FunctionComponent = () => {
 
@@ -30,4 +30,4 @@ const ResetPasswordComponent:FunctionComponent = () => {
     );
 }
 
-export default ResetPasswordComponent;
+export {ResetPasswordComponent};

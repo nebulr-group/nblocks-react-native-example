@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 import { useApp } from "../../../hooks/app-context";
 import { useSecureContext } from "../../../hooks/secure-http-context";
 import { AuthRoutesStackParams } from "../../../routes/AuthRoutes";
-import TextInputComponent from "../../shared/InputComponent";
-import SubmitCancelButtonsComponent from "../../shared/SubmitCancelButtonsComponent";
-import BaseStyleComponent from "../BaseStyleComponent";
+import {TextInputComponent} from "../../shared/InputComponent";
+import {SubmitCancelButtonsComponent} from "../../shared/SubmitCancelButtonsComponent";
+import {BaseStyleComponent} from "../BaseStyleComponent";
 
 const LoginComponent:FunctionComponent = () => {
 
@@ -60,4 +60,4 @@ const LoginComponent:FunctionComponent = () => {
     );
 }
 
-export default LoginComponent;
+export {LoginComponent};

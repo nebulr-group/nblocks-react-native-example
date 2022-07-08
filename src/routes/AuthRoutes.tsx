@@ -1,16 +1,16 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { FunctionComponent } from 'react';
-import ChooseUserScreen from '../screens/Auth/ChooseUserScreen';
-import LoginScreen from '../screens/Auth/LoginScreen';
-import OnboardTenantScreen from '../screens/Auth/OnboardTenantScreen';
-import OnboardUserScreen from '../screens/Auth/OnboardUserScreen';
-import RequireMfaScreen from '../screens/Auth/RequireMfaScreen';
-import ResetMfaScreen from '../screens/Auth/ResetMfaScreen';
-import ResetPasswordScreen from '../screens/Auth/ResetPasswordScreen';
-import SetupMfaScreen from '../screens/Auth/SetupMfaScreen';
+import {ChooseUserScreen} from '../screens/Auth/ChooseUserScreen';
+import {LoginScreen} from '../screens/Auth/LoginScreen';
+import {OnboardTenantScreen} from '../screens/Auth/OnboardTenantScreen';
+import {OnboardUserScreen} from '../screens/Auth/OnboardUserScreen';
+import {RequireMfaScreen} from '../screens/Auth/RequireMfaScreen';
+import {ResetMfaScreen} from '../screens/Auth/ResetMfaScreen';
+import {ResetPasswordScreen} from '../screens/Auth/ResetPasswordScreen';
+import {SetupMfaScreen} from '../screens/Auth/SetupMfaScreen';
 
-export type AuthRoutesStackParams = {
+type AuthRoutesStackParams = {
     Login: undefined;
     ResetPassword: undefined;
     SetupMfa: undefined;
@@ -42,4 +42,4 @@ const AuthRoutes: FunctionComponent<{}> = ({}) => {
     );
 }
 
-export default AuthRoutes;
+export {AuthRoutes, AuthRoutesStackParams};

@@ -1,15 +1,14 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React, { FunctionComponent } from 'react';
-import UserListComponent from '../components/User/UserListComponent/UserListComponent';
 import { useAuth } from '../hooks/auth-context';
-import BrandExpoScreen from '../screens/BrandExpo/BrandExpoScreen';
-import HomeScreen from '../screens/Home/HomeScreen';
-import UserProfileScreen from '../screens/UserProfile/UserProfileScreen';
-import TenantScreen from '../screens/Tenant/TenantScreen';
-import UsersScreen from '../screens/Users/UsersScreen';
-import AuthRoutes, { AuthRoutesStackParams } from './AuthRoutes';
-import ChooseUserScreen from '../screens/Auth/ChooseUserScreen';
+import {BrandExpoScreen} from '../screens/BrandExpo/BrandExpoScreen';
+import {HomeScreen} from '../screens/Home/HomeScreen';
+import {UserProfileScreen} from '../screens/UserProfile/UserProfileScreen';
+import {TenantScreen} from '../screens/Tenant/TenantScreen';
+import {UsersScreen} from '../screens/Users/UsersScreen';
+import { AuthRoutes, AuthRoutesStackParams } from './AuthRoutes';
+import {ChooseUserScreen} from '../screens/Auth/ChooseUserScreen';
 
 export type RoutesStackParams = AuthRoutesStackParams & {
     Home: undefined;
@@ -45,4 +44,4 @@ const Routes: FunctionComponent<{}> = ({}) => {
         );
 }
 
-export default Routes;
+export {Routes};

@@ -18,4 +18,4 @@ const TextComponent:FunctionComponent<{
     )
 }
 
-export default TextComponent;
+export {TextComponent};

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
-import DefaultPaddingComponent from '../../components/shared/DefaultPaddingComponent';
-import UserProfileComponent from '../../components/User/UserProfileComponent/UserProfileComponent/UserProfileComponent';
+import {DefaultPaddingComponent} from '../../components/shared/DefaultPaddingComponent';
+import {UserProfileComponent} from '../../components/User/UserProfileComponent/UserProfileComponent/UserProfileComponent';
 
 const UserProfileScreen: FunctionComponent<{}> = () => {
   return (
@@ -10,4 +10,4 @@ const UserProfileScreen: FunctionComponent<{}> = () => {
   );
 }
 
-export default UserProfileScreen;
+export {UserProfileScreen};
