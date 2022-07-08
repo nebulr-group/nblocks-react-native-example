@@ -3,18 +3,15 @@ import { AuthService } from "../utils/AuthService";
 import { AuthHttpClient } from "../utils/AuthHttpClient";
 import { AuthApolloClient } from "../utils/AuthApolloClient";
 import { ApolloProvider } from "@apollo/client";
+import { useApp } from "./app-context";
 
-//const BASE_URL = "http://192.168.2.22";
-//const BASE_URL = "http://172.20.10.3"
-const BASE_URL = "http://172.22.78.160"
-const HTTP_URL = `${BASE_URL}:3300`;
-const GRAPHQL_URL = `${HTTP_URL}/graphql`;
-
-const authHttpClient = new AuthHttpClient(HTTP_URL, true);
-const authService = new AuthService(authHttpClient.httpClient, true);
-const authApolloClient = new AuthApolloClient(GRAPHQL_URL, true);
-
-const initialSecurityContext = {authService, authHttpClient, authApolloClient, authenticated: false, didAuthenticate: (value: boolean) => {}};
+const initialSecurityContext = {
+  authService: {} as AuthService,
+  authHttpClient: {} as AuthHttpClient, 
+  authApolloClient: {} as AuthApolloClient, 
+  authenticated: false, 
+  didAuthenticate: (value: boolean) => {}
+};
 const SecureContext = React.createContext(initialSecurityContext);
 const useSecureContext = () => useContext(SecureContext);
 
@@ -22,10 +19,17 @@ interface NblocksContextProps {
 }
 
 const NblocksSecureContextProvider: FunctionComponent<NblocksContextProps> = ({children}) => {
+
+    const {apiHost, graphqlPath, debug} = useApp();
+
     const [authenticated, setAuthenticated] = useState<boolean>(false);
+    const [authHttpClient] = useState<AuthHttpClient>(new AuthHttpClient(apiHost, debug));
+    const [authService] = useState<AuthService>(new AuthService(authHttpClient.httpClient, debug));
+    const [authApolloClient] = useState<AuthApolloClient>(new AuthApolloClient(`${apiHost}${graphqlPath}`, debug));
 
     const didAuthenticate = (value: boolean) => {
-      console.log(`Did authenticate: ${value}`);
+      if (debug)
+        console.log(`Did authenticate: ${value}`);
       setAuthenticated(value);
     }
 
@@ -38,7 +42,13 @@ const NblocksSecureContextProvider: FunctionComponent<NblocksContextProps> = ({c
     })
 
     return (
-      <SecureContext.Provider value={{...initialSecurityContext,...{authenticated, didAuthenticate}}}>
+      <SecureContext.Provider value={{...initialSecurityContext,...{
+        authHttpClient,
+        authService,
+        authApolloClient,
+        authenticated, 
+        didAuthenticate
+        }}}>
         <ApolloProvider client={authApolloClient.client}>
             {children}
         </ApolloProvider>

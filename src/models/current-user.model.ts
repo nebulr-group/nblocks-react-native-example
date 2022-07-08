@@ -11,8 +11,6 @@ export class CurrentUser {
     constructor(user?:AuthTenantUserResponseDto) {
         this.user = user;
         this.authenticated = user && !this._isAnonymous() ? true : false;
-        // if (this.authenticated)
-        //     console.log("User is authenticated");
     }
 
     getRole():string {

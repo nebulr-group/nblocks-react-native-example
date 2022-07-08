@@ -53,7 +53,8 @@ export class AuthApolloClient {
         });
 
         const requestMiddleware = new ApolloLink((operation, forward) => {
-          console.log("[GraphQL request]:", operation.operationName, operation.variables);
+          if (debug)
+            console.log("[GraphQL request]:", operation.operationName, operation.variables);
           return forward(operation);
         });
         

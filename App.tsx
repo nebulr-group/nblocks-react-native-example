@@ -4,6 +4,9 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import {NblocksProvider} from './src/components/NblocksProvider/NblocksProvider';
 import {Routes} from './src/routes/Routes';
 
+// This is the IP to your running docker container on your local network. This must be reachable from your mobile device that is running the app.
+const ipToBackend = "http://172.22.76.48:3300";
+
 export default class App extends Component<{}, {}> {
 
   render() {
@@ -13,7 +16,7 @@ export default class App extends Component<{}, {}> {
       }
     })
     return (
-      <NblocksProvider>
+      <NblocksProvider appName='Nebulr App' config={{apiHost: ipToBackend, debug: true}}>
         <SafeAreaView style={styles.container}>
           <StatusBar style="auto" />
           <Routes></Routes>

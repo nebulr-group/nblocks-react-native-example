@@ -2,6 +2,7 @@ import React, { FunctionComponent, useContext, useEffect, useState } from "react
 import { AuthService, UpdateUserProfileArgs } from "../utils/AuthService";
 import { CurrentUser } from "../models/current-user.model";
 import { useSecureContext } from "./secure-http-context";
+import { useApp } from "./app-context";
 
 const initialAuthContext = {
   currentUser: new CurrentUser(),
@@ -17,6 +18,7 @@ interface NblocksContextProps {
 }
 
 const NblocksAuthContextProvider: FunctionComponent<NblocksContextProps> = ({children}) => {
+    const {debug} = useApp();
     const {authenticated, didAuthenticate, authService, authApolloClient, authHttpClient} = useSecureContext();
     const [currentUser, setCurrentUser] = useState(new CurrentUser());
 
@@ -25,7 +27,8 @@ const NblocksAuthContextProvider: FunctionComponent<NblocksContextProps> = ({chi
       AuthService.clearAuthStorage();
       authApolloClient.client.resetStore();
       didAuthenticate(false);
-      console.log("DidLogout");
+      if(debug)
+        console.log("DidLogout");
     }
 
     //TODO async
@@ -34,7 +37,8 @@ const NblocksAuthContextProvider: FunctionComponent<NblocksContextProps> = ({chi
       AuthService.setTenantUserId(userId!);
       if (authenticated)
         refreshCurrentUser();
-      console.log("DidSwitchUser");
+      if (debug)
+        console.log("DidSwitchUser");
     }
 
     // Attach listners to events in http/graphql clients
@@ -45,7 +49,8 @@ const NblocksAuthContextProvider: FunctionComponent<NblocksContextProps> = ({chi
 
     const refreshCurrentUser = () => {
       authService.currentUser().then(user => setCurrentUser(new CurrentUser(user)));
-      console.log("refreshCurrentUser");
+      if (debug)
+        console.log("refreshCurrentUser");
     }
 
     useEffect(() => {

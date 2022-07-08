@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { NblocksAppContextProvider } from '../../hooks/app-context';
+import { LibConfig, NblocksAppContextProvider } from '../../hooks/app-context';
 import { NblocksAuthContextProvider } from '../../hooks/auth-context';
 import { LangOverrideParam, NblocksThemeContextProvider } from '../../hooks/theme-context';
 import { NblocksSecureContextProvider } from '../../hooks/secure-http-context';
@@ -11,13 +11,15 @@ import { BrandingConfig, ColorConfig } from '../../utils/BrandingConfig';
  * @returns 
  */
 const NblocksProvider: FunctionComponent<{
+  appName: string, 
+  config?: Partial<LibConfig>,
   i18nOverrides?: LangOverrideParam[];
   styleOverrides?: Partial<BrandingConfig>;
   colorOverrides?: Partial<ColorConfig>;
-}> = ({children, i18nOverrides, styleOverrides, colorOverrides}) => {
+}> = ({children, appName, config, i18nOverrides, styleOverrides, colorOverrides}) => {
 
   return (
-    <NblocksAppContextProvider>
+    <NblocksAppContextProvider appName={appName} config={config}>
       <NblocksSecureContextProvider>
         <NblocksAuthContextProvider>
           <NblocksThemeContextProvider i18nOverrides={i18nOverrides} styleOverrides={styleOverrides} colorOverrides={colorOverrides}>
