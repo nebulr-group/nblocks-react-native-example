@@ -11,23 +11,25 @@ import { BrandingConfig, ColorConfig } from '../../utils/BrandingConfig';
  * @returns 
  */
 const NblocksProvider: FunctionComponent<{
-  appName: string, 
   config?: Partial<LibConfig>,
   i18nOverrides?: LangOverrideParam[];
   styleOverrides?: Partial<BrandingConfig>;
   colorOverrides?: Partial<ColorConfig>;
-}> = ({children, appName, config, i18nOverrides, styleOverrides, colorOverrides}) => {
+}> = ({children, config, i18nOverrides, styleOverrides, colorOverrides}) => {
+
+  const apiHost = config?.apiHost ? config.apiHost : "http://localhost:3000";
+  const graphqlPath = config?.graphqlPath ? config.graphqlPath : "/graphql"
 
   return (
-    <NblocksAppContextProvider appName={appName} config={config}>
-      <NblocksSecureContextProvider>
+      <NblocksSecureContextProvider apiHost={apiHost} graphqlPath={graphqlPath} debug={!!config?.debug}>
         <NblocksAuthContextProvider>
-          <NblocksThemeContextProvider i18nOverrides={i18nOverrides} styleOverrides={styleOverrides} colorOverrides={colorOverrides}>
-            {children}
-          </NblocksThemeContextProvider>
+          <NblocksAppContextProvider config={config}>
+            <NblocksThemeContextProvider i18nOverrides={i18nOverrides} styleOverrides={styleOverrides} colorOverrides={colorOverrides}>
+              {children}
+            </NblocksThemeContextProvider>
+          </NblocksAppContextProvider>
         </NblocksAuthContextProvider>
       </NblocksSecureContextProvider>
-    </NblocksAppContextProvider>
   );
 }
 

@@ -16,11 +16,12 @@ const SecureContext = React.createContext(initialSecurityContext);
 const useSecureContext = () => useContext(SecureContext);
 
 interface NblocksContextProps {
+  apiHost: string;
+  graphqlPath: string;
+  debug: boolean
 }
 
-const NblocksSecureContextProvider: FunctionComponent<NblocksContextProps> = ({children}) => {
-
-    const {apiHost, graphqlPath, debug} = useApp();
+const NblocksSecureContextProvider: FunctionComponent<NblocksContextProps> = ({children, apiHost, graphqlPath, debug}) => {
 
     const [authenticated, setAuthenticated] = useState<boolean>(false);
     const [authHttpClient] = useState<AuthHttpClient>(new AuthHttpClient(apiHost, debug));

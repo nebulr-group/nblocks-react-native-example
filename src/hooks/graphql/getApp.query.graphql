@@ -1,0 +1,8 @@
+query GetApp {
+  getApp {
+    name
+    logo
+    privacyPolicyUrl
+    termsOfServiceUrl
+  }
+}

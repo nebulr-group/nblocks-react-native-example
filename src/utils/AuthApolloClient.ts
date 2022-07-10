@@ -2,6 +2,12 @@ import { ApolloClient, ApolloLink, createHttpLink, from, InMemoryCache, Normaliz
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import { AuthService } from './AuthService';
+import { ClientError } from './errors/ClientError';
+
+interface ErrorExtensions {
+  code?: string;
+  exception?: ClientError
+}
 
 export class AuthApolloClient {
 
@@ -74,9 +80,9 @@ export class AuthApolloClient {
                 `[GraphQL error]: Message: ${error.message}, Location: ${error.locations}, Path: ${error.path}`
               ); 
 
-              const exception: {errorCode: string, httpStatus: number} = error?.extensions?.exception as any;
-              if (exception) {
-                switch (exception.httpStatus) {
+              const extension = error?.extensions as ErrorExtensions;
+              if (extension) {
+                switch (extension.exception?.httpStatus) {
                   case 401:
                     this.unauthenticatedCallback();
                     break;
@@ -86,7 +92,7 @@ export class AuthApolloClient {
                     break;
                   
                   default:
-                    console.error("Unhandled GraphQL exception", exception);
+                    console.error("Unhandled GraphQL exception", error);
                     break;
                 }
               }

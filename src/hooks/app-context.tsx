@@ -1,15 +1,21 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from "react";
+import { App, useGetAppQuery } from "../generated/graphql";
 
-const initialAppContext = {
-  name: "", 
-  defaultLocale: "", 
-  logo: "", 
-  privacyPolicyUrl: "", 
+interface AppContext extends App {
+  defaultLocale: string;
+  apiHost: string;
+  graphqlPath: string;
+  debug: boolean;
+}
+
+const initialAppContext:AppContext = {
+  defaultLocale: 'en',
   apiHost: "", 
   graphqlPath: "",
   debug: false
 };
-const AppContext = React.createContext(initialAppContext);
+
+const AppContext = React.createContext<AppContext>(initialAppContext);
 const useApp = () => useContext(AppContext);
 
 export interface LibConfig {
@@ -22,12 +28,6 @@ export interface LibConfig {
 
   /** The path which host the graphql endpoint, will be concatenated with apiHost. E.g. `/graphql` */
   graphqlPath: string;
-
-  /** Asset Path to your logo. E.g. `https://www.myapp.com/logo.png` or `assets/logos/logo.png` */
-  logoPath: string;
-
-  /** Url to a privacy policy, will be used in href links. E.g. `https://www.myapp.com/privacy` */
-  privacyPolicyUrl: string;
 
   /** View routes that are considered public accessable and interceptors should not require authentication context. E.g. `['/about', '/home']` */
   openRoutes: string[];
@@ -60,21 +60,22 @@ export interface LibConfig {
   },
 }
 
-const NblocksAppContextProvider: FunctionComponent<{appName: string, config?: Partial<LibConfig>}> = ({children, config, appName}) => {
+const NblocksAppContextProvider: FunctionComponent<{config?: Partial<LibConfig>}> = ({children, config}) => {
+
+  
+  const {data, loading, error} = useGetAppQuery();
 
   useEffect(() => {
-    //Get app
-  })
+  });
 
     return (
-      <AppContext.Provider value={{...initialAppContext,...{
-        name: appName,
+      <AppContext.Provider value={
+        {...initialAppContext,...{
+        name: data?.getApp.name,
         defaultLocale: 'en', 
-        logo: config?.logoPath ? config.logoPath : "https://app-stage.northwhistle.com/assets/logos/logo-word-purple.png",  
-        privacyPolicyUrl: config?.privacyPolicyUrl ? config.privacyPolicyUrl : "https://www.northwhistle.com/privacy-app",
-        apiHost: config?.apiHost ? config.apiHost : "http://localhost:3000",
-        graphqlPath: config?.graphqlPath ? config.graphqlPath : "/graphql",
-        debug: config?.debug
+        logo: data?.getApp.logo,  
+        privacyPolicyUrl: data?.getApp.privacyPolicyUrl,
+        debug: !!config?.debug
         }}}>
         {children}
       </AppContext.Provider>
