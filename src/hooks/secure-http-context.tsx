@@ -3,8 +3,8 @@ import { AuthService } from "../utils/AuthService";
 import { AuthHttpClient } from "../utils/AuthHttpClient";
 import { AuthApolloClient } from "../utils/AuthApolloClient";
 import { ApolloProvider } from "@apollo/client";
-import { useApp } from "./app-context";
 
+//TODO expose something simpler hook for external app developers to use
 const initialSecurityContext = {
   authService: {} as AuthService,
   authHttpClient: {} as AuthHttpClient, 
