@@ -2,6 +2,7 @@ import React, { FunctionComponent, useState } from "react";
 import { View, Image, Dimensions } from "react-native";
 import WebView from "react-native-webview";
 import { useApp } from "../../hooks/app-context";
+import { ImageComponent } from "../shared/ImageComponent";
 import {IngressComponent} from "../shared/IngressComponent";
 import {NblocksButton} from "../shared/NblocksButton";
 import {NblocksModalComponent} from "../shared/NblocksModalComponent";
@@ -16,9 +17,9 @@ const BaseStyleComponent:FunctionComponent<{title: string, subTitle: string}> = 
     return (
         <View style={{flex: 1, alignContent: 'space-between'}}>
             <View style={{alignItems: 'center'}}>
-                <Image
+                <ImageComponent
                     style={{height: 100, width: Dimensions.get('window').width * (2/3), resizeMode: 'contain'}}
-                    source={{ uri: logo }}
+                    uri={logo}
                 />
                 <SubTitleComponent>{title}</SubTitleComponent>
                 <IngressComponent>{subTitle}</IngressComponent>
@@ -32,11 +33,14 @@ const BaseStyleComponent:FunctionComponent<{title: string, subTitle: string}> = 
                 </TextComponent>
                 <NblocksButton title="Privacy policy" onPress={() => setShowPrivacyPolicy(true)} />
             </View>
-            <NblocksModalComponent mode="full" visible={showPrivacyPolicy} swipable={false} onCloseModal={() => setShowPrivacyPolicy(false)}>
-                <WebView style={{flex: 1}} source={{uri: privacyPolicyUrl}}>
-                </WebView>
-                <NblocksButton title="Close" type="primary" onPress={() => setShowPrivacyPolicy(false)}></NblocksButton>
-            </NblocksModalComponent>
+            {
+                privacyPolicyUrl &&
+                <NblocksModalComponent mode="full" visible={showPrivacyPolicy} swipable={false} onCloseModal={() => setShowPrivacyPolicy(false)}>
+                    <WebView style={{flex: 1}} source={{uri: privacyPolicyUrl}}>
+                    </WebView>
+                    <NblocksButton title="Close" type="primary" onPress={() => setShowPrivacyPolicy(false)}></NblocksButton>
+                </NblocksModalComponent>
+            }
         </View>
     );
 }
