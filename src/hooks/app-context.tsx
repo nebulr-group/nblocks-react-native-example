@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useContext, useEffect, useState } from "react";
-import { App, useGetAppQuery } from "../generated/graphql";
+import { App, useGetAppAnonymousQuery } from "../generated/graphql";
 
 interface AppContext extends App {
   defaultLocale: string;
@@ -63,7 +63,7 @@ export interface LibConfig {
 const NblocksAppContextProvider: FunctionComponent<{config?: Partial<LibConfig>}> = ({children, config}) => {
 
   
-  const {data, loading, error} = useGetAppQuery();
+  const {data, loading, error} = useGetAppAnonymousQuery();
 
   useEffect(() => {
   });
@@ -71,10 +71,10 @@ const NblocksAppContextProvider: FunctionComponent<{config?: Partial<LibConfig>}
     return (
       <AppContext.Provider value={
         {...initialAppContext,...{
-        name: data?.getApp.name,
+        name: data?.getAppAnonymous.name,
         defaultLocale: 'en', 
-        logo: data?.getApp.logo,  
-        privacyPolicyUrl: data?.getApp.privacyPolicyUrl,
+        logo: data?.getAppAnonymous.logo,  
+        privacyPolicyUrl: data?.getAppAnonymous.privacyPolicyUrl,
         debug: !!config?.debug
         }}}>
         {children}

@@ -25,8 +25,16 @@ export type App = {
   websiteUrl?: Maybe<Scalars['String']>;
 };
 
+export type CreateTenantInput = {
+  email: Scalars['String'];
+  logo?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  plan: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  createTenantAnonymous: Tenant;
   /** This will create a new user for a tenant. */
   createUsers: Array<User>;
   deleteUser: Scalars['Boolean'];
@@ -34,6 +42,11 @@ export type Mutation = {
   updateTenant: Tenant;
   /** Update the user. You can change role, teams and also enable or disable the user from logging in. */
   updateUser: User;
+};
+
+
+export type MutationCreateTenantAnonymousArgs = {
+  tenant: CreateTenantInput;
 };
 
 
@@ -64,7 +77,7 @@ export type MutationUpdateUserArgs = {
 export type Query = {
   __typename?: 'Query';
   /** Gets useful App configs for the UI to consume */
-  getApp: App;
+  getAppAnonymous: App;
   /** Obtain an short lived session url to redirect or present the user its Stripe subscription panel for updating payment or subscription data. */
   getCustomerPortal: Scalars['String'];
   /** Gets a single tenant */
@@ -176,10 +189,10 @@ export type UpdateUserMutationVariables = Exact<{
 
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', id: string, fullName?: string | null, email?: string | null, username?: string | null, createdAt?: string | null, onboarded?: boolean | null, enabled?: boolean | null, role?: string | null, teams?: Array<string> | null } };
 
-export type GetAppQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAppAnonymousQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAppQuery = { __typename?: 'Query', getApp: { __typename?: 'App', name?: string | null, logo?: string | null, privacyPolicyUrl?: string | null, termsOfServiceUrl?: string | null } };
+export type GetAppAnonymousQuery = { __typename?: 'Query', getAppAnonymous: { __typename?: 'App', name?: string | null, logo?: string | null, privacyPolicyUrl?: string | null, termsOfServiceUrl?: string | null } };
 
 
 export const GetCustomerPortalDocument = gql`
@@ -511,9 +524,9 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
-export const GetAppDocument = gql`
-    query GetApp {
-  getApp {
+export const GetAppAnonymousDocument = gql`
+    query GetAppAnonymous {
+  getAppAnonymous {
     name
     logo
     privacyPolicyUrl
@@ -523,28 +536,28 @@ export const GetAppDocument = gql`
     `;
 
 /**
- * __useGetAppQuery__
+ * __useGetAppAnonymousQuery__
  *
- * To run a query within a React component, call `useGetAppQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAppQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAppAnonymousQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAppAnonymousQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAppQuery({
+ * const { data, loading, error } = useGetAppAnonymousQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetAppQuery(baseOptions?: Apollo.QueryHookOptions<GetAppQuery, GetAppQueryVariables>) {
+export function useGetAppAnonymousQuery(baseOptions?: Apollo.QueryHookOptions<GetAppAnonymousQuery, GetAppAnonymousQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAppQuery, GetAppQueryVariables>(GetAppDocument, options);
+        return Apollo.useQuery<GetAppAnonymousQuery, GetAppAnonymousQueryVariables>(GetAppAnonymousDocument, options);
       }
-export function useGetAppLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAppQuery, GetAppQueryVariables>) {
+export function useGetAppAnonymousLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAppAnonymousQuery, GetAppAnonymousQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAppQuery, GetAppQueryVariables>(GetAppDocument, options);
+          return Apollo.useLazyQuery<GetAppAnonymousQuery, GetAppAnonymousQueryVariables>(GetAppAnonymousDocument, options);
         }
-export type GetAppQueryHookResult = ReturnType<typeof useGetAppQuery>;
-export type GetAppLazyQueryHookResult = ReturnType<typeof useGetAppLazyQuery>;
-export type GetAppQueryResult = Apollo.QueryResult<GetAppQuery, GetAppQueryVariables>;
+export type GetAppAnonymousQueryHookResult = ReturnType<typeof useGetAppAnonymousQuery>;
+export type GetAppAnonymousLazyQueryHookResult = ReturnType<typeof useGetAppAnonymousLazyQuery>;
+export type GetAppAnonymousQueryResult = Apollo.QueryResult<GetAppAnonymousQuery, GetAppAnonymousQueryVariables>;

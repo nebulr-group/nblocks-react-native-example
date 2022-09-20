@@ -1,5 +1,5 @@
-query GetApp {
-  getApp {
+query GetAppAnonymous {
+  getAppAnonymous {
     name
     logo
     privacyPolicyUrl
